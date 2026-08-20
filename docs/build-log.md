@@ -266,3 +266,36 @@ screen showed `pending` as though nothing had been attempted.
 That is exactly the silent failure this project is built to avoid, and it was in
 the plumbing rather than the domain. The error now belongs to the screen that
 outlives the form.
+
+---
+
+## Where the build stands — 20 August 2026
+
+**Done and committed, steps 0 to 9.** Sign-in, the move, the two-person
+membership with its join code, the nineteen-item catalogue, the item table, the
+boundary lookup, the geocoder, the address form and the confirmation screen.
+
+All six migrations in `supabase/migrations/` have been applied to the Supabase
+project. None of them needs running again.
+
+**Verified against the live services, not just compiled:** Google sign-in creates
+a `profile` row; `רחוב חיים לסקוב 4, תל אביב` produces `address_not_found`;
+`לסקוב 4, תל אביב` resolves to תל אביב - יפו, `עירייה`, and confirming it sets
+`address_confirmed_at`. One move exists in the database, in that state.
+
+**Left, steps 10 to 17.** Seeding the nineteen rows when a move is confirmed; the
+board; changing an item's state; taking ownership; adding an item by hand;
+joining with a code; a right-to-left pass over every screen; and the report on
+the six checks.
+
+**Owed by Tomer, and not blocking.** The three route descriptions in
+`docs/items.md` are marked there as unverified. One search each: does a city do
+change-of-occupier by online form or by the 106 call centre, does a local council
+really do it by telephone, and is the local committee genuinely a second body a
+regional council resident must approach. The third is the one that matters: if it
+is wrong, a person contacts one body when two are needed and the item looks
+finished when it is not.
+
+Correcting a route is one line in `src/catalogue/routes.ts`. No migration, and
+moves already running pick up the correction, because `move_item` stores a
+`catalogue_key` and never any wording.
