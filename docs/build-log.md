@@ -222,3 +222,26 @@ Two functions rather than an update policy, because `authenticated` still has no
 write path to `move`: `confirm_move_address` agrees, and `set_move_address`
 replaces the address and puts the move back to `pending` - which is what "no,
 that is the wrong place" has to do.
+
+## Step 9 — Creating a move, and agreeing with the match
+
+About to add the first screens that write anything: an address form, and the
+confirmation that option A requires.
+
+The confirmation screen shows `matched_address` - what the geocoder found - and
+never the address the person typed. The entire failure being guarded against is
+that those two differ, so showing back what they wrote would confirm nothing.
+
+Six states the move can be in, and each says something different rather than
+falling back to one message:
+
+- pending - nothing looked up yet
+- resolved, unconfirmed - here is what was matched, is it yours
+- resolved, confirmed - ready for its items
+- address_not_found - the geocoder knows no such address
+- outside_boundaries - matched, but inside no polygon
+- no_jurisdiction - matched, inside a polygon that has no authority
+- lookup_failed - someone else's service did not answer
+
+Every one of them offers the same way out: change the address. That is what makes
+a wrong match recoverable rather than a dead end.
