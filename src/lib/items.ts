@@ -30,8 +30,14 @@ const COLUMNS =
  * verified list, and giving it a copy would create a second place for the list
  * to be wrong.
  *
- * Safe to call again. A unique index on (move_id, catalogue_key) means a repeat
- * inserts nothing, so an interrupted seed is fixed by repeating it.
+ * All nineteen go in one statement, so the result is either all of them or none
+ * - there is no half-seeded board to recover from.
+ *
+ * The unique index that protects this is partial, `where catalogue_key is not
+ * null`, so that hand-added rows are unaffected by it. A partial index cannot be
+ * named in an ON CONFLICT clause, so this is a plain insert and the duplicate is
+ * caught instead: it means the other person confirmed at the same moment, which
+ * is not a failure.
  */
 export async function seedItems(moveId: string): Promise<void> {
   const rows = CATALOGUE.map((item) => ({
@@ -40,11 +46,10 @@ export async function seedItems(moveId: string): Promise<void> {
     position: item.position,
   }))
 
-  const { error } = await supabase
-    .from('move_item')
-    .upsert(rows, { onConflict: 'move_id,catalogue_key', ignoreDuplicates: true })
+  const { error } = await supabase.from('move_item').insert(rows)
 
-  if (error) throw new Error(error.message)
+  // 23505 is unique_violation: the rows are already there.
+  if (error && error.code !== '23505') throw new Error(error.message)
 }
 
 export async function listItems(moveId: string): Promise<MoveItem[]> {
