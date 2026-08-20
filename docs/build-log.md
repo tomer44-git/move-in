@@ -147,3 +147,32 @@ Three outcomes, and none of them is a guess:
 The function is written to be callable with a coordinate directly, so it can be
 tested against a known point before any geocoder exists. The address comes in
 step 8.
+
+## Step 8 — An address to a coordinate
+
+Two commits, because one is a schema change and one is not.
+
+**First, a sixth lookup status.** The plan approved five. Querying the layer for
+the values `Sug_Muni` actually takes turned up `ללא שיפוט`: real polygons -
+Delton lake, Bet Netofa valley, the Arbel - that belong to no authority at all
+and carry a single space where the `CR_LAMAS` code should be.
+
+A point there is inside a polygon and still has no authority, which is neither
+`resolved` nor `outside_boundaries`. Tomer chose on 20 August to give it its own
+status rather than fold it into "outside every polygon", because the two lead a
+person to different actions: no polygon usually means the address was matched
+badly and is worth retrying, while no jurisdiction is a permanent fact about the
+place and there is nothing to retry.
+
+**Then the geocoder.** Nominatim, server side, with the declared user agent
+Tomer approved as a dependency on 20 August. It runs in front of the boundary
+lookup from step 7 and writes the result to the move under the service role.
+
+The lookup runs once per move: an already-resolved move returns its stored
+answer and makes no external call at all. A move that failed can be tried again,
+because the failure may have been the service rather than the address.
+
+The caller is checked twice - the token is verified, and the move is read through
+the caller's own row level security so that only a member of a move can resolve
+it. The authority is then written with the service role, because `authenticated`
+has no write path to those columns and should not have one.
