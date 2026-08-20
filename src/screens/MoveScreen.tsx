@@ -10,6 +10,7 @@ import {
   type Move,
 } from '../lib/move'
 import { AddressForm } from './AddressForm'
+import { Board } from './Board'
 import { ConfirmAddress } from './ConfirmAddress'
 import { LookupOutcome } from './LookupOutcome'
 
@@ -122,16 +123,7 @@ export function MoveScreen() {
 
   const { move } = screen
 
-  if (isReady(move)) {
-    return (
-      <div className="panel">
-        <h2 className="panel__title">{move.authority_name}</h2>
-        <p className="panel__lead">
-          הכתובת אושרה. תשעה־עשר הפריטים ייבנו כאן בשלב הבא.
-        </p>
-      </div>
-    )
-  }
+  if (isReady(move)) return <Board move={move} />
 
   if (move.lookup_status === 'resolved') {
     return (
