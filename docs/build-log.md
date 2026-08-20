@@ -317,3 +317,35 @@ The question raised at step 7 - whether a move that never resolves should still
 get the fifteen items that do not depend on an authority - is not answered here.
 Seeding stays tied to confirmation, as the plan says. It is a real question and
 it belongs to a later turn, once use has shown whether it matters.
+
+## Step 10 — the fault it turned up
+
+The seed used an upsert with `ON CONFLICT (move_id, catalogue_key)` and failed:
+`there is no unique or exclusion constraint matching the ON CONFLICT
+specification`.
+
+The index it was aiming at is partial - `where catalogue_key is not null`, so
+that hand-added rows, which have no key, are not caught by it. Postgres will not
+let a partial index be named in an ON CONFLICT clause.
+
+Weakening the index to a plain unique constraint would have made the upsert work.
+It would also have changed what the index means. The insert changed instead, and
+the duplicate is now caught by its error code, which happens only when both
+people confirm the same move at the same moment - not a failure worth reporting.
+
+## Step 11 — The board
+
+About to render the nineteen. `CLAUDE.md` is specific about what has to be
+visible without opening an item: its state, its owner, and how long it has been
+waiting. All three go on the row.
+
+Waiting time is computed at render from `request_sent_at` and never stored, so it
+cannot go stale. It appears only while an item is waiting: a row that nobody has
+started has not been waiting for anything, and a confirmed one has stopped.
+
+Items 3 to 6 show the route for this move's `authority_type`. Where the type is
+`unrecognised` they show that no route is known rather than the route of a guess.
+
+A row whose `catalogue_key` is not in the catalogue is rendered as a broken row
+that says so. It should be impossible, but the alternative to saying so is a
+blank line that looks like an item with no name.
