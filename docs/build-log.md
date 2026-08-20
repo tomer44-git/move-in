@@ -384,3 +384,35 @@ Ownership is a single button and can be taken, not assigned. Either person can
 take any item, and either can put it down again. `framing.md` settles that both
 people have the same view and the same ability to take an item, so there is no
 permission to model here.
+
+## Steps 12 and 13 — what the testing showed, and one thing I got wrong
+
+The database refuses `confirmed` without a confirmation, and refuses a
+whitespace-only one too. An item taken straight from *not started* to *confirmed*
+still comes back with `request_sent_at` set, because the trigger stamps it - the
+board can always say how long something took.
+
+Ownership can be taken and put down by either person. A reference over 64
+characters is refused by the constraint.
+
+`setItemReference` existed with nothing on screen that could reach it, so an item
+could not actually hold an identifier. Added.
+
+**A rule I broke.** `fb217f3` says "change an item state" and also carried taking
+ownership - two changes under one message, which is exactly what `CLAUDE.md`
+forbids. It is not amended, because that rule outranks the first one. Steps 12
+and 13 were listed separately in the plan and I should have committed them
+separately.
+
+## Step 14 — An item added by hand
+
+About to allow an item the verified list does not contain.
+
+It carries `custom_title` and no `catalogue_key`, which the check constraint from
+step 6 already enforces as exclusive. It gets no route and no warnings, and the
+row says on screen that it was added by hand and has no route from the verified
+list - because there is no verified route for it and inventing the shape of one
+would be worse than saying nothing.
+
+Positions start at 100 so hand-added items sort below the nineteen without ever
+colliding with them.
