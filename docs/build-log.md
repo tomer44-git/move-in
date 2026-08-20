@@ -349,3 +349,38 @@ Items 3 to 6 show the route for this move's `authority_type`. Where the type is
 A row whose `catalogue_key` is not in the catalogue is rendered as a broken row
 that says so. It should be impossible, but the alternative to saying so is a
 blank line that looks like an item with no name.
+
+## Step 11 — what looking at it turned up
+
+Three things, none of which a compiler would have found.
+
+The detail transcribed from `docs/items.md` was not rendered at all. Electricity
+carried its phone number and what to bring; the board showed neither. Nothing
+errored, and the item simply looked emptier than it is.
+
+Hebrew was being italicised, in two places. Hebrew has no italic form, so a
+browser slants the upright letters instead, and the result reads as a rendering
+fault rather than as emphasis. Weight and colour now carry the difference.
+
+The font stack named `Assistant` and `Heebo`, and no webfont is loaded, so
+neither was ever fetched. It read like a decision that had been taken. It now
+names only what is present. Loading a Hebrew face would be a real improvement and
+it is Tomer's call, not a default to slip in.
+
+## Steps 12 and 13 — Changing state, and taking an item
+
+About to make the rows act.
+
+Confirming an item asks for the confirmation the database already demands. The
+field is free text and the screen says why: some authorities confirm by telephone
+and give back no number at all. What is being recorded is that a confirmation
+happened and what it was, not a reference number that may not exist.
+
+Dates are not sent from the browser. The trigger from step 6 stamps
+`request_sent_at` and `confirmed_at`, so the waiting time on the board is
+measured by the database's clock rather than by whatever the laptop believes.
+
+Ownership is a single button and can be taken, not assigned. Either person can
+take any item, and either can put it down again. `framing.md` settles that both
+people have the same view and the same ability to take an item, so there is no
+permission to model here.
