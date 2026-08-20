@@ -197,3 +197,28 @@ here, and it is not a hypothetical: it happened on the first address tried.
 
 `not_found` is not the problem. A confident wrong answer is. Stopped and put the
 question to Tomer rather than choosing a design for it.
+
+## Step 8b — Confirming the address
+
+Tomer chose option A on 20 August: a person confirms what the geocoder matched
+before the move resolves.
+
+The shape of it. `lookup_status` keeps meaning what the lookup found, and a new
+`address_confirmed_at` records that a person agreed with it. A move is only ready
+to carry items when it is both `resolved` and confirmed. Keeping the two separate
+means the constraint written in step 4 - resolved requires a real authority -
+does not have to be loosened to make room for a proposal.
+
+`matched_address` stores what the geocoder actually matched, in full, so the
+screen can show `חיים לסקוב, חולון, קרית פנחס אילון` rather than the address the
+person typed. Showing back what they typed would confirm nothing: the whole
+failure is that the two differ and nobody notices.
+
+Confirmation applies to `resolved` only. The other outcomes already say on screen
+that no authority was determined, and nothing is seeded from them, so a wrong
+match there is visible rather than silent.
+
+Two functions rather than an update policy, because `authenticated` still has no
+write path to `move`: `confirm_move_address` agrees, and `set_move_address`
+replaces the address and puts the move back to `pending` - which is what "no,
+that is the wrong place" has to do.
