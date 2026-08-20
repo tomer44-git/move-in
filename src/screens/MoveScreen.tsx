@@ -31,6 +31,13 @@ type Screen =
 export function MoveScreen() {
   const [screen, setScreen] = useState<Screen>({ name: 'loading' })
   const [busy, setBusy] = useState(false)
+  /**
+   * Held here rather than inside the address form, because creating a move
+   * unmounts that form. When it held the error handler, a lookup that failed
+   * after the switch had nobody left to report it, and the screen showed
+   * `pending` as though nothing had been tried.
+   */
+  const [lookupError, setLookupError] = useState<string | null>(null)
 
   const show = useCallback((move: Move) => {
     setScreen({ name: 'move', move })
@@ -59,8 +66,11 @@ export function MoveScreen() {
   const runLookup = useCallback(
     async (moveId: string) => {
       setBusy(true)
+      setLookupError(null)
       try {
         show(await resolveMove(moveId))
+      } catch (cause) {
+        setLookupError(cause instanceof Error ? cause.message : String(cause))
       } finally {
         setBusy(false)
       }
@@ -138,11 +148,18 @@ export function MoveScreen() {
   }
 
   return (
-    <LookupOutcome
-      move={move}
-      busy={busy}
-      onRetry={() => void runLookup(move.id)}
-      onChangeAddress={() => setScreen({ name: 'editing_address', move })}
-    />
+    <>
+      <LookupOutcome
+        move={move}
+        busy={busy}
+        onRetry={() => void runLookup(move.id)}
+        onChangeAddress={() => setScreen({ name: 'editing_address', move })}
+      />
+      {lookupError && (
+        <p className="notice notice--error" role="alert">
+          {lookupError}
+        </p>
+      )}
+    </>
   )
 }
