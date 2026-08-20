@@ -101,3 +101,27 @@ be checked mechanically and the Hebrew can be checked by Tomer.
 this step is for.
 
 Nothing is written into `docs/items.md`.
+
+## Step 6 — `move_item`
+
+About to add the third migration: the row that holds an item's state, its owner,
+its dates and its short identifiers. No item text - the wording comes from the
+catalogue in git, by `catalogue_key`.
+
+Two things this migration decides:
+
+**Confirmed requires a confirmation, and the database is what enforces it.** The
+recorded confirmation is free text rather than a required reference number,
+because some authorities confirm by telephone and give nothing back. Demanding a
+number there would make the tool unusable for those items and push a person to
+type something false. Demanding a record keeps the guarantee honest.
+
+**The dates are stamped by a trigger, not by the client.** "How long it has been
+waiting" is only worth showing if the clock behind it is trustworthy, and a
+timestamp the browser supplies is neither trustworthy nor checkable. The trigger
+also clears both dates when an item goes back to not started, so the constraints
+never have to be satisfied by hand.
+
+There is no column anywhere in this schema that can hold a file, and none is
+coming. `framing.md` puts files out of scope; this is where that becomes true
+rather than intended.
