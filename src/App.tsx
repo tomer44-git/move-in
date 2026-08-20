@@ -27,7 +27,7 @@ export function App() {
 
         {state.status === 'signed_out' && <SignIn />}
 
-        {state.status === 'signed_in' && <MoveScreen />}
+        {state.status === 'signed_in' && <MoveScreen meId={state.profile.id} />}
 
         {state.status === 'error' && (
           <p className="notice notice--error" role="alert">

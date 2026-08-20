@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react'
-import { listItems, seedItems, type MoveItem } from '../lib/items'
+import {
+  listItems,
+  seedItems,
+  setItemOwner,
+  setItemState,
+  type ItemState,
+  type MoveItem,
+} from '../lib/items'
 import { peopleOnMove, type Person } from '../lib/people'
 import type { Move } from '../lib/move'
 import { ItemRow } from './ItemRow'
@@ -24,8 +31,40 @@ const AUTHORITY_TYPE_LABEL: Record<string, string> = {
  * for the rows and creating them when there are none is the same code path for
  * the first visit and for a recovery.
  */
-export function Board({ move }: { move: Move }) {
+export function Board({ move, meId }: { move: Move; meId: string }) {
   const [state, setState] = useState<State>({ name: 'loading' })
+  const [busyItem, setBusyItem] = useState<string | null>(null)
+  const [actionError, setActionError] = useState<string | null>(null)
+
+  /**
+   * Replaces one row with what the database returned for it.
+   *
+   * The row is never patched from what was asked for: the trigger sets the dates
+   * and the constraints may refuse the change outright, so the only trustworthy
+   * version of a row is the one that comes back.
+   */
+  const replace = (updated: MoveItem) =>
+    setState((current) =>
+      current.name === 'ready'
+        ? {
+            ...current,
+            items: current.items.map((item) =>
+              item.id === updated.id ? updated : item,
+            ),
+          }
+        : current,
+    )
+
+  const act = (itemId: string, work: () => Promise<MoveItem>) => {
+    setBusyItem(itemId)
+    setActionError(null)
+    work()
+      .then(replace)
+      .catch((cause: unknown) =>
+        setActionError(cause instanceof Error ? cause.message : String(cause)),
+      )
+      .finally(() => setBusyItem(null))
+  }
 
   useEffect(() => {
     let cancelled = false
@@ -98,9 +137,23 @@ export function Board({ move }: { move: Move }) {
             item={item}
             people={state.people}
             authorityType={move.authority_type}
+            meId={meId}
+            busy={busyItem === item.id}
+            onState={(next: ItemState, confirmation?: string) =>
+              act(item.id, () => setItemState(item.id, next, confirmation))
+            }
+            onOwner={(ownerId: string | null) =>
+              act(item.id, () => setItemOwner(item.id, ownerId))
+            }
           />
         ))}
       </ol>
+
+      {actionError && (
+        <p className="notice notice--error" role="alert">
+          {actionError}
+        </p>
+      )}
     </div>
   )
 }

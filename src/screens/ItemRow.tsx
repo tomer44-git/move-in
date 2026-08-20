@@ -1,6 +1,7 @@
 import { CATALOGUE_BY_KEY } from '../catalogue/items'
+import { ItemActions } from './ItemActions'
 import { NO_ROUTE_FOR_AUTHORITY_TYPE } from '../catalogue/routes'
-import type { MoveItem } from '../lib/items'
+import type { ItemState, MoveItem } from '../lib/items'
 import type { AuthorityType } from '../lib/move'
 import type { Person } from '../lib/people'
 import { waitingLabel } from '../lib/waiting'
@@ -21,10 +22,18 @@ export function ItemRow({
   item,
   people,
   authorityType,
+  meId,
+  busy,
+  onState,
+  onOwner,
 }: {
   item: MoveItem
   people: Map<string, Person>
   authorityType: AuthorityType | null
+  meId: string
+  busy: boolean
+  onState: (state: ItemState, confirmation?: string) => void
+  onOwner: (ownerId: string | null) => void
 }) {
   const entry = item.catalogue_key
     ? CATALOGUE_BY_KEY.get(item.catalogue_key)
@@ -95,6 +104,20 @@ export function ItemRow({
       {!entry && item.custom_title && (
         <p className="item__order">פריט שנוסף ביד. אין לו מסלול מתוך הרשימה המאומתת.</p>
       )}
+
+      {/* What the authority said, kept where the item can be read without
+          opening anything. */}
+      {item.state === 'confirmed' && item.confirmation && (
+        <p className="item__confirmation">אישור: {item.confirmation}</p>
+      )}
+
+      <ItemActions
+        item={item}
+        meId={meId}
+        busy={busy}
+        onState={onState}
+        onOwner={onOwner}
+      />
     </li>
   )
 }

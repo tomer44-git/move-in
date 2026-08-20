@@ -29,7 +29,7 @@ type Screen =
  * the boundary layer is someone else's service and CLAUDE.md is explicit that it
  * is not to be called on every page load.
  */
-export function MoveScreen() {
+export function MoveScreen({ meId }: { meId: string }) {
   const [screen, setScreen] = useState<Screen>({ name: 'loading' })
   const [busy, setBusy] = useState(false)
   /**
@@ -123,7 +123,7 @@ export function MoveScreen() {
 
   const { move } = screen
 
-  if (isReady(move)) return <Board move={move} />
+  if (isReady(move)) return <Board move={move} meId={meId} />
 
   if (move.lookup_status === 'resolved') {
     return (

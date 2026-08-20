@@ -369,3 +369,33 @@ body {
   color: #6b4b12;
   opacity: 0.85;
 }
+
+/* Acting on an item */
+
+.actions--item {
+  margin-block-start: var(--space-2);
+  padding-inline-start: 1.5rem;
+}
+
+.button--small {
+  font-size: 0.8125rem;
+  padding-block: 0.25rem;
+  padding-inline: 0.75rem;
+}
+
+.item__confirm {
+  margin-block-start: var(--space-2);
+  padding-inline-start: 1.5rem;
+}
+
+.item__confirm .field {
+  margin-block-end: var(--space-1);
+  max-inline-size: 32rem;
+}
+
+.item__confirmation {
+  margin: var(--space-1) 0 0;
+  padding-inline-start: 1.5rem;
+  font-size: 0.8125rem;
+  color: #23532c;
+}
