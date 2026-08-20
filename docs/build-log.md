@@ -54,3 +54,29 @@ from the session, for the same reason: it is the only way to find out whether th
 trigger from step 2 actually fires. If the row is missing the screen says so
 instead of falling back to the name in the token, because a silent fallback would
 hide exactly the failure worth knowing about.
+
+## Step 4 — `move` and `move_member`
+
+About to add the second migration: the move itself, the two-person membership,
+and the join code that Tomer approved on 20 August so that the second person can
+get onto a move without the system sending anything.
+
+Three things in this migration are decided rather than obvious, and they are
+written into the SQL as constraints rather than left to the application:
+
+- A move cannot be `resolved` without a real authority, and cannot carry an
+  authority unless it is `resolved`. Four failure states, because "no such
+  address", "inside no polygon", "service unreachable" and "not yet run" need
+  different sentences on screen.
+- Membership is capped at two by `unique (move_id, slot)` with `slot in (1,2)`.
+  No trigger, and no application check to forget.
+- `authenticated` gets no insert or update on `move` at all. Rows are created
+  through `create_move`, and the authority columns are written only by the lookup
+  in step 8, under the service role. A client that could write them directly
+  could record an authority nobody looked up.
+
+Creating a move and joining one are both `security definer` functions, because
+row level security correctly refuses to show a person a move they are not yet a
+member of - including the one they are in the act of creating.
+
+No application code in this step.
