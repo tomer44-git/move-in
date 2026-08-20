@@ -339,6 +339,7 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+.item__detail,
 .item__route,
 .item__order,
 .item__warning,

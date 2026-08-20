@@ -74,6 +74,12 @@ export function ItemRow({
         {item.reference && <span className="item__reference">{item.reference}</span>}
       </div>
 
+      {entry?.detail.map((line) => (
+        <p key={line} className="item__detail">
+          {line}
+        </p>
+      ))}
+
       {route && <p className="item__route">{route}</p>}
 
       {entry?.order && <p className="item__order">{entry.order}</p>}
