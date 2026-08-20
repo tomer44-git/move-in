@@ -24,3 +24,17 @@ The read policy is written now but cannot be finished until `move_member` exists
 in step 4. Until then a person can read only their own row.
 
 No application code in this step.
+
+## Convention recorded — explicit grants
+
+Decided on 20 August 2026, while creating the Supabase project.
+
+`Automatically expose new tables` is **off**, and `Enable automatic RLS` is **on**.
+
+A new table therefore arrives with no privileges at all, and every migration from
+here on has to carry its own `grant`. If one is forgotten the table answers with
+a permission error — a loud failure, visible immediately. The setting we turned
+off would have failed the other way: a table exposed without anyone noticing.
+
+The migration in step 2 already ends with an explicit grant, so nothing needs
+changing retroactively.
