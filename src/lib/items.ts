@@ -128,3 +128,33 @@ export async function setItemReference(
   if (error) throw new Error(error.message)
   return data
 }
+
+/** Hand-added items sort below the nineteen and never collide with them. */
+const FIRST_CUSTOM_POSITION = 100
+
+/**
+ * Adds an item the verified list does not contain.
+ *
+ * It carries a title and nothing else. No route, no warnings, no procedure: the
+ * verified list has nothing to say about it, and a plausible-looking route
+ * invented here would be indistinguishable on screen from one that was checked.
+ */
+export async function addCustomItem(
+  moveId: string,
+  title: string,
+): Promise<MoveItem> {
+  const existing = await listItems(moveId)
+  const nextPosition = Math.max(
+    FIRST_CUSTOM_POSITION,
+    ...existing.map((item) => item.position + 1),
+  )
+
+  const { data, error } = await supabase
+    .from('move_item')
+    .insert({ move_id: moveId, custom_title: title.trim(), position: nextPosition })
+    .select(COLUMNS)
+    .single<MoveItem>()
+
+  if (error) throw new Error(error.message)
+  return data
+}

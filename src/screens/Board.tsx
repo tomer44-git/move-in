@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import {
+  addCustomItem,
   listItems,
   seedItems,
   setItemOwner,
@@ -10,6 +11,7 @@ import {
 } from '../lib/items'
 import { peopleOnMove, type Person } from '../lib/people'
 import type { Move } from '../lib/move'
+import { AddItem } from './AddItem'
 import { ItemRow } from './ItemRow'
 
 type State =
@@ -152,6 +154,17 @@ export function Board({ move, meId }: { move: Move; meId: string }) {
           />
         ))}
       </ol>
+
+      <AddItem
+        onAdd={async (title) => {
+          const added = await addCustomItem(move.id, title)
+          setState((current) =>
+            current.name === 'ready'
+              ? { ...current, items: [...current.items, added] }
+              : current,
+          )
+        }}
+      />
 
       {actionError && (
         <p className="notice notice--error" role="alert">

@@ -399,3 +399,11 @@ body {
   font-size: 0.8125rem;
   color: #23532c;
 }
+
+.add-item__open {
+  margin-block-start: var(--space-2);
+}
+
+.add-item {
+  margin-block-start: var(--space-2);
+}
