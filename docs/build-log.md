@@ -461,3 +461,16 @@ people see the same state - is enforced by row level security and by there being
 one copy of the state, but it cannot be demonstrated from here: it needs a second
 Google account, and creating one is not something the agent does. Tomer and Noa
 demonstrate it by signing in separately and entering the join code.
+
+## Step 17a — Writing the verification down
+
+About to record the six checks and their results in
+`docs/verification-turn-1.md`.
+
+They were reported in conversation, which is the wrong place for them: the
+conversation is not part of the repository, and the one check that did not pass -
+that both people see the same state - has to survive as an open item rather than
+as something said once and lost.
+
+The file records the evidence for each check and, for check 3, exactly what is
+enforced, what was not demonstrated, why not, and what Tomer does to close it.
