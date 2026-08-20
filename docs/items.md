@@ -1,6 +1,6 @@
 # The verified list
 
-Twenty items. What has to be done is the same for anyone moving in Israel; only
+Nineteen items. What has to be done is the same for anyone moving in Israel; only
 the route to the local authority changes, and only for four of them.
 
 Most of this comes from the כל-זכות guide to moving house, which is maintained
