@@ -299,3 +299,21 @@ finished when it is not.
 Correcting a route is one line in `src/catalogue/routes.ts`. No migration, and
 moves already running pick up the correction, because `move_item` stores a
 `catalogue_key` and never any wording.
+
+## Step 10 — Seeding the nineteen
+
+About to create the nineteen `move_item` rows when a move becomes confirmed.
+
+The keys and positions come from `src/catalogue/items.ts`, so the browser is what
+inserts them - the verified list lives in git and the database has never been
+told what is on it. What the rows carry is a `catalogue_key` and a position, and
+nothing else: no title, no wording, no route.
+
+Seeding is safe to run more than once. `move_item_one_row_per_catalogue_key` is a
+unique index, so a second attempt inserts nothing rather than doubling the board,
+and a half-finished insert can simply be repeated.
+
+The question raised at step 7 - whether a move that never resolves should still
+get the fifteen items that do not depend on an authority - is not answered here.
+Seeding stays tied to confirmation, as the plan says. It is a real question and
+it belongs to a later turn, once use has shown whether it matters.
