@@ -126,6 +126,11 @@ export function Board({ move, meId }: { move: Move; meId: string }) {
             {typeLabel && <span className="board__type"> · {typeLabel}</span>}
           </p>
         </div>
+        {/* Passed on by hand. The system never sends it anywhere. */}
+        <p className="board__code">
+          קוד הצטרפות <code>{move.join_code}</code>
+        </p>
+
         {/* The honest answer to "where are we", without opening anything. */}
         <p className="board__tally">
           {counts.confirmed} אושרו · {counts.sent} ממתינים · {counts.notStarted} לא

@@ -110,3 +110,26 @@ export async function setAddress(moveId: string, address: string): Promise<void>
   })
   if (error) throw new Error(error.message)
 }
+
+/**
+ * Puts the caller on the move with this code.
+ *
+ * Idempotent: someone who is already on the move gets its id back rather than an
+ * error. A third person is refused - the move has two slots and that is settled
+ * in the schema, not here.
+ */
+export async function joinMove(code: string): Promise<string> {
+  const { data, error } = await supabase.rpc('join_move', { p_code: code.trim() })
+
+  if (error) {
+    if (error.message.includes('no such join code')) {
+      throw new Error('אין מעבר עם הקוד הזה. בדוק את האותיות שוב.')
+    }
+    if (error.message.includes('already has two people')) {
+      throw new Error('למעבר הזה כבר מחוברים שני אנשים.')
+    }
+    throw new Error(error.message)
+  }
+
+  return data as string
+}

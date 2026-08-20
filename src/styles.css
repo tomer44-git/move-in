@@ -407,3 +407,30 @@ body {
 .add-item {
   margin-block-start: var(--space-2);
 }
+
+/* Starting a move, or joining one */
+
+.doors {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.field__input--code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 1.25rem;
+  letter-spacing: 0.25em;
+  text-align: center;
+  max-inline-size: 12rem;
+}
+
+.board__code {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--colour-ink-soft);
+}
+
+.board__code code {
+  font-size: 1rem;
+  letter-spacing: 0.15em;
+  color: var(--colour-ink);
+}

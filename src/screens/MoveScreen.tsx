@@ -4,6 +4,7 @@ import {
   createMove,
   currentMove,
   isReady,
+  joinMove,
   moveById,
   resolveMove,
   setAddress,
@@ -11,6 +12,7 @@ import {
 } from '../lib/move'
 import { AddressForm } from './AddressForm'
 import { Board } from './Board'
+import { JoinMove } from './JoinMove'
 import { ConfirmAddress } from './ConfirmAddress'
 import { LookupOutcome } from './LookupOutcome'
 
@@ -90,19 +92,33 @@ export function MoveScreen({ meId }: { meId: string }) {
   }
 
   if (screen.name === 'no_move') {
+    // Two doors. With only the address form here, the second person would create
+    // a second move for the same apartment - which is the thing the join code
+    // exists to prevent.
     return (
-      <AddressForm
-        title="כתובת הדירה החדשה"
-        lead="הכתובת קובעת לאיזו רשות שייכת הדירה, ומכאן מה צריך לעשות ואיפה. היא נבדקת פעם אחת."
-        submitLabel="המשך"
-        onSubmit={async (address) => {
-          const id = await createMove(address)
-          const move = await moveById(id)
-          if (!move) throw new Error('המעבר נוצר אך לא נמצא')
-          setScreen({ name: 'move', move })
-          await runLookup(id)
-        }}
-      />
+      <div className="doors">
+        <AddressForm
+          title="כתובת הדירה החדשה"
+          lead="הכתובת קובעת לאיזו רשות שייכת הדירה, ומכאן מה צריך לעשות ואיפה. היא נבדקת פעם אחת."
+          submitLabel="המשך"
+          onSubmit={async (address) => {
+            const id = await createMove(address)
+            const move = await moveById(id)
+            if (!move) throw new Error('המעבר נוצר אך לא נמצא')
+            setScreen({ name: 'move', move })
+            await runLookup(id)
+          }}
+        />
+
+        <JoinMove
+          onJoin={async (code) => {
+            const id = await joinMove(code)
+            const move = await moveById(id)
+            if (!move) throw new Error('ההצטרפות הצליחה אך המעבר לא נמצא')
+            setScreen({ name: 'move', move })
+          }}
+        />
+      </div>
     )
   }
 
