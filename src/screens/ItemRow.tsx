@@ -26,6 +26,7 @@ export function ItemRow({
   busy,
   onState,
   onOwner,
+  onReference,
 }: {
   item: MoveItem
   people: Map<string, Person>
@@ -34,6 +35,7 @@ export function ItemRow({
   busy: boolean
   onState: (state: ItemState, confirmation?: string) => void
   onOwner: (ownerId: string | null) => void
+  onReference: (reference: string) => void
 }) {
   const entry = item.catalogue_key
     ? CATALOGUE_BY_KEY.get(item.catalogue_key)
@@ -80,7 +82,9 @@ export function ItemRow({
           <span className="item__waiting">{waitingLabel(item.request_sent_at)}</span>
         )}
 
-        {item.reference && <span className="item__reference">{item.reference}</span>}
+        {item.reference && (
+          <span className="item__reference">אסמכתה: {item.reference}</span>
+        )}
       </div>
 
       {entry?.detail.map((line) => (
@@ -117,6 +121,7 @@ export function ItemRow({
         busy={busy}
         onState={onState}
         onOwner={onOwner}
+        onReference={onReference}
       />
     </li>
   )

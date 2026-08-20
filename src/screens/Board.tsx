@@ -3,6 +3,7 @@ import {
   listItems,
   seedItems,
   setItemOwner,
+  setItemReference,
   setItemState,
   type ItemState,
   type MoveItem,
@@ -144,6 +145,9 @@ export function Board({ move, meId }: { move: Move; meId: string }) {
             }
             onOwner={(ownerId: string | null) =>
               act(item.id, () => setItemOwner(item.id, ownerId))
+            }
+            onReference={(reference: string) =>
+              act(item.id, () => setItemReference(item.id, reference))
             }
           />
         ))}
