@@ -125,3 +125,25 @@ never have to be satisfied by hand.
 There is no column anywhere in this schema that can hold a file, and none is
 coming. `framing.md` puts files out of scope; this is where that becomes true
 rather than intended.
+
+## Step 7 — A coordinate to an authority
+
+About to add a Netlify function that takes a point and asks the Ministry of the
+Interior boundary layer which authority contains it.
+
+Before writing it, the service directory is queried to find the exact layer index
+and the exact field names. `CLAUDE.md` names `Muni_Heb`, `Sug_Muni` and
+`CR_LAMAS`, but guessing the layer path or a letter of a field name is precisely
+the kind of error that returns nothing and looks like an address outside every
+polygon.
+
+Three outcomes, and none of them is a guess:
+
+- a polygon contains the point, and its authority is returned
+- no polygon contains it, which is a real case and says so
+- the service is slow, unreachable or answers with something unexpected, which
+  is a different case and also says so
+
+The function is written to be callable with a coordinate directly, so it can be
+tested against a known point before any geocoder exists. The address comes in
+step 8.
