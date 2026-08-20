@@ -62,3 +62,75 @@ body {
   margin: 0;
   color: var(--colour-ink-soft);
 }
+
+/* Header, once there is an identity to show beside the title. */
+
+.app__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.app__identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.app__name {
+  color: var(--colour-ink-soft);
+}
+
+/* Sign-in */
+
+.signin__title {
+  margin: 0 0 var(--space-1);
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.signin__lead {
+  margin: 0 0 var(--space-3);
+  color: var(--colour-ink-soft);
+  max-inline-size: 34rem;
+}
+
+.button {
+  font: inherit;
+  color: var(--colour-surface);
+  background: var(--colour-ink);
+  border: 1px solid var(--colour-ink);
+  border-radius: 6px;
+  padding-block: 0.5rem;
+  padding-inline: 1.125rem;
+  cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.button--quiet {
+  color: var(--colour-ink);
+  background: transparent;
+  border-color: var(--colour-line);
+}
+
+/* Notices carry both the waiting states and the failures. A failure is never
+   silent and never replaced by a guess - see framing.md. */
+
+.notice {
+  margin: 0;
+  color: var(--colour-ink-soft);
+}
+
+.notice--error {
+  margin-block-start: var(--space-2);
+  color: #8a2318;
+  background: #fdf2f0;
+  border: 1px solid #f0cfc9;
+  border-radius: 6px;
+  padding: var(--space-2);
+}
