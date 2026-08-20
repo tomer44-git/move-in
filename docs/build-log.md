@@ -245,3 +245,24 @@ falling back to one message:
 
 Every one of them offers the same way out: change the address. That is what makes
 a wrong match recoverable rather than a dead end.
+
+## Step 9 — two faults found by using it
+
+**The service role had no grant.** The lookup ran, resolved, and failed at the
+last step with `permission denied for table move`. The project has "automatically
+expose new tables" turned off, and every migration so far granted to
+`authenticated` only. `service_role` bypasses row level security but not the
+grant system, so it could not write the answer it had just fetched.
+
+The convention recorded on 20 August was right and incomplete: a migration has to
+carry grants for every role that touches the table, not only the one a person
+signs in as.
+
+**The failure was invisible on screen.** Creating a move switches the screen away
+from the address form, which unmounts it - and the form was the only thing
+holding the error handler. The lookup failed, nobody was left to say so, and the
+screen showed `pending` as though nothing had been attempted.
+
+That is exactly the silent failure this project is built to avoid, and it was in
+the plumbing rather than the domain. The error now belongs to the screen that
+outlives the form.
