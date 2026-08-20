@@ -227,3 +227,136 @@ body {
   border-radius: 6px;
   padding: var(--space-2);
 }
+
+/* The board */
+
+.board__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-block-end: var(--space-3);
+}
+
+.board__authority {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.board__address,
+.board__tally {
+  margin: 0;
+  color: var(--colour-ink-soft);
+  font-size: 0.875rem;
+}
+
+.items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-1);
+}
+
+.item {
+  background: var(--colour-surface);
+  border: 1px solid var(--colour-line);
+  border-radius: 8px;
+  padding: var(--space-2);
+}
+
+/* A confirmed item recedes; the board is for what is not finished. */
+.item--confirmed {
+  background: transparent;
+}
+
+.item--confirmed .item__title {
+  color: var(--colour-ink-soft);
+}
+
+.item--broken {
+  border-color: #f0cfc9;
+  background: #fdf2f0;
+}
+
+.item__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+}
+
+.item__position {
+  flex: 0 0 1.5rem;
+  color: var(--colour-ink-soft);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.item__title {
+  flex: 1 1 auto;
+  font-weight: 600;
+}
+
+.badge {
+  flex: 0 0 auto;
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--colour-line);
+  color: var(--colour-ink-soft);
+  white-space: nowrap;
+}
+
+.badge--request_sent {
+  border-color: #ecd9a8;
+  background: #fdf7e8;
+  color: #6b4b12;
+}
+
+.badge--confirmed {
+  border-color: #bfd8c2;
+  background: #eef6ef;
+  color: #23532c;
+}
+
+.item__meta {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-block-start: 0.25rem;
+  padding-inline-start: 1.5rem;
+  font-size: 0.8125rem;
+  color: var(--colour-ink-soft);
+}
+
+.item__owner--none {
+  font-style: italic;
+}
+
+.item__reference {
+  font-variant-numeric: tabular-nums;
+}
+
+.item__route,
+.item__order,
+.item__warning,
+.item__unverified {
+  margin: var(--space-1) 0 0;
+  padding-inline-start: 1.5rem;
+  font-size: 0.8125rem;
+  color: var(--colour-ink-soft);
+}
+
+.item__route {
+  color: var(--colour-ink);
+}
+
+.item__warning {
+  color: #6b4b12;
+}
+
+.item__unverified {
+  font-style: italic;
+}

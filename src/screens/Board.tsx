@@ -1,11 +1,19 @@
 import { useEffect, useState } from 'react'
 import { listItems, seedItems, type MoveItem } from '../lib/items'
+import { peopleOnMove, type Person } from '../lib/people'
 import type { Move } from '../lib/move'
+import { ItemRow } from './ItemRow'
 
 type State =
   | { name: 'loading' }
-  | { name: 'ready'; items: MoveItem[] }
+  | { name: 'ready'; items: MoveItem[]; people: Map<string, Person> }
   | { name: 'error'; message: string }
+
+const AUTHORITY_TYPE_LABEL: Record<string, string> = {
+  city: 'עירייה',
+  local_council: 'מועצה מקומית',
+  regional_council: 'מועצה אזורית',
+}
 
 /**
  * The board for a confirmed move.
@@ -29,7 +37,8 @@ export function Board({ move }: { move: Move }) {
           await seedItems(move.id)
           items = await listItems(move.id)
         }
-        if (!cancelled) setState({ name: 'ready', items })
+        const people = await peopleOnMove(move.id)
+        if (!cancelled) setState({ name: 'ready', items, people })
       } catch (cause) {
         if (!cancelled) {
           setState({
@@ -55,10 +64,43 @@ export function Board({ move }: { move: Move }) {
     )
   }
 
+  const typeLabel = move.authority_type
+    ? (AUTHORITY_TYPE_LABEL[move.authority_type] ?? move.authority_type_raw)
+    : null
+
+  const counts = {
+    confirmed: state.items.filter((item) => item.state === 'confirmed').length,
+    sent: state.items.filter((item) => item.state === 'request_sent').length,
+    notStarted: state.items.filter((item) => item.state === 'not_started').length,
+  }
+
   return (
-    <div className="panel">
-      <h2 className="panel__title">{move.authority_name}</h2>
-      <p className="panel__lead">{state.items.length} פריטים. הלוח נבנה בשלב הבא.</p>
+    <div className="board">
+      <header className="board__head">
+        <div>
+          <h2 className="board__authority">{move.authority_name}</h2>
+          <p className="board__address">
+            {move.address_text}
+            {typeLabel && <span className="board__type"> · {typeLabel}</span>}
+          </p>
+        </div>
+        {/* The honest answer to "where are we", without opening anything. */}
+        <p className="board__tally">
+          {counts.confirmed} אושרו · {counts.sent} ממתינים · {counts.notStarted} לא
+          התחילו
+        </p>
+      </header>
+
+      <ol className="items">
+        {state.items.map((item) => (
+          <ItemRow
+            key={item.id}
+            item={item}
+            people={state.people}
+            authorityType={move.authority_type}
+          />
+        ))}
+      </ol>
     </div>
   )
 }
