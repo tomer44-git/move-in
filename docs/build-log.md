@@ -176,3 +176,24 @@ The caller is checked twice - the token is verified, and the move is read throug
 the caller's own row level security so that only a member of a move can resolve
 it. The authority is then written with the service role, because `authenticated`
 has no write path to those columns and should not have one.
+
+## Step 8 — what the first live call found
+
+The first real address, `רחוב חיים לסקוב 4, תל אביב`, returned `not_found`. That
+is the safe failure and it is handled. What the diagnosis turned up is not safe.
+
+Asked for the same street without the word `רחוב`, Nominatim answers confidently
+with a street of that name in **Holon**. Asked in English, it answers with one in
+**Herzliya**. The words `תל אביב` in the query are simply not honoured. Only
+`לסקוב 4, תל אביב` - dropping the first name - lands in Tel Aviv.
+
+The structured query, which passes street and city as separate fields, does not
+fix it: `street=חיים לסקוב 4` with `city=תל אביב` still returns Holon.
+
+Holon, Herzliya and Tel Aviv are three different authorities. The tool would have
+recorded one of them, resolved the move, shown the route for its authority type,
+and reported nothing. `CLAUDE.md` names this as the failure that matters most
+here, and it is not a hypothetical: it happened on the first address tried.
+
+`not_found` is not the problem. A confident wrong answer is. Stopped and put the
+question to Tomer rather than choosing a design for it.
