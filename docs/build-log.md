@@ -416,3 +416,23 @@ would be worse than saying nothing.
 
 Positions start at 100 so hand-added items sort below the nineteen without ever
 colliding with them.
+
+## Step 15 — Joining with a code
+
+About to show the join code and accept one.
+
+This is the step the milestone rests on. Until now everything has been true for
+one person, and "both people see the same state without either telling the other"
+cannot be demonstrated with one account.
+
+The code is shown on the board for the person who created the move, to be passed
+on by hand. There is no email and no notification: Tomer ruled out the system
+sending an invitation, not the joining itself.
+
+A person with no move sees two choices rather than one - start a move, or enter a
+code. Making the address form the only door would have left the second person
+creating a second move for the same apartment, which is the failure this step
+exists to prevent.
+
+`join_move` is idempotent and refuses a third person, both settled in step 4. The
+screen has to say which of those happened.
