@@ -436,3 +436,28 @@ exists to prevent.
 
 `join_move` is idempotent and refuses a third person, both settled in step 4. The
 screen has to say which of those happened.
+
+## Step 16 — The right-to-left pass
+
+Checked mechanically rather than by eye alone. Every rule in the stylesheet was
+read back from the browser and tested for a physical direction: `left`, `right`,
+`float`, a directional `text-align`, or a margin, padding or border whose two
+sides differ. There are none. The document is `dir="rtl"` and `lang="he"`, and
+the page does not scroll horizontally.
+
+The two faults worth having were found earlier by looking at the thing: Hebrew
+being italicised, and a font stack naming faces that were never loaded. Both are
+fixed.
+
+One limitation of the tooling, recorded so it is not mistaken for a defect:
+screenshots of this page come back blank at scrolled positions, and one render
+showed a doubled letter that the DOM does not contain. Both were confirmed
+against the DOM. The page is correct; the capture is not always.
+
+## Step 17 — What is verified, and what is not
+
+The six checks are reported in the message to Tomer. One of them - that both
+people see the same state - is enforced by row level security and by there being
+one copy of the state, but it cannot be demonstrated from here: it needs a second
+Google account, and creating one is not something the agent does. Tomer and Noa
+demonstrate it by signing in separately and entering the join code.
