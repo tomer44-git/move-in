@@ -24,7 +24,7 @@ export type LookupResult =
       authorityType: AuthorityType
     }
   /** Inside a polygon, but one that belongs to no authority. A real place. */
-  | { outcome: 'no_jurisdiction'; areaName: string }
+  | { outcome: 'no_jurisdiction'; areaName: string; authorityTypeRaw: string }
   /** Inside no polygon at all. */
   | { outcome: 'outside_boundaries' }
   /** The service did not answer, or did not answer with something usable. */
@@ -154,7 +154,7 @@ export async function resolveAuthority(
   // A polygon that belongs to no authority. Not the same as being outside every
   // polygon, and not something to resolve: there is no authority to record.
   if (authorityTypeRaw === NO_JURISDICTION) {
-    return { outcome: 'no_jurisdiction', areaName: authorityName }
+    return { outcome: 'no_jurisdiction', areaName: authorityName, authorityTypeRaw }
   }
 
   // An authority with no code cannot be recorded as resolved: the move row
