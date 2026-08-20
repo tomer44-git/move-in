@@ -33,11 +33,13 @@ type MoveRow = {
   authority_type_raw: string | null
   point_lat: number | null
   point_lon: number | null
+  matched_address: string | null
+  address_confirmed_at: string | null
   resolved_at: string | null
 }
 
 const SELECTED =
-  'id, address_text, lookup_status, lookup_error, authority_name, authority_code, authority_type, authority_type_raw, point_lat, point_lon, resolved_at'
+  'id, address_text, lookup_status, lookup_error, authority_name, authority_code, authority_type, authority_type_raw, point_lat, point_lon, matched_address, address_confirmed_at, resolved_at'
 
 export default async (request: Request): Promise<Response> => {
   if (request.method !== 'POST') return fail(405, 'use POST')
@@ -79,8 +81,9 @@ export default async (request: Request): Promise<Response> => {
   // distinguished on purpose.
   if (!move) return fail(404, 'no such move')
 
-  // Once per move. An answer that is already stored is returned untouched, and
-  // nothing external is called.
+  // Once per move. An answer that is already stored is returned untouched and
+  // nothing external is called - including a resolved answer still waiting to be
+  // confirmed, which the caller shows rather than looks up again.
   if (move.lookup_status === 'resolved') return ok(move)
 
   const geocoded = await geocodeAddress(move.address_text, USER_AGENT)
@@ -109,7 +112,14 @@ export default async (request: Request): Promise<Response> => {
   }
 
   const authority = await resolveAuthority(geocoded.lat, geocoded.lon)
-  const point = { point_lat: geocoded.lat, point_lon: geocoded.lon }
+  // The matched address is stored for every outcome, not only the resolved one.
+  // If the geocoder substituted a different place, that substitution is the
+  // thing worth showing - whatever the boundary layer then said about it.
+  const point = {
+    point_lat: geocoded.lat,
+    point_lon: geocoded.lon,
+    matched_address: geocoded.matchedName,
+  }
 
   switch (authority.outcome) {
     case 'outside_boundaries':
@@ -154,6 +164,10 @@ const CLEARED = {
   authority_type_raw: null,
   point_lat: null,
   point_lon: null,
+  matched_address: null,
+  // A new lookup is not a confirmed one. Clearing this is what stops a move
+  // confirmed once from staying confirmed after its address changes.
+  address_confirmed_at: null,
   resolved_at: null,
 } satisfies Partial<MoveRow>
 
