@@ -16,7 +16,11 @@
   --space-3: 1.5rem;
   --space-4: 2.5rem;
 
-  --font-body: 'Assistant', 'Heebo', 'Segoe UI', system-ui, sans-serif;
+  /* No webfont is loaded, so this names only faces that are actually present.
+     Assistant and Heebo were listed here and never fetched, which made the stack
+     read like a choice that had been made. Loading a Hebrew face is a decision
+     for Tomer, not a default. */
+  --font-body: system-ui, 'Segoe UI', Arial, sans-serif;
 }
 
 * {
