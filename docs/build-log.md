@@ -80,3 +80,24 @@ row level security correctly refuses to show a person a move they are not yet a
 member of - including the one they are in the act of creating.
 
 No application code in this step.
+
+## Step 5 — The catalogue
+
+About to transcribe the nineteen items and the three routes from `docs/items.md`
+into a typed catalogue in `src/catalogue/items.ts`.
+
+One thing the plan did not anticipate: `docs/items.md` is written in English, and
+the interface is Hebrew. So the transcription is not only a copy - every string
+that reaches the screen has to be rendered into Hebrew by me, and that rendering
+has no source behind it.
+
+The file therefore holds both. `source` is the English, verbatim, normalised only
+for whitespace. `title`, `detail`, `warnings` and `routes` are my Hebrew, and they
+are what a person actually reads. The two are kept side by side so the English can
+be checked mechanically and the Hebrew can be checked by Tomer.
+
+`scripts/check-catalogue.mjs` asserts that every `source` string still appears in
+`docs/items.md`. It cannot check the Hebrew. That is what the stop at the end of
+this step is for.
+
+Nothing is written into `docs/items.md`.
