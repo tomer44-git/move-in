@@ -38,3 +38,19 @@ off would have failed the other way: a table exposed without anyone noticing.
 
 The migration in step 2 already ends with an explicit grant, so nothing needs
 changing retroactively.
+
+## Step 3 — Google sign-in
+
+About to add the Supabase client, sign-in and sign-out with Google, and a shell
+that shows one thing when signed out and another when signed in.
+
+This is the first step where the setup done by hand gets tested. Until now the
+project, the OAuth client, the keys and the URLs have only been confirmed to
+exist separately; nothing has checked that they talk to each other. Signing in
+once is what checks it.
+
+The signed-in state reads the person's name from `public.profile` rather than
+from the session, for the same reason: it is the only way to find out whether the
+trigger from step 2 actually fires. If the row is missing the screen says so
+instead of falling back to the name in the token, because a silent fallback would
+hide exactly the failure worth knowing about.
