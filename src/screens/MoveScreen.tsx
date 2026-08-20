@@ -1,0 +1,148 @@
+import { useCallback, useEffect, useState } from 'react'
+import {
+  confirmAddress,
+  createMove,
+  currentMove,
+  isReady,
+  moveById,
+  resolveMove,
+  setAddress,
+  type Move,
+} from '../lib/move'
+import { AddressForm } from './AddressForm'
+import { ConfirmAddress } from './ConfirmAddress'
+import { LookupOutcome } from './LookupOutcome'
+
+type Screen =
+  | { name: 'loading' }
+  | { name: 'no_move' }
+  | { name: 'editing_address'; move: Move }
+  | { name: 'move'; move: Move }
+  | { name: 'error'; message: string }
+
+/**
+ * Everything between signing in and the board.
+ *
+ * The lookup is never started by the act of loading this screen. It runs once,
+ * when a move is created or when a person asks for it again after a failure -
+ * the boundary layer is someone else's service and CLAUDE.md is explicit that it
+ * is not to be called on every page load.
+ */
+export function MoveScreen() {
+  const [screen, setScreen] = useState<Screen>({ name: 'loading' })
+  const [busy, setBusy] = useState(false)
+
+  const show = useCallback((move: Move) => {
+    setScreen({ name: 'move', move })
+  }, [])
+
+  useEffect(() => {
+    let cancelled = false
+    currentMove()
+      .then((move) => {
+        if (cancelled) return
+        setScreen(move ? { name: 'move', move } : { name: 'no_move' })
+      })
+      .catch((cause: unknown) => {
+        if (cancelled) return
+        setScreen({
+          name: 'error',
+          message: cause instanceof Error ? cause.message : String(cause),
+        })
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  /** Runs the lookup and shows whatever it found, including a failure. */
+  const runLookup = useCallback(
+    async (moveId: string) => {
+      setBusy(true)
+      try {
+        show(await resolveMove(moveId))
+      } finally {
+        setBusy(false)
+      }
+    },
+    [show],
+  )
+
+  if (screen.name === 'loading') return <p className="notice">רגע…</p>
+
+  if (screen.name === 'error') {
+    return (
+      <p className="notice notice--error" role="alert">
+        {screen.message}
+      </p>
+    )
+  }
+
+  if (screen.name === 'no_move') {
+    return (
+      <AddressForm
+        title="כתובת הדירה החדשה"
+        lead="הכתובת קובעת לאיזו רשות שייכת הדירה, ומכאן מה צריך לעשות ואיפה. היא נבדקת פעם אחת."
+        submitLabel="המשך"
+        onSubmit={async (address) => {
+          const id = await createMove(address)
+          const move = await moveById(id)
+          if (!move) throw new Error('המעבר נוצר אך לא נמצא')
+          setScreen({ name: 'move', move })
+          await runLookup(id)
+        }}
+      />
+    )
+  }
+
+  if (screen.name === 'editing_address') {
+    return (
+      <AddressForm
+        title="שינוי הכתובת"
+        lead="כל מה שהבדיקה הקודמת מצאה יימחק, והכתובת החדשה תיבדק מחדש."
+        submitLabel="בדוק מחדש"
+        initial={screen.move.address_text}
+        onSubmit={async (address) => {
+          await setAddress(screen.move.id, address)
+          await runLookup(screen.move.id)
+        }}
+      />
+    )
+  }
+
+  const { move } = screen
+
+  if (isReady(move)) {
+    return (
+      <div className="panel">
+        <h2 className="panel__title">{move.authority_name}</h2>
+        <p className="panel__lead">
+          הכתובת אושרה. תשעה־עשר הפריטים ייבנו כאן בשלב הבא.
+        </p>
+      </div>
+    )
+  }
+
+  if (move.lookup_status === 'resolved') {
+    return (
+      <ConfirmAddress
+        move={move}
+        onConfirm={async () => {
+          await confirmAddress(move.id)
+          const fresh = await moveById(move.id)
+          if (fresh) show(fresh)
+        }}
+        onReject={() => setScreen({ name: 'editing_address', move })}
+      />
+    )
+  }
+
+  return (
+    <LookupOutcome
+      move={move}
+      busy={busy}
+      onRetry={() => void runLookup(move.id)}
+      onChangeAddress={() => setScreen({ name: 'editing_address', move })}
+    />
+  )
+}

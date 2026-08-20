@@ -134,3 +134,96 @@ body {
   border-radius: 6px;
   padding: var(--space-2);
 }
+
+/* Panels — every screen between signing in and the board is one of these. */
+
+.panel__title {
+  margin: 0 0 var(--space-1);
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.panel__lead {
+  margin: 0 0 var(--space-3);
+  color: var(--colour-ink-soft);
+  max-inline-size: 40rem;
+}
+
+.field {
+  display: block;
+  margin-block-end: var(--space-3);
+  max-inline-size: 28rem;
+}
+
+.field__label {
+  display: block;
+  margin-block-end: var(--space-1);
+  font-size: 0.875rem;
+  color: var(--colour-ink-soft);
+}
+
+.field__input {
+  font: inherit;
+  inline-size: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--colour-line);
+  border-radius: 6px;
+  background: var(--colour-surface);
+  color: inherit;
+}
+
+.field__input:focus-visible {
+  outline: 2px solid var(--colour-ink);
+  outline-offset: 1px;
+}
+
+/* What was typed against what was found. The comparison is the whole point of
+   the confirmation screen, so the two sit on adjacent rows. */
+
+.facts {
+  margin: 0 0 var(--space-3);
+  border-block-start: 1px solid var(--colour-line);
+}
+
+.facts__row {
+  display: flex;
+  gap: var(--space-2);
+  padding-block: 0.625rem;
+  border-block-end: 1px solid var(--colour-line);
+}
+
+.facts__key {
+  flex: 0 0 6rem;
+  margin: 0;
+  color: var(--colour-ink-soft);
+  font-size: 0.875rem;
+  padding-block-start: 0.125rem;
+}
+
+.facts__value {
+  margin: 0;
+  flex: 1 1 auto;
+}
+
+.facts__value--quiet {
+  color: var(--colour-ink-soft);
+}
+
+.facts__aside {
+  color: var(--colour-ink-soft);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+}
+
+.notice--warning {
+  margin-block: var(--space-2);
+  color: #6b4b12;
+  background: #fdf7e8;
+  border: 1px solid #ecd9a8;
+  border-radius: 6px;
+  padding: var(--space-2);
+}

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { signOut, useSession } from './lib/session'
+import { MoveScreen } from './screens/MoveScreen'
 import { SignIn } from './screens/SignIn'
 
 /**
@@ -26,9 +27,7 @@ export function App() {
 
         {state.status === 'signed_out' && <SignIn />}
 
-        {state.status === 'signed_in' && (
-          <p className="notice">עוד אין מעבר. המסך הזה נבנה בשלב הבא.</p>
-        )}
+        {state.status === 'signed_in' && <MoveScreen />}
 
         {state.status === 'error' && (
           <p className="notice notice--error" role="alert">
