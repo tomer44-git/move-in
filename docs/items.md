@@ -7,7 +7,8 @@ Most of this comes from the כל-זכות guide to moving house, which is mainta
 with the support of the Ministry of Justice and the National Digital Agency and
 was last updated in July 2026. Where an item does not come from there, it says so.
 
-Nothing is added to this file by an agent. If something is missing, I add it.
+The agent writes to this file only when I have said so for that change, and I
+check what it wrote. Nothing goes in from an agent on its own.
 
 Source: https://www.kolzchut.org.il/he/מדריך_למעבר_דירה
 
@@ -117,16 +118,17 @@ Applies to items 3, 4, 5 and 6 only. The rest are identical everywhere.
 
 **City (עירייה)** — an online form on the municipal site, or the 106 call centre.
 
-**Local council (מועצה מקומית)** — usually by telephone to the council offices.
+**Local council (מועצה מקומית)** — usually by telephone to the council offices,
+or by finding the council's website.
 
 **Regional council (מועצה אזורית)** — the council, and the local committee of the
 settlement as well. Two bodies, not one.
 
-These three descriptions are my own and have not been checked against a real
-authority. Verify against Tel Aviv before shipping.
+Checked on 22 August 2026, each against a real authority of its kind: the city
+route against Tel Aviv-Yafo, the local council route against Kfar Shmaryahu, and
+the regional council route against Gezer Regional Council.
 
 ## Still to verify
 
 - Item 19, building committee — my addition, no source.
-- The three routes above — assumed, not checked.
 - Whether items 16, 17 and 18 apply to this move at all.
