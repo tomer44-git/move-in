@@ -499,3 +499,30 @@ The row will show its place in the list - 1 to 20 - and `position` goes back to
 being what it is, something the screen never sees. Numbering hand-added items
 20, 21 and so on in the database would have worked today and collided the moment
 `docs/items.md` gains a twentieth item.
+
+## Step 6b — The note on item 19
+
+About to shorten what item 19 says on screen from
+
+    לא מתוך כל-זכות. נוסף בידי טומר וטרם אומת מול מקור.
+
+to
+
+    לא מתוך כל-זכות.
+
+Tomer chose this on 22 August, against a suggestion to leave it as it was.
+
+I argued for keeping the whole thing: the note is the only thing on screen that
+separates content with a source from content without one, and the reason given
+for removing it - that items will be hideable later - answers a different
+question. Hiding solves "this does not apply to me". It does not turn an
+unsourced item into a sourced one.
+
+The objection was principled rather than practical, and I said so at the time:
+building committee sends nobody to an office. What he chose keeps the half that
+carried the distinction and drops the half about who added it, which meets the
+objection.
+
+`docs/items.md` is unchanged, and the English it records stays in the catalogue
+as `source`, so `npm run check:catalogue` still passes. Only the Hebrew shown to
+a person is shorter.
