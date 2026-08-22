@@ -7,6 +7,31 @@ has started.
 
 The specification is in `docs/framing.md`. Read it before proposing anything.
 
+## The record
+
+The git history is as much a product of this project as the code. It is read and
+judged on its own, so it is written on purpose and never left as a side effect.
+
+Commit before you begin a step, not only after. A commit that exists before the
+work is the record that the work was directed.
+
+Push after every commit. A commit that only exists on this machine is not part of
+the record.
+
+One message, one change. A schema change and a screen change never share a
+commit.
+
+Say what actually changed. If it cannot be said in one line, the commit is too
+big.
+
+Never amend, squash, rebase or force push. A messy honest history is worth more
+than a clean invented one.
+
+Work stays on its branch until I merge it myself.
+
+If you correct the same thing twice, stop and tell me — it belongs here as a rule,
+not in the chat.
+
 ## Conventions
 
 TypeScript throughout. Supabase for data and authentication, Netlify for hosting,
@@ -53,9 +78,6 @@ names no form, department or procedure.
 
 When the boundary layer is slow or unreachable, say so and stop. Never fall back
 to a guessed authority.
-
-Commit before you invoke an agent. One message, one change, and say what actually
-changed.
 
 Document what the code does. Do not invent why — if the reason is not written
 down, ask me.

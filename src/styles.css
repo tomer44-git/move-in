@@ -1,0 +1,436 @@
+/*
+ * Layout uses logical properties throughout - inline-start, inline-end, and
+ * margin-inline - and never left or right. In a right-to-left interface the
+ * physical properties are the ones that break quietly.
+ */
+
+:root {
+  --colour-page: #fbfaf8;
+  --colour-surface: #ffffff;
+  --colour-ink: #1c1b19;
+  --colour-ink-soft: #6b6862;
+  --colour-line: #e3e0da;
+
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+
+  /* No webfont is loaded, so this names only faces that are actually present.
+     Assistant and Heebo were listed here and never fetched, which made the stack
+     read like a choice that had been made. Loading a Hebrew face is a decision
+     for Tomer, not a default. */
+  --font-body: system-ui, 'Segoe UI', Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--colour-page);
+  color: var(--colour-ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.app {
+  max-inline-size: 60rem;
+  margin-inline: auto;
+  padding-inline: var(--space-3);
+  padding-block: var(--space-4);
+}
+
+.app__header {
+  border-block-end: 1px solid var(--colour-line);
+  padding-block-end: var(--space-2);
+  margin-block-end: var(--space-3);
+}
+
+.app__title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.app__main {
+  background: var(--colour-surface);
+  border: 1px solid var(--colour-line);
+  border-radius: 8px;
+  padding: var(--space-3);
+}
+
+.app__placeholder {
+  margin: 0;
+  color: var(--colour-ink-soft);
+}
+
+/* Header, once there is an identity to show beside the title. */
+
+.app__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.app__identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.app__name {
+  color: var(--colour-ink-soft);
+}
+
+/* Sign-in */
+
+.signin__title {
+  margin: 0 0 var(--space-1);
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.signin__lead {
+  margin: 0 0 var(--space-3);
+  color: var(--colour-ink-soft);
+  max-inline-size: 34rem;
+}
+
+.button {
+  font: inherit;
+  color: var(--colour-surface);
+  background: var(--colour-ink);
+  border: 1px solid var(--colour-ink);
+  border-radius: 6px;
+  padding-block: 0.5rem;
+  padding-inline: 1.125rem;
+  cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.button--quiet {
+  color: var(--colour-ink);
+  background: transparent;
+  border-color: var(--colour-line);
+}
+
+/* Notices carry both the waiting states and the failures. A failure is never
+   silent and never replaced by a guess - see framing.md. */
+
+.notice {
+  margin: 0;
+  color: var(--colour-ink-soft);
+}
+
+.notice--error {
+  margin-block-start: var(--space-2);
+  color: #8a2318;
+  background: #fdf2f0;
+  border: 1px solid #f0cfc9;
+  border-radius: 6px;
+  padding: var(--space-2);
+}
+
+/* Panels — every screen between signing in and the board is one of these. */
+
+.panel__title {
+  margin: 0 0 var(--space-1);
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.panel__lead {
+  margin: 0 0 var(--space-3);
+  color: var(--colour-ink-soft);
+  max-inline-size: 40rem;
+}
+
+.field {
+  display: block;
+  margin-block-end: var(--space-3);
+  max-inline-size: 28rem;
+}
+
+.field__label {
+  display: block;
+  margin-block-end: var(--space-1);
+  font-size: 0.875rem;
+  color: var(--colour-ink-soft);
+}
+
+.field__input {
+  font: inherit;
+  inline-size: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--colour-line);
+  border-radius: 6px;
+  background: var(--colour-surface);
+  color: inherit;
+}
+
+.field__input:focus-visible {
+  outline: 2px solid var(--colour-ink);
+  outline-offset: 1px;
+}
+
+/* What was typed against what was found. The comparison is the whole point of
+   the confirmation screen, so the two sit on adjacent rows. */
+
+.facts {
+  margin: 0 0 var(--space-3);
+  border-block-start: 1px solid var(--colour-line);
+}
+
+.facts__row {
+  display: flex;
+  gap: var(--space-2);
+  padding-block: 0.625rem;
+  border-block-end: 1px solid var(--colour-line);
+}
+
+.facts__key {
+  flex: 0 0 6rem;
+  margin: 0;
+  color: var(--colour-ink-soft);
+  font-size: 0.875rem;
+  padding-block-start: 0.125rem;
+}
+
+.facts__value {
+  margin: 0;
+  flex: 1 1 auto;
+}
+
+.facts__value--quiet {
+  color: var(--colour-ink-soft);
+}
+
+.facts__aside {
+  color: var(--colour-ink-soft);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+}
+
+.notice--warning {
+  margin-block: var(--space-2);
+  color: #6b4b12;
+  background: #fdf7e8;
+  border: 1px solid #ecd9a8;
+  border-radius: 6px;
+  padding: var(--space-2);
+}
+
+/* The board */
+
+.board__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-block-end: var(--space-3);
+}
+
+.board__authority {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.board__address,
+.board__tally {
+  margin: 0;
+  color: var(--colour-ink-soft);
+  font-size: 0.875rem;
+}
+
+.items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-1);
+}
+
+.item {
+  background: var(--colour-surface);
+  border: 1px solid var(--colour-line);
+  border-radius: 8px;
+  padding: var(--space-2);
+}
+
+/* A confirmed item recedes; the board is for what is not finished. */
+.item--confirmed {
+  background: transparent;
+}
+
+.item--confirmed .item__title {
+  color: var(--colour-ink-soft);
+}
+
+.item--broken {
+  border-color: #f0cfc9;
+  background: #fdf2f0;
+}
+
+.item__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+}
+
+.item__position {
+  flex: 0 0 1.5rem;
+  color: var(--colour-ink-soft);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.item__title {
+  flex: 1 1 auto;
+  font-weight: 600;
+}
+
+.badge {
+  flex: 0 0 auto;
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--colour-line);
+  color: var(--colour-ink-soft);
+  white-space: nowrap;
+}
+
+.badge--request_sent {
+  border-color: #ecd9a8;
+  background: #fdf7e8;
+  color: #6b4b12;
+}
+
+.badge--confirmed {
+  border-color: #bfd8c2;
+  background: #eef6ef;
+  color: #23532c;
+}
+
+.item__meta {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-block-start: 0.25rem;
+  padding-inline-start: 1.5rem;
+  font-size: 0.8125rem;
+  color: var(--colour-ink-soft);
+}
+
+/* No italics anywhere in Hebrew. The script has no italic form, so a browser
+   fakes one by slanting the upright letters, and the result reads as a rendering
+   fault rather than as emphasis. Weight and colour carry the difference. */
+.item__owner--none {
+  opacity: 0.7;
+}
+
+.item__reference {
+  font-variant-numeric: tabular-nums;
+}
+
+.item__detail,
+.item__route,
+.item__order,
+.item__warning,
+.item__unverified {
+  margin: var(--space-1) 0 0;
+  padding-inline-start: 1.5rem;
+  font-size: 0.8125rem;
+  color: var(--colour-ink-soft);
+}
+
+.item__route {
+  color: var(--colour-ink);
+}
+
+.item__warning {
+  color: #6b4b12;
+}
+
+.item__unverified {
+  color: #6b4b12;
+  opacity: 0.85;
+}
+
+/* Acting on an item */
+
+.actions--item {
+  margin-block-start: var(--space-2);
+  padding-inline-start: 1.5rem;
+}
+
+.button--small {
+  font-size: 0.8125rem;
+  padding-block: 0.25rem;
+  padding-inline: 0.75rem;
+}
+
+.item__confirm {
+  margin-block-start: var(--space-2);
+  padding-inline-start: 1.5rem;
+}
+
+.item__confirm .field {
+  margin-block-end: var(--space-1);
+  max-inline-size: 32rem;
+}
+
+.item__confirmation {
+  margin: var(--space-1) 0 0;
+  padding-inline-start: 1.5rem;
+  font-size: 0.8125rem;
+  color: #23532c;
+}
+
+.add-item__open {
+  margin-block-start: var(--space-2);
+}
+
+.add-item {
+  margin-block-start: var(--space-2);
+}
+
+/* Starting a move, or joining one */
+
+.doors {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.field__input--code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 1.25rem;
+  letter-spacing: 0.25em;
+  text-align: center;
+  max-inline-size: 12rem;
+}
+
+.board__code {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--colour-ink-soft);
+}
+
+.board__code code {
+  font-size: 1rem;
+  letter-spacing: 0.15em;
+  color: var(--colour-ink);
+}

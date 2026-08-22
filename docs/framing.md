@@ -1,10 +1,11 @@
 # move-in — Framing
 
-ASE-26 personal project · Tomer Ben Bassat · Revised 18 August 2026
+ASE-26 personal project · Tomer Ben Bassat · Revised 22 August 2026
 
 Written in pencil. Revised at the end of every turn of the spiral. This is the
-second version: the first was scoped to one couple and one apartment, and the
-work since has widened it to any address in Israel.
+third version. The first was scoped to one couple and one apartment; the second
+widened it to any address in Israel; this one is the first written after the tool
+was used rather than after it was thought about.
 
 ## Problem statement
 
@@ -46,6 +47,8 @@ works.
 7. Each item can hold the short identifiers it produced — a reference number, an
    account number, a permit number — as text. No files.
 8. When a move is finished, it can be reset for a future one rather than deleted.
+9. A person confirms the address that was found before the move resolves, with
+   what they typed and what was found shown side by side.
 
 ## Out of scope
 
@@ -55,7 +58,9 @@ works.
 - Anything after the move is finished
 - The physical move itself: removals, packing, locksmith
 - Notifications. Deferred on purpose, not forgotten — if use shows they are
-  needed, they come in a later turn.
+  needed, they come in a later turn. Two days of use did not show it: the want
+  was for the convenience, and nothing was actually dropped for want of being
+  told. The condition stands, untriggered.
 
 ## Settled
 
@@ -64,8 +69,26 @@ works.
 - Hebrew interface, right to left. Desktop first.
 - Roughly 15–20 items. Three states each: not started, request sent, confirmed.
 - Every item is assigned to one of the two people.
+- An item that does not apply to a particular move is hidden, not deleted. Both
+  people can touch everything, and a deletion by one would be unrecoverable for
+  the other, taking any owner, date and reference with it.
 - Each item shows how long it has been waiting since the request was sent.
 - Items are independent. There are no dependencies between them.
+
+**What the address lookup can answer**
+
+- An address resolves to an authority, or it does not, and there are five ways it
+  does not: the geocoder knows no such address, the point falls inside no
+  polygon, the point falls inside a polygon that belongs to no authority, the
+  service did not answer, or it has not been tried. Each says something different
+  on screen, because each leads a person somewhere different.
+- `ללא שיפוט` is a state of its own and not a kind of authority. Those polygons
+  are real places with no municipal body at all, and no authority is recorded for
+  them.
+- A geocoder will answer a street name that exists in three towns with the wrong
+  one, confidently and silently. So the match is shown to a person and agreed to
+  before it counts. This is not a nicety; it is the only thing standing between a
+  typo and a person being sent to another municipality.
 
 **Where the list comes from**
 
@@ -97,6 +120,11 @@ works.
 - For an item added by hand, the model has no verified information, so it drafts
   a general request with placeholders and does not name a form, a department or a
   procedure. The screen says the draft is general.
+- The line was tested by use and kept. Two days of it produced a wish for the
+  model to help with the municipality's website and guide the way through it —
+  which is asking it for a fact about civic procedure, and is the same reversal
+  the first interview made. Put as a decision rather than allowed to follow from
+  a feature request, the answer was to leave the line where it is.
 
 **Stack**
 
@@ -105,6 +133,29 @@ works.
 
 ## Still open
 
-Nothing carried over from the first interview. Turn one closed every question it
-raised, which means the next set will come from building rather than from
-thinking.
+The second version ended by saying the next set of questions would come from
+building rather than from thinking. They did. These came from two days of real
+use on a real move, and are recorded in full in
+`docs/turn-1-what-use-taught.md`.
+
+1. The drafted request, which is the one thing in this document turn one did not
+   build. Use found its absence at electricity and at home insurance, and the two
+   are different cases: one has verified facts to phrase, the other has nothing
+   but a name. Turn two starts from the items where it was actually missed rather
+   than from all nineteen at once.
+2. Hiding an item that does not apply to a move.
+3. A log per item: what happened and when. It needs a table of its own, because
+   the schema holds current state and no history. Asked for as date and action
+   only — whether it should also say who is the first question anyone will ask of
+   it.
+4. The look. Pastel light blue with light purple, `Move-in` centred at the top,
+   sign-in at the right — the start of the line, in the right-to-left sense.
+5. Notifications, still as a question and not yet as work.
+6. The three route descriptions in `docs/items.md`, still unverified. Tel Aviv is
+   a city, so only the first of the three touches this move — which is why two
+   days of use did not test the other two.
+7. Whether items 16, 17 and 18 — pension insurance, the IDF, subscriptions —
+   apply at all. `docs/items.md` has been asking since it was written.
+8. Whether an address that never resolves should still get the fifteen items that
+   do not depend on an authority. Raised while building and not yet answered by
+   anything.
