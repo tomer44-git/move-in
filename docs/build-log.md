@@ -474,3 +474,28 @@ as something said once and lost.
 
 The file records the evidence for each check and, for check 3, exactly what is
 enforced, what was not demonstrated, why not, and what Tomer does to close it.
+
+---
+
+# Turn one, closing · 22 August 2026
+
+Two days of real use, with both people on their own devices. What it taught is in
+`docs/turn-1-what-use-taught.md`; the fixes and the revision follow here.
+
+## Step 6a — The number on the row
+
+About to stop showing `position` on screen.
+
+`position` is a sort key. Hand-added items start at 100 so they sit below the
+nineteen and can never collide with them, however the verified list grows. Then
+the same field was printed on the row, so the first item added by hand appeared
+as number 100.
+
+That is a fault of mine and it is the right kind to find this way: nothing
+errored, nothing was inconsistent, and no test would have caught it. It only
+looks wrong to a person reading the board.
+
+The row will show its place in the list - 1 to 20 - and `position` goes back to
+being what it is, something the screen never sees. Numbering hand-added items
+20, 21 and so on in the database would have worked today and collided the moment
+`docs/items.md` gains a twentieth item.
