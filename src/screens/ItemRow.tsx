@@ -20,6 +20,7 @@ const STATE_LABEL: Record<MoveItem['state'], string> = {
  */
 export function ItemRow({
   item,
+  displayNumber,
   people,
   authorityType,
   meId,
@@ -29,6 +30,14 @@ export function ItemRow({
   onReference,
 }: {
   item: MoveItem
+  /**
+   * The row's place in the list, 1 upwards.
+   *
+   * Not `item.position`, which is a sort key: hand-added items start at 100 so
+   * they sit below the nineteen and cannot collide with them however the
+   * verified list grows. That number has no meaning to a person reading it.
+   */
+  displayNumber: number
   people: Map<string, Person>
   authorityType: AuthorityType | null
   meId: string
@@ -66,7 +75,7 @@ export function ItemRow({
   return (
     <li className={`item item--${item.state}`}>
       <div className="item__head">
-        <span className="item__position">{item.position}</span>
+        <span className="item__position">{displayNumber}</span>
         <span className="item__title">{title}</span>
         <span className={`badge badge--${item.state}`}>
           {STATE_LABEL[item.state]}

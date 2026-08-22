@@ -139,10 +139,11 @@ export function Board({ move, meId }: { move: Move; meId: string }) {
       </header>
 
       <ol className="items">
-        {state.items.map((item) => (
+        {state.items.map((item, index) => (
           <ItemRow
             key={item.id}
             item={item}
+            displayNumber={index + 1}
             people={state.people}
             authorityType={move.authority_type}
             meId={meId}
