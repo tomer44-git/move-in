@@ -538,3 +538,17 @@ worth more than the conclusion on its own.
 
 The file is not a bug list. Four of the six things use turned up are not defects,
 and reading them as a backlog would lose what the milestone was for.
+
+## Step 6d — Closing check 3
+
+About to record in `docs/verification-turn-1.md` that the sixth of six now
+passes.
+
+Noa signed in on her own device on 22 August, joined with the code, and both
+people saw the same state without either telling the other.
+
+The section is edited rather than replaced. What was enforced, what had been
+demonstrated, and why the two-person case could not be shown from here all stay
+on the page, with the closing added to them. A verification document that quietly
+loses the record of what was once open is worth less than one that keeps it: the
+reason it stayed open is part of what the turn showed.
