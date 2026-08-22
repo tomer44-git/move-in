@@ -6,6 +6,7 @@ dist/
 
 # Local build state
 .netlify/
+.vite/
 
 # Local editor and agent tooling
 .claude/
