@@ -272,7 +272,7 @@ export const CATALOGUE: CatalogueItem[] = [
     warnings: [],
     routes: null,
     order: null,
-    unverified: 'לא מתוך כל-זכות. נוסף בידי טומר וטרם אומת מול מקור.',
+    unverified: 'לא מתוך כל-זכות.',
     source: [
       'Building committee',
       'Not from כל-זכות. Added by me and not yet verified against a source.',
