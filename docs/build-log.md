@@ -552,3 +552,30 @@ demonstrated, and why the two-person case could not be shown from here all stay
 on the page, with the closing added to them. A verification document that quietly
 loses the record of what was once open is worth less than one that keeps it: the
 reason it stayed open is part of what the turn showed.
+
+## Step 6e — The framing, third version
+
+About to revise `docs/framing.md`. It says of itself that it is written in pencil
+and revised at the end of every turn, and this is the first revision written
+after use rather than after thinking.
+
+What changes, agreed with Tomer on 22 August:
+
+- A ninth item in the definition of done: a person confirms the matched address
+  before a move resolves. It was not in the plan. It exists because Nominatim
+  answered a Tel Aviv address with a street in Holon and said nothing about the
+  substitution. Unwritten, it will later look like a screen that could be
+  dropped.
+- The decisions the turn produced move into Settled: `ללא שיפוט` as a state of
+  its own, hiding rather than deleting, and the model's line re-affirmed under
+  use.
+- Notifications stay out of scope, with the note that their written condition was
+  tested against real use and not met.
+- Still open is rewritten. It currently says the next set of questions will come
+  from building rather than from thinking. They did.
+
+The definition of done keeps all eight existing items and none of them is marked
+as achieved. It defines what the product has to be, not what this turn managed;
+what was achieved is in `verification-turn-1.md` and
+`turn-1-what-use-taught.md`, and marking it here would put the same fact in three
+places where only one of them would stay current.
