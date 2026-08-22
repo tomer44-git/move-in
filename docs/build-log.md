@@ -526,3 +526,15 @@ objection.
 `docs/items.md` is unchanged, and the English it records stays in the catalogue
 as `source`, so `npm run check:catalogue` still passes. Only the Hebrew shown to
 a person is shorter.
+
+## Step 6c — What the use taught
+
+About to write `docs/turn-1-what-use-taught.md`.
+
+Everything in it comes from the interview on 22 August, in Tomer's words. Nothing
+is inferred, and nothing that was not said is added. Where he raised something
+and then decided against it, both halves are recorded, because the decision is
+worth more than the conclusion on its own.
+
+The file is not a bug list. Four of the six things use turned up are not defects,
+and reading them as a backlog would lose what the milestone was for.
