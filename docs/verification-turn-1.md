@@ -6,8 +6,10 @@ The six checks turn one was to be measured against, and what each one actually
 returned. The plan is `docs/plan.md`; the working record, including the faults
 found along the way, is `docs/build-log.md`.
 
-Five pass. One is enforced but was not demonstrated, and it is written up in full
-below rather than rounded up.
+All six pass. Five passed on 20 August; the sixth - that both people see the same
+state - was enforced but could not be demonstrated from the agent's side, and was
+closed by use on 22 August. It is written up in full below, including the period
+when it was open, because why it stayed open is part of what the turn showed.
 
 Everything here was run against the live Supabase project and the live Ministry
 of the Interior boundary layer, not against a compiler.
@@ -55,7 +57,8 @@ always say how long something took.
 
 ## 3 · Both people see the same state without either telling the other
 
-**Enforced. Not demonstrated.** This is the one check turn one does not close.
+**Pass, closed by use on 22 August.** Open from 20 to 22 August; what follows
+keeps that record rather than replacing it.
 
 **What is enforced.** There is one copy of the state, in Postgres. Nothing about
 an item lives in a browser, so there is nothing that can diverge between two
@@ -80,15 +83,14 @@ work.
 Reporting this as a pass would have been the same kind of claim the confirmation
 screen exists to prevent: something that looks verified because nobody looked.
 
-**How it gets closed.** Noa signs in with Google on her own machine, chooses
-*הצטרפות למעבר קיים*, and enters the six-character code shown at the top of the
-board. Both boards should then show the same states and the same owners, and a
-change made by one should appear for the other on reload — this turn has no
-notifications and none were promised.
+**How it was closed.** On 22 August the two of them used the board on a real
+move to באזל 30. Noa signed in with Google on her own device, joined with the
+code `WGT8D4`, and both of them saw the same state without either telling the
+other. Neither the agent nor any manual step in the database was involved.
 
-If she cannot get in, the first thing to check is the Google OAuth consent
-screen: while it is in `Testing`, only accounts listed as test users can sign in
-at all, and the failure arrives as a Google error that does not explain itself.
+That is the milestone the whole turn rested on, and it is the reason the check
+was not rounded up to a pass two days earlier. What was true then was that the
+machinery worked; what is true now is that two people used it.
 
 ## 4 · Signing in and giving an address produces the list with no manual preparation
 
