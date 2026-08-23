@@ -3,6 +3,7 @@ import {
   addCustomItem,
   listItems,
   seedItems,
+  setItemHidden,
   setItemOwner,
   setItemReference,
   setItemState,
@@ -36,6 +37,7 @@ const AUTHORITY_TYPE_LABEL: Record<string, string> = {
  */
 export function Board({ move, meId }: { move: Move; meId: string }) {
   const [state, setState] = useState<State>({ name: 'loading' })
+  const [showHidden, setShowHidden] = useState(false)
   const [busyItem, setBusyItem] = useState<string | null>(null)
   const [actionError, setActionError] = useState<string | null>(null)
 
@@ -110,10 +112,17 @@ export function Board({ move, meId }: { move: Move; meId: string }) {
     ? (AUTHORITY_TYPE_LABEL[move.authority_type] ?? move.authority_type_raw)
     : null
 
+  // Hidden items leave the list but not the count. A board that silently drops
+  // four items would let a person believe they had finished when they had only
+  // stopped looking.
+  const onBoard = state.items.filter((item) => item.hidden_at === null)
+  const hidden = state.items.filter((item) => item.hidden_at !== null)
+  const shown = showHidden ? hidden : onBoard
+
   const counts = {
-    confirmed: state.items.filter((item) => item.state === 'confirmed').length,
-    sent: state.items.filter((item) => item.state === 'request_sent').length,
-    notStarted: state.items.filter((item) => item.state === 'not_started').length,
+    confirmed: onBoard.filter((item) => item.state === 'confirmed').length,
+    sent: onBoard.filter((item) => item.state === 'request_sent').length,
+    notStarted: onBoard.filter((item) => item.state === 'not_started').length,
   }
 
   return (
@@ -138,8 +147,21 @@ export function Board({ move, meId }: { move: Move; meId: string }) {
         </p>
       </header>
 
+      {hidden.length > 0 && (
+        <div className="board__hidden-toggle">
+          <button
+            className="button button--small button--quiet"
+            onClick={() => setShowHidden((current) => !current)}
+          >
+            {showHidden
+              ? `חזרה ללוח (${onBoard.length})`
+              : `${hidden.length} פריטים מוסתרים`}
+          </button>
+        </div>
+      )}
+
       <ol className="items">
-        {state.items.map((item, index) => (
+        {shown.map((item, index) => (
           <ItemRow
             key={item.id}
             item={item}
@@ -157,10 +179,14 @@ export function Board({ move, meId }: { move: Move; meId: string }) {
             onReference={(reference: string) =>
               act(item.id, () => setItemReference(item.id, reference))
             }
+            onHidden={(isHidden: boolean) =>
+              act(item.id, () => setItemHidden(item.id, isHidden))
+            }
           />
         ))}
       </ol>
 
+      {!showHidden && (
       <AddItem
         onAdd={async (title) => {
           const added = await addCustomItem(move.id, title)
@@ -171,6 +197,7 @@ export function Board({ move, meId }: { move: Move; meId: string }) {
           )
         }}
       />
+      )}
 
       {actionError && (
         <p className="notice notice--error" role="alert">

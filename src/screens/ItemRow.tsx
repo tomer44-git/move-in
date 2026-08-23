@@ -28,6 +28,7 @@ export function ItemRow({
   onState,
   onOwner,
   onReference,
+  onHidden,
 }: {
   item: MoveItem
   /**
@@ -45,6 +46,7 @@ export function ItemRow({
   onState: (state: ItemState, confirmation?: string) => void
   onOwner: (ownerId: string | null) => void
   onReference: (reference: string) => void
+  onHidden: (hidden: boolean) => void
 }) {
   const entry = item.catalogue_key
     ? CATALOGUE_BY_KEY.get(item.catalogue_key)
@@ -73,7 +75,7 @@ export function ItemRow({
       : null
 
   return (
-    <li className={`item item--${item.state}`}>
+    <li className={`item item--${item.state}${item.hidden_at ? ' item--hidden' : ''}`}>
       <div className="item__head">
         <span className="item__position">{displayNumber}</span>
         <span className="item__title">{title}</span>
@@ -131,6 +133,7 @@ export function ItemRow({
         onState={onState}
         onOwner={onOwner}
         onReference={onReference}
+        onHidden={onHidden}
       />
     </li>
   )

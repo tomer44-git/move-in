@@ -15,12 +15,14 @@ export type MoveItem = {
   confirmed_at: string | null
   confirmation: string | null
   reference: string | null
+  /** When this item was hidden for this move. Null means it is on the board. */
+  hidden_at: string | null
   updated_at: string
   updated_by: string | null
 }
 
 const COLUMNS =
-  'id, move_id, catalogue_key, custom_title, position, state, owner_id, request_sent_at, confirmed_at, confirmation, reference, updated_at, updated_by'
+  'id, move_id, catalogue_key, custom_title, position, state, owner_id, request_sent_at, confirmed_at, confirmation, reference, hidden_at, updated_at, updated_by'
 
 /**
  * Creates the nineteen rows for a move.
@@ -152,6 +154,28 @@ export async function addCustomItem(
   const { data, error } = await supabase
     .from('move_item')
     .insert({ move_id: moveId, custom_title: title.trim(), position: nextPosition })
+    .select(COLUMNS)
+    .single<MoveItem>()
+
+  if (error) throw new Error(error.message)
+  return data
+}
+
+/**
+ * Takes an item off this board, or puts it back.
+ *
+ * Nothing is deleted. The owner, the dates, the reference and the confirmation
+ * all stay on the row while it is hidden, so restoring it returns exactly what
+ * was there. Only `hidden_at` changes.
+ */
+export async function setItemHidden(
+  itemId: string,
+  hidden: boolean,
+): Promise<MoveItem> {
+  const { data, error } = await supabase
+    .from('move_item')
+    .update({ hidden_at: hidden ? new Date().toISOString() : null })
+    .eq('id', itemId)
     .select(COLUMNS)
     .single<MoveItem>()
 

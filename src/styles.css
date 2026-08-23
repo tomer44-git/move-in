@@ -434,3 +434,18 @@ body {
   letter-spacing: 0.15em;
   color: var(--colour-ink);
 }
+
+/* Hidden items. They leave the list, not the record. */
+
+.board__hidden-toggle {
+  margin-block-end: var(--space-2);
+}
+
+.item--hidden {
+  background: transparent;
+  border-style: dashed;
+}
+
+.item--hidden .item__title {
+  color: var(--colour-ink-soft);
+}
