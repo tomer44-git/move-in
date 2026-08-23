@@ -1,5 +1,6 @@
 import { CATALOGUE_BY_KEY } from '../catalogue/items'
 import { ItemActions } from './ItemActions'
+import { ItemLog } from './ItemLog'
 import { NO_ROUTE_FOR_AUTHORITY_TYPE } from '../catalogue/routes'
 import type { ItemState, MoveItem } from '../lib/items'
 import type { AuthorityType } from '../lib/move'
@@ -135,6 +136,8 @@ export function ItemRow({
         onReference={onReference}
         onHidden={onHidden}
       />
+
+      <ItemLog itemId={item.id} />
     </li>
   )
 }
