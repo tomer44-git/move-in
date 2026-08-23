@@ -818,3 +818,17 @@ The one screen that could not be checked from here is the signed-in header,
 because the agent has no session. It was measured instead by inserting what that
 header renders and reading its position: zero pixels from the right edge, 873
 from the left, with the title centred to within two pixels.
+
+## Step 13 — Reporting the checks
+
+About to write `docs/verification-turn-2.md`.
+
+Four of the nine can be settled from here and are. Five cannot, and the reason
+matters: the agent has no session on this application and does not sign in as
+Tomer, so anything that needs a signed-in board - or two of them - is his to
+observe. That was true of check 3 in turn one and it is true of more of them now,
+because this turn's work lives further inside the application.
+
+The document says which is which. A check reported as passing because it was
+built rather than because it was seen would be the same failure the confirmation
+screen exists to prevent.
