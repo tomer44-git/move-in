@@ -751,3 +751,27 @@ a commit that can be seen.
 
 The function writes nothing to the database. It returns the text, and the client
 saves it - the same client that is allowed to edit it afterwards.
+
+## Steps 9 and 10 — The draft on the screen
+
+About to put the draft on the item, and mark the ones that are general.
+
+The facts are sent from the browser rather than looked up on the server, because
+the verified list lives in git and the database has never been told what is on
+it. Giving the server a second copy would create a second place for the list to
+be wrong.
+
+Folded away like the log. An item carrying a twelve-line letter open by default
+would bury the state, the owner and the waiting time, which are the three things
+`CLAUDE.md` requires to be readable without opening anything.
+
+Editable. It is a draft, and it leaves as a message from the person, not from the
+tool. Regenerating replaces what is there, so the button says so.
+
+**No send button, and no mailto link either.** A link that opens a mail client
+with the text already in it would be one click from sending, and `framing.md` is
+not ambiguous: the model drafts, it never sends. Copying is the whole affordance.
+
+For an item added by hand the screen says the draft is general and names no form
+or procedure - which is what `framing.md` asks for in so many words, and what the
+prompt already enforces on the other side.
