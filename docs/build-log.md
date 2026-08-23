@@ -722,3 +722,32 @@ person who sends it before it goes anywhere.
 `draft_generated_at` records when the model last wrote it. It does not record
 whether a person has edited it since; telling those apart is not worth a column
 this turn.
+
+## Step 8 — The drafting function
+
+About to add the model call. Approved by Tomer on 22 August, as `CLAUDE.md`
+requires for anything that adds one. Model: `anthropic/claude-sonnet-5`, through
+OpenRouter, chosen the same day.
+
+The model is given the item's title, the verified detail the list holds for it,
+its warnings, the route for this authority type, the authority name and type, and
+the address. It is given no name, no identity number and no account number, and
+the prompt tells it to leave those as square-bracketed placeholders.
+
+It is asked to phrase, never to know. The system prompt says in as many words
+that it must not add any form, department, telephone number or procedure that it
+was not given, and that if a detail is missing it leaves a placeholder rather
+than filling it in. This is the line `framing-interview.md` records as the most
+useful thing the first interview produced, and Tomer re-affirmed it under use two
+days ago.
+
+For an item with no verified detail - anything added by hand - the prompt is a
+different one: a general request that names no form, department or procedure at
+all. The screen says so in step 10.
+
+The model's name lives in the code rather than in `.env.local`. Which model
+writes the drafts is a product decision, not a secret, and changing it should be
+a commit that can be seen.
+
+The function writes nothing to the database. It returns the text, and the client
+saves it - the same client that is allowed to edit it afterwards.
