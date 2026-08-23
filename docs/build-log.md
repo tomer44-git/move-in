@@ -607,3 +607,28 @@ the level of the move.
 
 No new policy is needed: `move_item` already allows a member to update, and
 hiding is an update. The grant already covers it.
+
+## Step 2 — Hiding, on the screen
+
+About to add hiding to the board: a control on each item, and a way to see and
+restore what is hidden.
+
+Three decisions in it.
+
+**Hidden items leave the list but not the tally.** A board that silently drops
+four items would let a person believe they have finished when they have only
+stopped looking. The count of what is hidden sits next to the count of what is
+confirmed, waiting and not started.
+
+**Restoring is one click and loses nothing.** The row keeps its owner, its dates,
+its reference and its confirmation while hidden - `hidden_at` is the only field
+that changes.
+
+**A hidden item can still be hidden by the other person's screen already showing
+it.** Both people can hide and restore anything; there is no ownership of the
+decision, in the same way there is no ownership of an item beyond who took it.
+
+The model choice for step 8 was settled today: `anthropic/claude-sonnet-5`. It
+goes in the code rather than in `.env.local` - which model writes the drafts is a
+product decision, not a secret, and changing it should be a commit that can be
+seen.
