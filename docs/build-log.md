@@ -832,3 +832,26 @@ because this turn's work lives further inside the application.
 The document says which is which. A check reported as passing because it was
 built rather than because it was seen would be the same failure the confirmation
 screen exists to prevent.
+
+## Step 3 — the fault it took use to find
+
+`permission denied for table move_item_event`, on every attempt to change an
+item: taking it, hiding it, marking it sent. The board was unusable.
+
+The log trigger is not `security definer`, so it runs as whoever caused the
+update - `authenticated`. And `authenticated` has `select` on
+`move_item_event` and nothing else, deliberately, because the whole point is that
+a client cannot write the log.
+
+Which left the trigger unable to write it either. The step 3 note in this file
+says the log is "written by a trigger and by nothing else", and I then made the
+trigger one of the nothings.
+
+The fix is not a grant to `authenticated`; that would hand the client exactly the
+write path the design exists to deny. The function becomes `security definer` and
+runs as its owner, so the log stays writable by the trigger alone.
+
+Found by Tomer on the live site, in check 6, after four commits had already been
+pushed past it. It could not have been found from here: it needs a signed-in
+board, and every test of the trigger up to this point had been reading the
+migration rather than running it.
