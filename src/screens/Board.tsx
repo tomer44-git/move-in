@@ -11,7 +11,7 @@ import {
   type MoveItem,
 } from '../lib/items'
 import { peopleOnMove, type Person } from '../lib/people'
-import type { Move } from '../lib/move'
+import { hasAuthority, type Move } from '../lib/move'
 import { AddItem } from './AddItem'
 import { ItemRow } from './ItemRow'
 
@@ -112,6 +112,8 @@ export function Board({ move, meId }: { move: Move; meId: string }) {
     ? (AUTHORITY_TYPE_LABEL[move.authority_type] ?? move.authority_type_raw)
     : null
 
+  const known = hasAuthority(move)
+
   // Hidden items leave the list but not the count. A board that silently drops
   // four items would let a person believe they had finished when they had only
   // stopped looking.
@@ -129,7 +131,9 @@ export function Board({ move, meId }: { move: Move; meId: string }) {
     <div className="board">
       <header className="board__head">
         <div>
-          <h2 className="board__authority">{move.authority_name}</h2>
+          <h2 className="board__authority">
+            {known ? move.authority_name : 'רשות לא ידועה'}
+          </h2>
           <p className="board__address">
             {move.address_text}
             {typeLabel && <span className="board__type"> · {typeLabel}</span>}

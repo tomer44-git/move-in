@@ -1,7 +1,10 @@
 import { CATALOGUE_BY_KEY } from '../catalogue/items'
 import { ItemActions } from './ItemActions'
 import { ItemLog } from './ItemLog'
-import { NO_ROUTE_FOR_AUTHORITY_TYPE } from '../catalogue/routes'
+import {
+  NO_AUTHORITY_FOUND,
+  NO_ROUTE_FOR_AUTHORITY_TYPE,
+} from '../catalogue/routes'
 import type { ItemState, MoveItem } from '../lib/items'
 import type { AuthorityType } from '../lib/move'
 import type { Person } from '../lib/people'
@@ -68,12 +71,15 @@ export function ItemRow({
   const title = entry?.title ?? item.custom_title ?? '—'
   const owner = item.owner_id ? people.get(item.owner_id) : undefined
 
-  const route =
-    entry?.routes && authorityType
-      ? authorityType === 'unrecognised'
+  // An item whose route depends on the authority says why it has none, rather
+  // than quietly showing nothing - which would read as "this does not apply".
+  const route = !entry?.routes
+    ? null
+    : authorityType === null
+      ? NO_AUTHORITY_FOUND
+      : authorityType === 'unrecognised'
         ? NO_ROUTE_FOR_AUTHORITY_TYPE
         : entry.routes[authorityType]
-      : null
 
   return (
     <li className={`item item--${item.state}${item.hidden_at ? ' item--hidden' : ''}`}>
@@ -105,7 +111,11 @@ export function ItemRow({
         </p>
       ))}
 
-      {route && <p className="item__route">{route}</p>}
+      {route && (
+        <p className={authorityType ? 'item__route' : 'item__route item__route--none'}>
+          {route}
+        </p>
+      )}
 
       {entry?.order && <p className="item__order">{entry.order}</p>}
 

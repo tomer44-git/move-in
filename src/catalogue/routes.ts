@@ -32,3 +32,13 @@ export const ROUTES_SOURCE: string[] = [
  */
 export const NO_ROUTE_FOR_AUTHORITY_TYPE =
   'סוג הרשות לא זוהה, ולכן אין כאן מסלול. יש לברר מול הרשות עצמה.'
+
+/**
+ * Shown on items 3 to 6 when the address never resolved to an authority.
+ *
+ * The item stays on the board. Leaving it out would let a person conclude that
+ * arnona does not apply to them, when the truth is only that nobody knows which
+ * authority it belongs to.
+ */
+export const NO_AUTHORITY_FOUND =
+  'לא נמצאה הרשות של הכתובת, ולכן אין כאן מסלול. הפריט עצמו עדיין רלוונטי.'

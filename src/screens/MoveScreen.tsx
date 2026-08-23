@@ -139,7 +139,24 @@ export function MoveScreen({ meId }: { meId: string }) {
 
   const { move } = screen
 
-  if (isReady(move)) return <Board move={move} meId={meId} />
+  if (isReady(move)) {
+    // A move that never resolved still gets its board. The outcome sits above
+    // it, so the reason there is no authority stays visible and correctable
+    // rather than being replaced by a list that looks complete.
+    return (
+      <>
+        {move.lookup_status !== 'resolved' && (
+          <LookupOutcome
+            move={move}
+            busy={busy}
+            onRetry={() => void runLookup(move.id)}
+            onChangeAddress={() => setScreen({ name: 'editing_address', move })}
+          />
+        )}
+        <Board move={move} meId={meId} />
+      </>
+    )
+  }
 
   if (move.lookup_status === 'resolved') {
     return (
