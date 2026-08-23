@@ -632,3 +632,25 @@ The model choice for step 8 was settled today: `anthropic/claude-sonnet-5`. It
 goes in the code rather than in `.env.local` - which model writes the drafts is a
 product decision, not a secret, and changing it should be a commit that can be
 seen.
+
+## Step 3 — The log, in the schema
+
+About to add `move_item_event`: what happened to an item, and when.
+
+Written by a trigger and by nothing else. There is no insert policy and no insert
+grant for `authenticated`, for the same reason the dates are stamped in the
+database rather than sent by the browser - a log the client can write to is a log
+that can be wrong, and a log that can be wrong is worse than none, because it
+looks authoritative.
+
+No actor column. Tomer asked for date and action, and I raised at the time that
+"who" is the first question anyone will put to a log on a two-person board.
+`updated_by` on the item still holds who touched it last, so nothing is lost that
+cannot be added later.
+
+The actions are a closed set, checked in the schema. An action the trigger does
+not know about is a bug, and the constraint makes it a loud one rather than a row
+of text nobody can group by.
+
+Reading is scoped through the item to its move, so the same two people who can
+see an item can see its history and nobody else can.
