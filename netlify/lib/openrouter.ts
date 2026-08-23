@@ -46,7 +46,7 @@ export async function draftRequest(
         model: MODEL,
         messages: [
           { role: 'system', content: systemPrompt(subject) },
-          { role: 'user', content: userPrompt(address) },
+          { role: 'user', content: userPrompt(address, subject.title) },
         ],
         // Phrasing, not invention. Low enough that the same item drafted twice
         // reads consistently.
