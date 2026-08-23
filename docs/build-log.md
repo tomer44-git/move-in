@@ -654,3 +654,23 @@ of text nobody can group by.
 
 Reading is scoped through the item to its move, so the same two people who can
 see an item can see its history and nobody else can.
+
+## Step 4 — The log, on the screen
+
+About to show an item's history on the item.
+
+Folded away by default. Nineteen items each carrying a visible list of everything
+that ever happened to them would bury the three things `CLAUDE.md` requires to be
+readable without opening anything - state, owner, and how long it has been
+waiting. The log is opened when a question is asked of it.
+
+It is read once per item, when it is opened, rather than for the whole board on
+load. Most items will never be asked.
+
+The actions are rendered in Hebrew from a fixed map. An action the map does not
+know is shown as its raw key rather than skipped: the closed set in the schema
+means that can only happen if the two drift apart, and a silent omission would
+hide exactly that.
+
+Dates are shown as a date, not as "two days ago". The board already carries
+elapsed time on the row; the log answers when, which is a different question.
