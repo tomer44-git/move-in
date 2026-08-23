@@ -775,3 +775,22 @@ not ambiguous: the model drafts, it never sends. Copying is the whole affordance
 For an item added by hand the screen says the draft is general and names no form
 or procedure - which is what `framing.md` asks for in so many words, and what the
 prompt already enforces on the other side.
+
+## Step 11 — The look
+
+About to change the palette and the header, as Tomer specified on 22 August:
+pastel light blue with light purple, the name `Move-in` centred at the top, and
+sign-in and sign-out at the right.
+
+Right is the start of the line here, not the end. It was confirmed as meant in
+the right-to-left sense rather than carried over from left-to-right habit, and
+that is the one instruction in this step that could have been misread.
+
+The name becomes `Move-in` in Latin script inside a Hebrew, right-to-left page.
+That is what was asked for. It sits in its own centred block so the surrounding
+direction cannot pull its punctuation around.
+
+Colour carries meaning in three places already - waiting, confirmed, and a
+warning - and those keep their hues rather than being folded into the new
+palette. A board where every state is a shade of the same blue answers "what is
+happening" worse than one that is plainer.
