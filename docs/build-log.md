@@ -674,3 +674,26 @@ hide exactly that.
 
 Dates are shown as a date, not as "two days ago". The board already carries
 elapsed time on the row; the log answers when, which is a different question.
+
+## Step 5 — Items for a move whose address did not resolve
+
+About to seed and show the nineteen even when no authority was found.
+
+Today an unresolved address produces nothing: the board is gated on
+`resolved && confirmed`, so a person in a new neighbourhood the geocoder has
+never heard of gets an error screen and no list at all. Fifteen of the nineteen
+items do not depend on the authority in any way - electricity, gas, banks, the
+health fund - and withholding them helps nobody.
+
+Tomer chose on 22 August that all nineteen appear, and that the four
+authority-dependent items say no authority was found rather than being left out.
+Leaving them out would let a person conclude that arnona does not apply to them,
+when the truth is only that we do not know which authority it belongs to.
+
+What changes is the gate, not the seeding: items are created once the lookup has
+reached any conclusion at all, rather than once it has reached a good one. A move
+still `pending` seeds nothing, because nothing has been attempted yet.
+
+The confirmation screen keeps its place. A resolved address still has to be
+agreed to before the board appears, because that is what stops a street in Holon
+from being recorded as a street in Tel Aviv.
