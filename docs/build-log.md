@@ -805,3 +805,16 @@ tested for a physical direction - `left`, `right`, `float`, a directional
 `text-align`, or a margin, padding or border whose two sides differ. Plus the two
 things this turn added that turn one had no equivalent of: a Latin-script name
 inside a right-to-left header, and a textarea holding a Hebrew letter.
+
+### What the pass found
+
+Nothing. No rule in the stylesheet carries a physical direction; the document is
+`dir="rtl"` and `lang="he"`; the page does not scroll sideways. The Latin name in
+the header is `unicode-bidi: isolate`, so the surrounding Hebrew cannot pull its
+punctuation about. The draft textarea inherits `direction: rtl` and aligns to
+`start`, which is what a Hebrew letter needs.
+
+The one screen that could not be checked from here is the signed-in header,
+because the agent has no session. It was measured instead by inserting what that
+header renders and reading its position: zero pixels from the right edge, 873
+from the left, with the title centred to within two pixels.
