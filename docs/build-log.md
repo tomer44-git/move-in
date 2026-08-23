@@ -794,3 +794,14 @@ Colour carries meaning in three places already - waiting, confirmed, and a
 warning - and those keep their hues rather than being folded into the new
 palette. A board where every state is a shade of the same blue answers "what is
 happening" worse than one that is plainer.
+
+## Step 12 — The right-to-left pass
+
+About to check every screen again, in Hebrew, now that the palette and four new
+screens exist.
+
+The same mechanical check as turn one: every rule read back from the browser and
+tested for a physical direction - `left`, `right`, `float`, a directional
+`text-align`, or a margin, padding or border whose two sides differ. Plus the two
+things this turn added that turn one had no equivalent of: a Latin-script name
+inside a right-to-left header, and a textarea holding a Hebrew letter.
