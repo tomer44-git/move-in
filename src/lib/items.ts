@@ -17,12 +17,15 @@ export type MoveItem = {
   reference: string | null
   /** When this item was hidden for this move. Null means it is on the board. */
   hidden_at: string | null
+  /** The request as drafted, and possibly edited since. Never sent from here. */
+  draft: string | null
+  draft_generated_at: string | null
   updated_at: string
   updated_by: string | null
 }
 
 const COLUMNS =
-  'id, move_id, catalogue_key, custom_title, position, state, owner_id, request_sent_at, confirmed_at, confirmation, reference, hidden_at, updated_at, updated_by'
+  'id, move_id, catalogue_key, custom_title, position, state, owner_id, request_sent_at, confirmed_at, confirmation, reference, hidden_at, draft, draft_generated_at, updated_at, updated_by'
 
 /**
  * Creates the nineteen rows for a move.
@@ -175,6 +178,77 @@ export async function setItemHidden(
   const { data, error } = await supabase
     .from('move_item')
     .update({ hidden_at: hidden ? new Date().toISOString() : null })
+    .eq('id', itemId)
+    .select(COLUMNS)
+    .single<MoveItem>()
+
+  if (error) throw new Error(error.message)
+  return data
+}
+
+/** What the model is given about an item. Only verified facts, never a person. */
+export type DraftSubject =
+  | {
+      kind: 'catalogue'
+      title: string
+      detail: string[]
+      warnings: string[]
+      route: string | null
+      authorityName: string | null
+      authorityType: string | null
+    }
+  | { kind: 'custom'; title: string }
+
+/**
+ * Asks the model to phrase a request, and stores what comes back.
+ *
+ * The verified facts travel from the browser, because the catalogue lives in git
+ * and the database has never been told what is on the verified list. A second
+ * copy on the server would be a second place for the list to be wrong.
+ */
+export async function generateDraft(
+  itemId: string,
+  subject: DraftSubject,
+): Promise<MoveItem> {
+  const { data: session } = await supabase.auth.getSession()
+  const token = session.session?.access_token
+  if (!token) throw new Error('אינך מחובר')
+
+  const response = await fetch('/.netlify/functions/draft-request', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', authorization: `Bearer ${token}` },
+    body: JSON.stringify({ itemId, subject }),
+  })
+
+  const body = (await response.json()) as
+    | { outcome: 'drafted'; text: string }
+    | { outcome: 'draft_failed'; reason: string }
+
+  if (body.outcome !== 'drafted') {
+    throw new Error(body.reason ?? 'הניסוח נכשל')
+  }
+
+  return saveDraft(itemId, body.text, true)
+}
+
+/** Saves a draft, whether the model wrote it or a person edited it. */
+export async function saveDraft(
+  itemId: string,
+  draft: string,
+  fromModel: boolean,
+): Promise<MoveItem> {
+  const trimmed = draft.trim()
+
+  const patch: Record<string, unknown> = {
+    draft: trimmed.length > 0 ? trimmed : null,
+  }
+  // Only the model moves this date. An edit by a person is still their text on
+  // top of what the model wrote at that time.
+  if (fromModel) patch['draft_generated_at'] = new Date().toISOString()
+
+  const { data, error } = await supabase
+    .from('move_item')
+    .update(patch)
     .eq('id', itemId)
     .select(COLUMNS)
     .single<MoveItem>()

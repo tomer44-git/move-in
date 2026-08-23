@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
 import {
   addCustomItem,
+  generateDraft,
   listItems,
+  saveDraft,
   seedItems,
   setItemHidden,
   setItemOwner,
   setItemReference,
   setItemState,
+  type DraftSubject,
   type ItemState,
   type MoveItem,
 } from '../lib/items'
@@ -172,6 +175,8 @@ export function Board({ move, meId }: { move: Move; meId: string }) {
             displayNumber={index + 1}
             people={state.people}
             authorityType={move.authority_type}
+            authorityName={known ? move.authority_name : null}
+            authorityTypeLabel={known ? typeLabel : null}
             meId={meId}
             busy={busyItem === item.id}
             onState={(next: ItemState, confirmation?: string) =>
@@ -185,6 +190,12 @@ export function Board({ move, meId }: { move: Move; meId: string }) {
             }
             onHidden={(isHidden: boolean) =>
               act(item.id, () => setItemHidden(item.id, isHidden))
+            }
+            onGenerateDraft={(subject: DraftSubject) =>
+              act(item.id, () => generateDraft(item.id, subject))
+            }
+            onSaveDraft={(draft: string) =>
+              act(item.id, () => saveDraft(item.id, draft, false))
             }
           />
         ))}

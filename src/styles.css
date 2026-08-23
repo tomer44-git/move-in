@@ -492,3 +492,43 @@ body {
 .item__route--none {
   color: var(--colour-ink-soft);
 }
+
+/* The drafted request */
+
+.draft {
+  margin-block-start: var(--space-2);
+  padding-inline-start: 1.5rem;
+}
+
+.draft__text {
+  font: inherit;
+  inline-size: 100%;
+  max-inline-size: 46rem;
+  margin-block-start: var(--space-1);
+  padding: var(--space-2);
+  border: 1px solid var(--colour-line);
+  border-radius: 6px;
+  background: var(--colour-surface);
+  color: inherit;
+  line-height: 1.7;
+  resize: vertical;
+}
+
+.draft__note {
+  margin: var(--space-1) 0 0;
+  font-size: 0.8125rem;
+  color: var(--colour-ink-soft);
+  max-inline-size: 46rem;
+}
+
+/* Said on screen because framing.md asks for it in so many words. */
+.draft__general {
+  margin: var(--space-1) 0 0;
+  padding: var(--space-2);
+  max-inline-size: 46rem;
+  font-size: 0.8125rem;
+  color: #6b4b12;
+  background: #fdf7e8;
+  border: 1px solid #ecd9a8;
+  border-radius: 6px;
+}

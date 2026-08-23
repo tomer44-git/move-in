@@ -1,11 +1,12 @@
 import { CATALOGUE_BY_KEY } from '../catalogue/items'
 import { ItemActions } from './ItemActions'
+import { ItemDraft } from './ItemDraft'
 import { ItemLog } from './ItemLog'
 import {
   NO_AUTHORITY_FOUND,
   NO_ROUTE_FOR_AUTHORITY_TYPE,
 } from '../catalogue/routes'
-import type { ItemState, MoveItem } from '../lib/items'
+import type { DraftSubject, ItemState, MoveItem } from '../lib/items'
 import type { AuthorityType } from '../lib/move'
 import type { Person } from '../lib/people'
 import { waitingLabel } from '../lib/waiting'
@@ -27,12 +28,16 @@ export function ItemRow({
   displayNumber,
   people,
   authorityType,
+  authorityName,
+  authorityTypeLabel,
   meId,
   busy,
   onState,
   onOwner,
   onReference,
   onHidden,
+  onGenerateDraft,
+  onSaveDraft,
 }: {
   item: MoveItem
   /**
@@ -45,12 +50,17 @@ export function ItemRow({
   displayNumber: number
   people: Map<string, Person>
   authorityType: AuthorityType | null
+  authorityName: string | null
+  /** The authority type in Hebrew, for the model. Null when it is unknown. */
+  authorityTypeLabel: string | null
   meId: string
   busy: boolean
   onState: (state: ItemState, confirmation?: string) => void
   onOwner: (ownerId: string | null) => void
   onReference: (reference: string) => void
   onHidden: (hidden: boolean) => void
+  onGenerateDraft: (subject: DraftSubject) => void
+  onSaveDraft: (draft: string) => void
 }) {
   const entry = item.catalogue_key
     ? CATALOGUE_BY_KEY.get(item.catalogue_key)
@@ -73,6 +83,11 @@ export function ItemRow({
 
   // An item whose route depends on the authority says why it has none, rather
   // than quietly showing nothing - which would read as "this does not apply".
+  const verifiedRoute =
+    entry?.routes && authorityType && authorityType !== 'unrecognised'
+      ? entry.routes[authorityType]
+      : null
+
   const route = !entry?.routes
     ? null
     : authorityType === null
@@ -145,6 +160,30 @@ export function ItemRow({
         onOwner={onOwner}
         onReference={onReference}
         onHidden={onHidden}
+      />
+
+      {/* The facts travel from here, because the catalogue is in git and the
+          database has never been told what is on the verified list. */}
+      <ItemDraft
+        item={item}
+        isGeneral={!entry}
+        busy={busy}
+        onGenerate={() =>
+          onGenerateDraft(
+            entry
+              ? {
+                  kind: 'catalogue',
+                  title: entry.title,
+                  detail: entry.detail,
+                  warnings: entry.warnings,
+                  route: verifiedRoute,
+                  authorityName: authorityName,
+                  authorityType: authorityTypeLabel,
+                }
+              : { kind: 'custom', title: item.custom_title ?? title },
+          )
+        }
+        onSave={onSaveDraft}
       />
 
       <ItemLog itemId={item.id} />
