@@ -579,3 +579,31 @@ as achieved. It defines what the product has to be, not what this turn managed;
 what was achieved is in `verification-turn-1.md` and
 `turn-1-what-use-taught.md`, and marking it here would put the same fact in three
 places where only one of them would stay current.
+
+---
+
+# Turn two · 22 August 2026 · branch `build/drafts`
+
+The plan is `docs/plan-turn-2.md`. The milestone is a drafted request actually
+sent to a real authority.
+
+## Step 1 — Hiding, in the schema
+
+About to add `move_item.hidden_at`.
+
+A date rather than a boolean, so the board can answer when as well as whether.
+No `hidden_by`: Tomer asked for the log without an actor, and a column that
+returns the actor for this one action would contradict that. `updated_by` is
+already stamped on every write by the trigger from turn one.
+
+Hiding rather than deleting was settled at the end of turn one, and the reason is
+that both people can touch everything: a deletion by one is unrecoverable for the
+other and takes the owner, the dates and the reference with it. Hiding is
+reversible and loses nothing.
+
+It applies to all nineteen as well as to hand-added items. Items 16, 17 and 18
+are the immediate case - not relevant to this move, kept in the list, hidden at
+the level of the move.
+
+No new policy is needed: `move_item` already allows a member to update, and
+hiding is an update. The grant already covers it.
