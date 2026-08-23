@@ -5,21 +5,24 @@
  */
 
 :root {
-  --colour-page: #fbfaf8;
+  /* Pastel light blue, with light purple alongside it. */
+  --colour-page: #f4f8fc;
   --colour-surface: #ffffff;
-  --colour-ink: #1c1b19;
-  --colour-ink-soft: #6b6862;
-  --colour-line: #e3e0da;
+  --colour-ink: #23303d;
+  --colour-ink-soft: #66788a;
+  --colour-line: #d8e4f0;
+
+  --colour-accent: #6b8fb8;
+  --colour-accent-soft: #e7eff8;
+  --colour-violet: #7d6ba8;
+  --colour-violet-soft: #eeeaf6;
 
   --space-1: 0.5rem;
   --space-2: 1rem;
   --space-3: 1.5rem;
   --space-4: 2.5rem;
 
-  /* No webfont is loaded, so this names only faces that are actually present.
-     Assistant and Heebo were listed here and never fetched, which made the stack
-     read like a choice that had been made. Loading a Hebrew face is a decision
-     for Tomer, not a default. */
+  /* No webfont is loaded, so this names only faces that are actually present. */
   --font-body: system-ui, 'Segoe UI', Arial, sans-serif;
 }
 
@@ -44,22 +47,39 @@ body {
 }
 
 .app__header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--space-2);
   border-block-end: 1px solid var(--colour-line);
   padding-block-end: var(--space-2);
   margin-block-end: var(--space-3);
 }
 
+/* Latin script inside a right-to-left page. Its own block, and isolated, so the
+   surrounding direction cannot pull its punctuation about. */
 .app__title {
+  grid-column: 2;
   margin: 0;
   font-size: 1.5rem;
   font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--colour-violet);
+  direction: ltr;
+  unicode-bidi: isolate;
 }
 
 .app__main {
   background: var(--colour-surface);
   border: 1px solid var(--colour-line);
-  border-radius: 8px;
+  border-radius: 10px;
   padding: var(--space-3);
+}
+
+/* An item still being worked on stands slightly off the page. */
+.item--not_started,
+.item--request_sent {
+  border-color: var(--colour-line);
 }
 
 .app__placeholder {
@@ -69,14 +89,10 @@ body {
 
 /* Header, once there is an identity to show beside the title. */
 
-.app__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
-}
-
 .app__identity {
+  grid-column: 1;
+  justify-self: start;
+
   display: flex;
   align-items: center;
   gap: var(--space-2);
@@ -103,8 +119,8 @@ body {
 .button {
   font: inherit;
   color: var(--colour-surface);
-  background: var(--colour-ink);
-  border: 1px solid var(--colour-ink);
+  background: var(--colour-accent);
+  border: 1px solid var(--colour-accent);
   border-radius: 6px;
   padding-block: 0.5rem;
   padding-inline: 1.125rem;
@@ -118,7 +134,7 @@ body {
 
 .button--quiet {
   color: var(--colour-ink);
-  background: transparent;
+  background: var(--colour-surface);
   border-color: var(--colour-line);
 }
 
@@ -177,7 +193,7 @@ body {
 }
 
 .field__input:focus-visible {
-  outline: 2px solid var(--colour-ink);
+  outline: 2px solid var(--colour-accent);
   outline-offset: 1px;
 }
 
@@ -432,7 +448,7 @@ body {
 .board__code code {
   font-size: 1rem;
   letter-spacing: 0.15em;
-  color: var(--colour-ink);
+  color: var(--colour-violet);
 }
 
 /* Hidden items. They leave the list, not the record. */
