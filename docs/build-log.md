@@ -855,3 +855,17 @@ Found by Tomer on the live site, in check 6, after four commits had already been
 pushed past it. It could not have been found from here: it needs a signed-in
 board, and every test of the trigger up to this point had been reading the
 migration rather than running it.
+
+## Check 3 — passed, with a refinement Tomer asked for
+
+The general draft carries its notice and its placeholders, and names no form,
+department or procedure. Tomer's observation: the addressee is sometimes guessed
+rather than left open.
+
+He is right, and it is the same rule as everything else in this prompt. For an
+item added by hand the model does not know who the request goes to, so the
+addressee is a fact it was not given - and the rule says an ungiven fact becomes
+a placeholder, not a plausible guess. Testing showed it going both ways: `[נמען]`
+on one item, `[ועד הבית / נציג הבית המשותף]` on another.
+
+The instruction is now explicit rather than implied.
