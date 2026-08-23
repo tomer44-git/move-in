@@ -697,3 +697,28 @@ still `pending` seeds nothing, because nothing has been attempted yet.
 The confirmation screen keeps its place. A resolved address still has to be
 agreed to before the board appears, because that is what stops a street in Holon
 from being recorded as a street in Tel Aviv.
+
+## Step 7 — The draft, in the schema
+
+About to add two columns to `move_item`:
+
+    draft               text, capped
+    draft_generated_at  timestamptz
+
+Stored rather than generated on each view, for two reasons. Both people have to
+see the same draft: one regenerated per viewer would give them different text for
+the same item, which breaks the property the whole board rests on. And every
+viewing would otherwise cost a model call.
+
+Members can write it. The function generates it and the client saves it, and a
+person can edit what came back before sending - it is a draft, and the whole
+point is that it leaves as a message from them.
+
+This is deliberately unlike the authority columns, which no client may write.
+The difference is what a wrong value costs: a wrong authority sends a person to
+the wrong office and nothing reports it, while a wrong draft is read by the
+person who sends it before it goes anywhere.
+
+`draft_generated_at` records when the model last wrote it. It does not record
+whether a person has edited it since; telling those apart is not worth a column
+this turn.
