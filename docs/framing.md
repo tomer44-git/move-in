@@ -1,11 +1,14 @@
 # move-in — Framing
 
-ASE-26 personal project · Tomer Ben Bassat · Revised 22 August 2026
+ASE-26 personal project · Tomer Ben Bassat · Revised 24 August 2026
 
 Written in pencil. Revised at the end of every turn of the spiral. This is the
-third version. The first was scoped to one couple and one apartment; the second
-widened it to any address in Israel; this one is the first written after the tool
-was used rather than after it was thought about.
+fourth version. The first was scoped to one couple and one apartment; the second
+widened it to any address in Israel; the third was the first written after the
+tool was used rather than thought about. This one is the first written after the
+thing this document had been asking for since its first version - a request that
+can be sent after reading it once - was built, sent to real authorities, and
+answered.
 
 ## Problem statement
 
@@ -58,9 +61,9 @@ works.
 - Anything after the move is finished
 - The physical move itself: removals, packing, locksmith
 - Notifications. Deferred on purpose, not forgotten — if use shows they are
-  needed, they come in a later turn. Two days of use did not show it: the want
-  was for the convenience, and nothing was actually dropped for want of being
-  told. The condition stands, untriggered.
+  needed, they come in a later turn. Two turns of use have not shown it. Both
+  times the want was for the convenience, and neither produced a case of
+  something dropped because nobody was told. The condition stands, untriggered.
 
 ## Settled
 
@@ -72,6 +75,18 @@ works.
 - An item that does not apply to a particular move is hidden, not deleted. Both
   people can touch everything, and a deletion by one would be unrecoverable for
   the other, taking any owner, date and reference with it.
+- Hiding lives at the level of the move, never of the list. An item that does not
+  apply to one couple applies to somebody: a family with children needs the
+  school registration. Nothing is removed from the list because it did not apply
+  once.
+- Every item carries a log of what happened to it and when, written by a database
+  trigger and by nothing else. A log a client can write is a log that can be
+  wrong, and a wrong log is worse than none because it still looks
+  authoritative.
+- What a row must show without being opened has grown by one: the date, beside
+  the elapsed time. "Three days" and "the 24th" are different questions, and use
+  had both being asked - people were opening a history to read a field the row
+  could have carried.
 - Each item shows how long it has been waiting since the request was sent.
 - Items are independent. There are no dependencies between them.
 
@@ -120,11 +135,21 @@ works.
 - For an item added by hand, the model has no verified information, so it drafts
   a general request with placeholders and does not name a form, a department or a
   procedure. The screen says the draft is general.
-- The line was tested by use and kept. Two days of it produced a wish for the
-  model to help with the municipality's website and guide the way through it —
-  which is asking it for a fact about civic procedure, and is the same reversal
+- The line was tested by use and kept. The first turn of use produced a wish for
+  the model to help with the municipality's website and guide the way through it
+  — which is asking it for a fact about civic procedure, and is the same reversal
   the first interview made. Put as a decision rather than allowed to follow from
   a feature request, the answer was to leave the line where it is.
+- The second turn of use settled it further, and with evidence rather than
+  argument. Requests drafted under this line were sent to real authorities
+  unchanged, and the replies were serious ones. Holding the model to phrasing
+  costs nothing in usefulness.
+- The draft is stored on the item, not written afresh for each viewer. Two people
+  looking at one item have to see one draft; a draft regenerated per viewer would
+  give them different text for the same request.
+- A draft that came back cut off is refused, not saved. A half-written request
+  displayed like a whole one is the failure this project exists to avoid, and it
+  is invisible to whoever is about to send it.
 
 **Stack**
 
@@ -133,29 +158,28 @@ works.
 
 ## Still open
 
-The second version ended by saying the next set of questions would come from
-building rather than from thinking. They did. These came from two days of real
-use on a real move, and are recorded in full in
-`docs/turn-1-what-use-taught.md`.
+The third version listed eight. Four were built in turn two - the drafted
+request, hiding, the item log, and the look. One was answered. What remains joins
+what turn two raised, and the whole is recorded in
+`docs/turn-2-what-use-taught.md`.
 
-1. The drafted request, which is the one thing in this document turn one did not
-   build. Use found its absence at electricity and at home insurance, and the two
-   are different cases: one has verified facts to phrase, the other has nothing
-   but a name. Turn two starts from the items where it was actually missed rather
-   than from all nineteen at once.
-2. Hiding an item that does not apply to a move.
-3. A log per item: what happened and when. It needs a table of its own, because
-   the schema holds current state and no history. Asked for as date and action
-   only — whether it should also say who is the first question anyone will ask of
-   it.
-4. The look. Pastel light blue with light purple, `Move-in` centred at the top,
-   sign-in at the right — the start of the line, in the right-to-left sense.
-5. Notifications, still as a question and not yet as work.
-6. The three route descriptions in `docs/items.md`, still unverified. Tel Aviv is
-   a city, so only the first of the three touches this move — which is why two
-   days of use did not test the other two.
-7. Whether items 16, 17 and 18 — pension insurance, the IDF, subscriptions —
-   apply at all. `docs/items.md` has been asking since it was written.
-8. Whether an address that never resolves should still get the fifteen items that
-   do not depend on an authority. Raised while building and not yet answered by
-   anything.
+1. **Who did it, in the log.** The log records what happened and when. Asked for
+   that way, and after one turn of use the answer was that "who" is missing —
+   *"although there is an owner for every task"*. The "although" is the point:
+   owner and actor are the same person only on a board where each person has
+   their own tasks. On this one either may touch anything, so a line saying a
+   request was sent does not say who sent it. `updated_by` already holds it.
+2. **Notifications**, still a question and not yet work. Two turns, and the
+   condition above has not been met.
+3. **The three route descriptions.** Verified on 22 August, each against a real
+   authority of its kind. Turn two tested only the city one, because Tel Aviv is
+   a city; the other two are recorded as checked but have not been used.
+4. **Whether items 16, 17 and 18 apply.** Answered for this move by hiding them.
+   Still open for the list, and hiding is the reason it can stay open.
+5. **Whether an unresolved address gives a useful board.** Built in turn two and
+   deliberately never run: testing it means entering an address the geocoder
+   cannot find, which would replace the authority on a board two people are using
+   for a real move. Recorded as unobserved rather than tested at that price.
+6. **What happens when the move ends.** Item 8 of the definition of done, and the
+   only one still unbuilt now that the drafted request exists. Nothing has needed
+   it yet, because the first move is not finished.
