@@ -120,14 +120,18 @@ export function Board({ move, meId }: { move: Move; meId: string }) {
   // Hidden items leave the list but not the count. A board that silently drops
   // four items would let a person believe they had finished when they had only
   // stopped looking.
-  const onBoard = state.items.filter((item) => item.hidden_at === null)
-  const hidden = state.items.filter((item) => item.hidden_at !== null)
+  // Numbered once, over every item on the move. A number that counted rows in
+  // whichever list happens to be open would change when an item is hidden and
+  // change back when it returns, which is not what a number on an item is for.
+  const numbered = state.items.map((item, index) => ({ item, number: index + 1 }))
+  const onBoard = numbered.filter((row) => row.item.hidden_at === null)
+  const hidden = numbered.filter((row) => row.item.hidden_at !== null)
   const shown = showHidden ? hidden : onBoard
 
   const counts = {
-    confirmed: onBoard.filter((item) => item.state === 'confirmed').length,
-    sent: onBoard.filter((item) => item.state === 'request_sent').length,
-    notStarted: onBoard.filter((item) => item.state === 'not_started').length,
+    confirmed: onBoard.filter((row) => row.item.state === 'confirmed').length,
+    sent: onBoard.filter((row) => row.item.state === 'request_sent').length,
+    notStarted: onBoard.filter((row) => row.item.state === 'not_started').length,
   }
 
   return (
@@ -168,11 +172,11 @@ export function Board({ move, meId }: { move: Move; meId: string }) {
       )}
 
       <ol className="items">
-        {shown.map((item, index) => (
+        {shown.map(({ item, number }) => (
           <ItemRow
             key={item.id}
             item={item}
-            displayNumber={index + 1}
+            displayNumber={number}
             people={state.people}
             authorityType={move.authority_type}
             authorityName={known ? move.authority_name : null}

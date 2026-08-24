@@ -901,3 +901,19 @@ So: raise the budget, and treat a truncated answer as a failure that says so
 rather than a draft that looks whole. A draft that is visibly missing is a
 nuisance; one that looks finished and is not is the silent failure this project
 exists to avoid.
+
+## Step 6b — The number in the hidden view
+
+About to make an item's number mean the same thing wherever it is shown.
+
+Tomer's screenshot of the hidden items showed them numbered 1, 2 and 3. They are
+items 6, 7 and 15. Hide three items and they are renumbered from one; restore
+one and its number changes again.
+
+This is the fault turn one fixed, in a place turn one did not have. The number
+was made to describe a row's place in whatever list happens to be open, when what
+it has to do is identify the item.
+
+The number is now the item's place among all the items on the move, computed once
+and not per view. A hidden item keeps the number it had, which is the number it
+will still have when it comes back.
