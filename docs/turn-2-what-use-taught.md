@@ -1,9 +1,9 @@
 # What the use taught — turn two
 
-ASE-26 personal project · Tomer Ben Bassat · 22 August 2026
+ASE-26 personal project · Tomer Ben Bassat · 24 August 2026
 
-A week of real use on the move to באזל 30, both people from their own devices,
-with replies received from some of the authorities.
+Real use on the move to באזל 30, both people from their own devices, with
+replies received from some of the authorities.
 
 Written from an interview with Tomer and holding what he said. It is not a
 backlog: the most important thing in it is not a fault.
@@ -32,9 +32,8 @@ an identity number and never invented one.
 
 This matters more than it sounds. The line was re-affirmed as a decision at the
 end of turn one, when Tomer chose to keep the model away from facts about civic
-procedure even though he had a good reason to move it. A week of drafts sent to
-real authorities is the first evidence that keeping it costs nothing in
-usefulness.
+procedure even though he had a good reason to move it. Drafts sent to real
+authorities are the first evidence that keeping it costs nothing in usefulness.
 
 ## What the log turned out to be for
 
@@ -54,8 +53,8 @@ row could have carried is a screen falling short, not a feature missing. The dat
 is now on the row beside the elapsed time; both are shown, because "three days"
 and "the 24th" are different questions and the week had both being asked.
 
-**"Who" is missing, and the owner does not cover it.** Asked directly, after a
-week: *"חסר לי לדעת, כן. למרות שיש אחראי לכל משימה."*
+**"Who" is missing, and the owner does not cover it.** Asked directly, after the
+use: *"חסר לי לדעת, כן. למרות שיש אחראי לכל משימה."*
 
 The "although" is the point. Owner and actor are the same person on a board where
 each person has their own tasks. On this one either may touch anything, so they
@@ -64,7 +63,7 @@ would let a later reader assume Tomer sent it. `updated_by` already holds the
 answer.
 
 Recorded when the log was designed as the first question anyone would put to it.
-It was, after one week.
+It was, at the first opportunity.
 
 ## Hiding, used as intended
 
@@ -114,10 +113,10 @@ useful material in turn one - the answer was that nothing was. It simply worked.
 
 - **Who did it, in the log.** Asked for, and the reason given.
 - **Notifications**, still a question. Two turns of use have not met the
-  condition written into `framing.md`; the week produced no case of something
+  condition written into `framing.md`; this one produced no case of something
   dropped for want of being told.
 - **The three route descriptions**, verified for a city, a local council and a
-  regional council on 22 August. Nothing in this week tested the other two,
+  regional council on 22 August. Nothing in this use tested the other two,
   because Tel Aviv is a city.
 - **Whether items 16, 17 and 18 apply.** Answered for this move by hiding them.
   Still open for the list.

@@ -872,10 +872,10 @@ The instruction is now explicit rather than implied.
 
 ---
 
-# Turn two, closing · 22 August 2026
+# Turn two, closing · 24 August 2026
 
-A week of use on the real move, both people, with replies received from some of
-the authorities. What it taught is in `docs/turn-2-what-use-taught.md`.
+Use on the real move, both people, with replies received from some of the
+authorities. What it taught is in `docs/turn-2-what-use-taught.md`.
 
 ## Step 6a — The truncated draft
 
@@ -922,7 +922,7 @@ will still have when it comes back.
 
 About to put the exact date beside the elapsed time.
 
-Asked for by Tomer after a week of use, and the reason is precise. The row
+Asked for by Tomer after the use, and the reason is precise. The row
 already carries "ממתין 3 ימים", and they saw it - question (b) of three, not (a).
 They opened the log anyway, because what they wanted was the date itself, to
 decide whether an authority had gone quiet long enough to be worth a telephone

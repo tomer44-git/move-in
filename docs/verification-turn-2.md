@@ -1,6 +1,6 @@
 # Verification — turn two
 
-ASE-26 personal project · Tomer Ben Bassat · 22 August 2026 · branch `build/drafts`
+ASE-26 personal project · Tomer Ben Bassat · 24 August 2026 · branch `build/drafts`
 
 The nine checks turn two set itself, in `docs/plan-turn-2.md`, and where each one
 stands at the end of building.
@@ -9,7 +9,7 @@ stands at the end of building.
 not run.**
 
 Four were settled by the agent. Three more were observed by Tomer on the live
-site on 22 August, and they had to be: the agent has no session on this
+site on 24 August, and they had to be: the agent has no session on this
 application and does not sign in as him. That division found a fault the agent
 could not have found, described under check 6.
 
