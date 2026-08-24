@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react'
 import {
   addCustomItem,
+  generateDraft,
   listItems,
+  saveDraft,
   seedItems,
+  setItemHidden,
   setItemOwner,
   setItemReference,
   setItemState,
+  type DraftSubject,
   type ItemState,
   type MoveItem,
 } from '../lib/items'
 import { peopleOnMove, type Person } from '../lib/people'
-import type { Move } from '../lib/move'
+import { hasAuthority, type Move } from '../lib/move'
 import { AddItem } from './AddItem'
 import { ItemRow } from './ItemRow'
 
@@ -36,6 +40,7 @@ const AUTHORITY_TYPE_LABEL: Record<string, string> = {
  */
 export function Board({ move, meId }: { move: Move; meId: string }) {
   const [state, setState] = useState<State>({ name: 'loading' })
+  const [showHidden, setShowHidden] = useState(false)
   const [busyItem, setBusyItem] = useState<string | null>(null)
   const [actionError, setActionError] = useState<string | null>(null)
 
@@ -110,17 +115,32 @@ export function Board({ move, meId }: { move: Move; meId: string }) {
     ? (AUTHORITY_TYPE_LABEL[move.authority_type] ?? move.authority_type_raw)
     : null
 
+  const known = hasAuthority(move)
+
+  // Hidden items leave the list but not the count. A board that silently drops
+  // four items would let a person believe they had finished when they had only
+  // stopped looking.
+  // Numbered once, over every item on the move. A number that counted rows in
+  // whichever list happens to be open would change when an item is hidden and
+  // change back when it returns, which is not what a number on an item is for.
+  const numbered = state.items.map((item, index) => ({ item, number: index + 1 }))
+  const onBoard = numbered.filter((row) => row.item.hidden_at === null)
+  const hidden = numbered.filter((row) => row.item.hidden_at !== null)
+  const shown = showHidden ? hidden : onBoard
+
   const counts = {
-    confirmed: state.items.filter((item) => item.state === 'confirmed').length,
-    sent: state.items.filter((item) => item.state === 'request_sent').length,
-    notStarted: state.items.filter((item) => item.state === 'not_started').length,
+    confirmed: onBoard.filter((row) => row.item.state === 'confirmed').length,
+    sent: onBoard.filter((row) => row.item.state === 'request_sent').length,
+    notStarted: onBoard.filter((row) => row.item.state === 'not_started').length,
   }
 
   return (
     <div className="board">
       <header className="board__head">
         <div>
-          <h2 className="board__authority">{move.authority_name}</h2>
+          <h2 className="board__authority">
+            {known ? move.authority_name : 'רשות לא ידועה'}
+          </h2>
           <p className="board__address">
             {move.address_text}
             {typeLabel && <span className="board__type"> · {typeLabel}</span>}
@@ -138,14 +158,29 @@ export function Board({ move, meId }: { move: Move; meId: string }) {
         </p>
       </header>
 
+      {hidden.length > 0 && (
+        <div className="board__hidden-toggle">
+          <button
+            className="button button--small button--quiet"
+            onClick={() => setShowHidden((current) => !current)}
+          >
+            {showHidden
+              ? `חזרה ללוח (${onBoard.length})`
+              : `${hidden.length} פריטים מוסתרים`}
+          </button>
+        </div>
+      )}
+
       <ol className="items">
-        {state.items.map((item, index) => (
+        {shown.map(({ item, number }) => (
           <ItemRow
             key={item.id}
             item={item}
-            displayNumber={index + 1}
+            displayNumber={number}
             people={state.people}
             authorityType={move.authority_type}
+            authorityName={known ? move.authority_name : null}
+            authorityTypeLabel={known ? typeLabel : null}
             meId={meId}
             busy={busyItem === item.id}
             onState={(next: ItemState, confirmation?: string) =>
@@ -157,10 +192,20 @@ export function Board({ move, meId }: { move: Move; meId: string }) {
             onReference={(reference: string) =>
               act(item.id, () => setItemReference(item.id, reference))
             }
+            onHidden={(isHidden: boolean) =>
+              act(item.id, () => setItemHidden(item.id, isHidden))
+            }
+            onGenerateDraft={(subject: DraftSubject) =>
+              act(item.id, () => generateDraft(item.id, subject))
+            }
+            onSaveDraft={(draft: string) =>
+              act(item.id, () => saveDraft(item.id, draft, false))
+            }
           />
         ))}
       </ol>
 
+      {!showHidden && (
       <AddItem
         onAdd={async (title) => {
           const added = await addCustomItem(move.id, title)
@@ -171,6 +216,7 @@ export function Board({ move, meId }: { move: Move; meId: string }) {
           )
         }}
       />
+      )}
 
       {actionError && (
         <p className="notice notice--error" role="alert">

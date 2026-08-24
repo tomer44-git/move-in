@@ -13,7 +13,7 @@ export function App() {
   return (
     <div className="app">
       <header className="app__header">
-        <h1 className="app__title">מעבר דירה</h1>
+        <h1 className="app__title">Move-in</h1>
         {state.status === 'signed_in' && (
           <div className="app__identity">
             <span className="app__name">{state.profile.display_name}</span>

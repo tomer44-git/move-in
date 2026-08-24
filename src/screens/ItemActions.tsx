@@ -15,6 +15,7 @@ export function ItemActions({
   onState,
   onOwner,
   onReference,
+  onHidden,
 }: {
   item: MoveItem
   meId: string
@@ -22,6 +23,7 @@ export function ItemActions({
   onState: (state: ItemState, confirmation?: string) => void
   onOwner: (ownerId: string | null) => void
   onReference: (reference: string) => void
+  onHidden: (hidden: boolean) => void
 }) {
   const [confirming, setConfirming] = useState(false)
   const [confirmation, setConfirmation] = useState('')
@@ -69,6 +71,16 @@ export function ItemActions({
           </button>
         </div>
       </form>
+    )
+  }
+
+  if (item.hidden_at) {
+    return (
+      <div className="actions actions--item">
+        <button className="button button--small" disabled={busy} onClick={() => onHidden(false)}>
+          החזר ללוח
+        </button>
+      </div>
     )
   }
 
@@ -162,6 +174,14 @@ export function ItemActions({
         onClick={() => setEditingReference(true)}
       >
         {item.reference ? 'ערוך אסמכתה' : 'הוסף אסמכתה'}
+      </button>
+
+      <button
+        className="button button--small button--quiet"
+        disabled={busy}
+        onClick={() => onHidden(true)}
+      >
+        לא רלוונטי
       </button>
     </div>
   )

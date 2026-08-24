@@ -33,9 +33,24 @@ export type Move = {
 const COLUMNS =
   'id, address_text, join_code, lookup_status, lookup_error, matched_address, address_confirmed_at, authority_name, authority_code, authority_type, authority_type_raw, created_at'
 
-/** A move is ready to carry items only when both are true. */
+/**
+ * A move carries items once the lookup has reached any conclusion, good or not.
+ *
+ * Fifteen of the nineteen do not depend on the authority, so an address the
+ * geocoder never found still deserves a board. Only `pending` seeds nothing:
+ * nothing has been attempted yet.
+ *
+ * A resolved address is the one case that must also be agreed to, because that
+ * is what stops a street in Holon being recorded as a street in Tel Aviv.
+ */
 export const isReady = (move: Move): boolean =>
-  move.lookup_status === 'resolved' && move.address_confirmed_at !== null
+  move.lookup_status === 'pending'
+    ? false
+    : move.lookup_status !== 'resolved' || move.address_confirmed_at !== null
+
+/** Whether this move knows which authority the address belongs to. */
+export const hasAuthority = (move: Move): boolean =>
+  move.lookup_status === 'resolved' && move.authority_type !== null
 
 /**
  * The move this person is on. Row level security limits this to their own; the

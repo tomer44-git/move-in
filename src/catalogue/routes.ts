@@ -4,13 +4,15 @@ import type { Routes } from './types'
  * The three routes, from the "Routes by authority type" section of
  * `docs/items.md`. They apply to items 3, 4, 5 and 6 only.
  *
- * That document marks these three as unverified: "These three descriptions are
- * my own and have not been checked against a real authority. Verify against Tel
- * Aviv before shipping." They are transcribed as they stand and not improved.
+ * Checked on 22 August 2026, each against a real authority of its kind: the city
+ * route against Tel Aviv-Yafo, the local council route against Kfar Shmaryahu,
+ * and the regional council route against Gezer Regional Council. They are still
+ * transcribed from that document rather than written here.
  */
 export const ROUTES_BY_AUTHORITY_TYPE: Routes = {
   city: 'טופס מקוון באתר העירייה, או מוקד 106.',
-  local_council: 'בדרך כלל בטלפון למשרדי המועצה.',
+  local_council:
+    'בדרך כלל טלפון למשרדי המועצה, או חיפוש אתר המועצה באינטרנט.',
   regional_council:
     'המועצה, וגם הוועד המקומי של היישוב. שני גופים, לא אחד.',
 }
@@ -19,9 +21,9 @@ export const ROUTES_BY_AUTHORITY_TYPE: Routes = {
 export const ROUTES_SOURCE: string[] = [
   'Applies to items 3, 4, 5 and 6 only. The rest are identical everywhere.',
   'City (עירייה) — an online form on the municipal site, or the 106 call centre.',
-  'Local council (מועצה מקומית) — usually by telephone to the council offices.',
+  'Local council (מועצה מקומית) — usually by telephone to the council offices, or by finding the council\'s website.',
   'Regional council (מועצה אזורית) — the council, and the local committee of the settlement as well. Two bodies, not one.',
-  'These three descriptions are my own and have not been checked against a real authority. Verify against Tel Aviv before shipping.',
+  'Checked on 22 August 2026, each against a real authority of its kind: the city route against Tel Aviv-Yafo, the local council route against Kfar Shmaryahu, and the regional council route against Gezer Regional Council.',
 ]
 
 /**
@@ -30,3 +32,13 @@ export const ROUTES_SOURCE: string[] = [
  */
 export const NO_ROUTE_FOR_AUTHORITY_TYPE =
   'סוג הרשות לא זוהה, ולכן אין כאן מסלול. יש לברר מול הרשות עצמה.'
+
+/**
+ * Shown on items 3 to 6 when the address never resolved to an authority.
+ *
+ * The item stays on the board. Leaving it out would let a person conclude that
+ * arnona does not apply to them, when the truth is only that nobody knows which
+ * authority it belongs to.
+ */
+export const NO_AUTHORITY_FOUND =
+  'לא נמצאה הרשות של הכתובת, ולכן אין כאן מסלול. הפריט עצמו עדיין רלוונטי.'

@@ -1,10 +1,15 @@
 import { CATALOGUE_BY_KEY } from '../catalogue/items'
 import { ItemActions } from './ItemActions'
-import { NO_ROUTE_FOR_AUTHORITY_TYPE } from '../catalogue/routes'
-import type { ItemState, MoveItem } from '../lib/items'
+import { ItemDraft } from './ItemDraft'
+import { ItemLog } from './ItemLog'
+import {
+  NO_AUTHORITY_FOUND,
+  NO_ROUTE_FOR_AUTHORITY_TYPE,
+} from '../catalogue/routes'
+import type { DraftSubject, ItemState, MoveItem } from '../lib/items'
 import type { AuthorityType } from '../lib/move'
 import type { Person } from '../lib/people'
-import { waitingLabel } from '../lib/waiting'
+import { shortDate, waitingLabel } from '../lib/waiting'
 
 const STATE_LABEL: Record<MoveItem['state'], string> = {
   not_started: 'לא התחיל',
@@ -23,11 +28,16 @@ export function ItemRow({
   displayNumber,
   people,
   authorityType,
+  authorityName,
+  authorityTypeLabel,
   meId,
   busy,
   onState,
   onOwner,
   onReference,
+  onHidden,
+  onGenerateDraft,
+  onSaveDraft,
 }: {
   item: MoveItem
   /**
@@ -40,11 +50,17 @@ export function ItemRow({
   displayNumber: number
   people: Map<string, Person>
   authorityType: AuthorityType | null
+  authorityName: string | null
+  /** The authority type in Hebrew, for the model. Null when it is unknown. */
+  authorityTypeLabel: string | null
   meId: string
   busy: boolean
   onState: (state: ItemState, confirmation?: string) => void
   onOwner: (ownerId: string | null) => void
   onReference: (reference: string) => void
+  onHidden: (hidden: boolean) => void
+  onGenerateDraft: (subject: DraftSubject) => void
+  onSaveDraft: (draft: string) => void
 }) {
   const entry = item.catalogue_key
     ? CATALOGUE_BY_KEY.get(item.catalogue_key)
@@ -65,15 +81,23 @@ export function ItemRow({
   const title = entry?.title ?? item.custom_title ?? '—'
   const owner = item.owner_id ? people.get(item.owner_id) : undefined
 
-  const route =
-    entry?.routes && authorityType
-      ? authorityType === 'unrecognised'
-        ? NO_ROUTE_FOR_AUTHORITY_TYPE
-        : entry.routes[authorityType]
+  // An item whose route depends on the authority says why it has none, rather
+  // than quietly showing nothing - which would read as "this does not apply".
+  const verifiedRoute =
+    entry?.routes && authorityType && authorityType !== 'unrecognised'
+      ? entry.routes[authorityType]
       : null
 
+  const route = !entry?.routes
+    ? null
+    : authorityType === null
+      ? NO_AUTHORITY_FOUND
+      : authorityType === 'unrecognised'
+        ? NO_ROUTE_FOR_AUTHORITY_TYPE
+        : entry.routes[authorityType]
+
   return (
-    <li className={`item item--${item.state}`}>
+    <li className={`item item--${item.state}${item.hidden_at ? ' item--hidden' : ''}`}>
       <div className="item__head">
         <span className="item__position">{displayNumber}</span>
         <span className="item__title">{title}</span>
@@ -88,7 +112,14 @@ export function ItemRow({
         </span>
 
         {item.state === 'request_sent' && item.request_sent_at && (
-          <span className="item__waiting">{waitingLabel(item.request_sent_at)}</span>
+          <>
+            <span className="item__when">נשלח {shortDate(item.request_sent_at)}</span>
+            <span className="item__waiting">{waitingLabel(item.request_sent_at)}</span>
+          </>
+        )}
+
+        {item.state === 'confirmed' && item.confirmed_at && (
+          <span className="item__when">אושר {shortDate(item.confirmed_at)}</span>
         )}
 
         {item.reference && (
@@ -102,7 +133,11 @@ export function ItemRow({
         </p>
       ))}
 
-      {route && <p className="item__route">{route}</p>}
+      {route && (
+        <p className={authorityType ? 'item__route' : 'item__route item__route--none'}>
+          {route}
+        </p>
+      )}
 
       {entry?.order && <p className="item__order">{entry.order}</p>}
 
@@ -131,7 +166,34 @@ export function ItemRow({
         onState={onState}
         onOwner={onOwner}
         onReference={onReference}
+        onHidden={onHidden}
       />
+
+      {/* The facts travel from here, because the catalogue is in git and the
+          database has never been told what is on the verified list. */}
+      <ItemDraft
+        item={item}
+        isGeneral={!entry}
+        busy={busy}
+        onGenerate={() =>
+          onGenerateDraft(
+            entry
+              ? {
+                  kind: 'catalogue',
+                  title: entry.title,
+                  detail: entry.detail,
+                  warnings: entry.warnings,
+                  route: verifiedRoute,
+                  authorityName: authorityName,
+                  authorityType: authorityTypeLabel,
+                }
+              : { kind: 'custom', title: item.custom_title ?? title },
+          )
+        }
+        onSave={onSaveDraft}
+      />
+
+      <ItemLog itemId={item.id} />
     </li>
   )
 }

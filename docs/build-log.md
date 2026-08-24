@@ -579,3 +579,385 @@ as achieved. It defines what the product has to be, not what this turn managed;
 what was achieved is in `verification-turn-1.md` and
 `turn-1-what-use-taught.md`, and marking it here would put the same fact in three
 places where only one of them would stay current.
+
+---
+
+# Turn two · 22 August 2026 · branch `build/drafts`
+
+The plan is `docs/plan-turn-2.md`. The milestone is a drafted request actually
+sent to a real authority.
+
+## Step 1 — Hiding, in the schema
+
+About to add `move_item.hidden_at`.
+
+A date rather than a boolean, so the board can answer when as well as whether.
+No `hidden_by`: Tomer asked for the log without an actor, and a column that
+returns the actor for this one action would contradict that. `updated_by` is
+already stamped on every write by the trigger from turn one.
+
+Hiding rather than deleting was settled at the end of turn one, and the reason is
+that both people can touch everything: a deletion by one is unrecoverable for the
+other and takes the owner, the dates and the reference with it. Hiding is
+reversible and loses nothing.
+
+It applies to all nineteen as well as to hand-added items. Items 16, 17 and 18
+are the immediate case - not relevant to this move, kept in the list, hidden at
+the level of the move.
+
+No new policy is needed: `move_item` already allows a member to update, and
+hiding is an update. The grant already covers it.
+
+## Step 2 — Hiding, on the screen
+
+About to add hiding to the board: a control on each item, and a way to see and
+restore what is hidden.
+
+Three decisions in it.
+
+**Hidden items leave the list but not the tally.** A board that silently drops
+four items would let a person believe they have finished when they have only
+stopped looking. The count of what is hidden sits next to the count of what is
+confirmed, waiting and not started.
+
+**Restoring is one click and loses nothing.** The row keeps its owner, its dates,
+its reference and its confirmation while hidden - `hidden_at` is the only field
+that changes.
+
+**A hidden item can still be hidden by the other person's screen already showing
+it.** Both people can hide and restore anything; there is no ownership of the
+decision, in the same way there is no ownership of an item beyond who took it.
+
+The model choice for step 8 was settled today: `anthropic/claude-sonnet-5`. It
+goes in the code rather than in `.env.local` - which model writes the drafts is a
+product decision, not a secret, and changing it should be a commit that can be
+seen.
+
+## Step 3 — The log, in the schema
+
+About to add `move_item_event`: what happened to an item, and when.
+
+Written by a trigger and by nothing else. There is no insert policy and no insert
+grant for `authenticated`, for the same reason the dates are stamped in the
+database rather than sent by the browser - a log the client can write to is a log
+that can be wrong, and a log that can be wrong is worse than none, because it
+looks authoritative.
+
+No actor column. Tomer asked for date and action, and I raised at the time that
+"who" is the first question anyone will put to a log on a two-person board.
+`updated_by` on the item still holds who touched it last, so nothing is lost that
+cannot be added later.
+
+The actions are a closed set, checked in the schema. An action the trigger does
+not know about is a bug, and the constraint makes it a loud one rather than a row
+of text nobody can group by.
+
+Reading is scoped through the item to its move, so the same two people who can
+see an item can see its history and nobody else can.
+
+## Step 4 — The log, on the screen
+
+About to show an item's history on the item.
+
+Folded away by default. Nineteen items each carrying a visible list of everything
+that ever happened to them would bury the three things `CLAUDE.md` requires to be
+readable without opening anything - state, owner, and how long it has been
+waiting. The log is opened when a question is asked of it.
+
+It is read once per item, when it is opened, rather than for the whole board on
+load. Most items will never be asked.
+
+The actions are rendered in Hebrew from a fixed map. An action the map does not
+know is shown as its raw key rather than skipped: the closed set in the schema
+means that can only happen if the two drift apart, and a silent omission would
+hide exactly that.
+
+Dates are shown as a date, not as "two days ago". The board already carries
+elapsed time on the row; the log answers when, which is a different question.
+
+## Step 5 — Items for a move whose address did not resolve
+
+About to seed and show the nineteen even when no authority was found.
+
+Today an unresolved address produces nothing: the board is gated on
+`resolved && confirmed`, so a person in a new neighbourhood the geocoder has
+never heard of gets an error screen and no list at all. Fifteen of the nineteen
+items do not depend on the authority in any way - electricity, gas, banks, the
+health fund - and withholding them helps nobody.
+
+Tomer chose on 22 August that all nineteen appear, and that the four
+authority-dependent items say no authority was found rather than being left out.
+Leaving them out would let a person conclude that arnona does not apply to them,
+when the truth is only that we do not know which authority it belongs to.
+
+What changes is the gate, not the seeding: items are created once the lookup has
+reached any conclusion at all, rather than once it has reached a good one. A move
+still `pending` seeds nothing, because nothing has been attempted yet.
+
+The confirmation screen keeps its place. A resolved address still has to be
+agreed to before the board appears, because that is what stops a street in Holon
+from being recorded as a street in Tel Aviv.
+
+## Step 7 — The draft, in the schema
+
+About to add two columns to `move_item`:
+
+    draft               text, capped
+    draft_generated_at  timestamptz
+
+Stored rather than generated on each view, for two reasons. Both people have to
+see the same draft: one regenerated per viewer would give them different text for
+the same item, which breaks the property the whole board rests on. And every
+viewing would otherwise cost a model call.
+
+Members can write it. The function generates it and the client saves it, and a
+person can edit what came back before sending - it is a draft, and the whole
+point is that it leaves as a message from them.
+
+This is deliberately unlike the authority columns, which no client may write.
+The difference is what a wrong value costs: a wrong authority sends a person to
+the wrong office and nothing reports it, while a wrong draft is read by the
+person who sends it before it goes anywhere.
+
+`draft_generated_at` records when the model last wrote it. It does not record
+whether a person has edited it since; telling those apart is not worth a column
+this turn.
+
+## Step 8 — The drafting function
+
+About to add the model call. Approved by Tomer on 22 August, as `CLAUDE.md`
+requires for anything that adds one. Model: `anthropic/claude-sonnet-5`, through
+OpenRouter, chosen the same day.
+
+The model is given the item's title, the verified detail the list holds for it,
+its warnings, the route for this authority type, the authority name and type, and
+the address. It is given no name, no identity number and no account number, and
+the prompt tells it to leave those as square-bracketed placeholders.
+
+It is asked to phrase, never to know. The system prompt says in as many words
+that it must not add any form, department, telephone number or procedure that it
+was not given, and that if a detail is missing it leaves a placeholder rather
+than filling it in. This is the line `framing-interview.md` records as the most
+useful thing the first interview produced, and Tomer re-affirmed it under use two
+days ago.
+
+For an item with no verified detail - anything added by hand - the prompt is a
+different one: a general request that names no form, department or procedure at
+all. The screen says so in step 10.
+
+The model's name lives in the code rather than in `.env.local`. Which model
+writes the drafts is a product decision, not a secret, and changing it should be
+a commit that can be seen.
+
+The function writes nothing to the database. It returns the text, and the client
+saves it - the same client that is allowed to edit it afterwards.
+
+## Steps 9 and 10 — The draft on the screen
+
+About to put the draft on the item, and mark the ones that are general.
+
+The facts are sent from the browser rather than looked up on the server, because
+the verified list lives in git and the database has never been told what is on
+it. Giving the server a second copy would create a second place for the list to
+be wrong.
+
+Folded away like the log. An item carrying a twelve-line letter open by default
+would bury the state, the owner and the waiting time, which are the three things
+`CLAUDE.md` requires to be readable without opening anything.
+
+Editable. It is a draft, and it leaves as a message from the person, not from the
+tool. Regenerating replaces what is there, so the button says so.
+
+**No send button, and no mailto link either.** A link that opens a mail client
+with the text already in it would be one click from sending, and `framing.md` is
+not ambiguous: the model drafts, it never sends. Copying is the whole affordance.
+
+For an item added by hand the screen says the draft is general and names no form
+or procedure - which is what `framing.md` asks for in so many words, and what the
+prompt already enforces on the other side.
+
+## Step 11 — The look
+
+About to change the palette and the header, as Tomer specified on 22 August:
+pastel light blue with light purple, the name `Move-in` centred at the top, and
+sign-in and sign-out at the right.
+
+Right is the start of the line here, not the end. It was confirmed as meant in
+the right-to-left sense rather than carried over from left-to-right habit, and
+that is the one instruction in this step that could have been misread.
+
+The name becomes `Move-in` in Latin script inside a Hebrew, right-to-left page.
+That is what was asked for. It sits in its own centred block so the surrounding
+direction cannot pull its punctuation around.
+
+Colour carries meaning in three places already - waiting, confirmed, and a
+warning - and those keep their hues rather than being folded into the new
+palette. A board where every state is a shade of the same blue answers "what is
+happening" worse than one that is plainer.
+
+## Step 12 — The right-to-left pass
+
+About to check every screen again, in Hebrew, now that the palette and four new
+screens exist.
+
+The same mechanical check as turn one: every rule read back from the browser and
+tested for a physical direction - `left`, `right`, `float`, a directional
+`text-align`, or a margin, padding or border whose two sides differ. Plus the two
+things this turn added that turn one had no equivalent of: a Latin-script name
+inside a right-to-left header, and a textarea holding a Hebrew letter.
+
+### What the pass found
+
+Nothing. No rule in the stylesheet carries a physical direction; the document is
+`dir="rtl"` and `lang="he"`; the page does not scroll sideways. The Latin name in
+the header is `unicode-bidi: isolate`, so the surrounding Hebrew cannot pull its
+punctuation about. The draft textarea inherits `direction: rtl` and aligns to
+`start`, which is what a Hebrew letter needs.
+
+The one screen that could not be checked from here is the signed-in header,
+because the agent has no session. It was measured instead by inserting what that
+header renders and reading its position: zero pixels from the right edge, 873
+from the left, with the title centred to within two pixels.
+
+## Step 13 — Reporting the checks
+
+About to write `docs/verification-turn-2.md`.
+
+Four of the nine can be settled from here and are. Five cannot, and the reason
+matters: the agent has no session on this application and does not sign in as
+Tomer, so anything that needs a signed-in board - or two of them - is his to
+observe. That was true of check 3 in turn one and it is true of more of them now,
+because this turn's work lives further inside the application.
+
+The document says which is which. A check reported as passing because it was
+built rather than because it was seen would be the same failure the confirmation
+screen exists to prevent.
+
+## Step 3 — the fault it took use to find
+
+`permission denied for table move_item_event`, on every attempt to change an
+item: taking it, hiding it, marking it sent. The board was unusable.
+
+The log trigger is not `security definer`, so it runs as whoever caused the
+update - `authenticated`. And `authenticated` has `select` on
+`move_item_event` and nothing else, deliberately, because the whole point is that
+a client cannot write the log.
+
+Which left the trigger unable to write it either. The step 3 note in this file
+says the log is "written by a trigger and by nothing else", and I then made the
+trigger one of the nothings.
+
+The fix is not a grant to `authenticated`; that would hand the client exactly the
+write path the design exists to deny. The function becomes `security definer` and
+runs as its owner, so the log stays writable by the trigger alone.
+
+Found by Tomer on the live site, in check 6, after four commits had already been
+pushed past it. It could not have been found from here: it needs a signed-in
+board, and every test of the trigger up to this point had been reading the
+migration rather than running it.
+
+## Check 3 — passed, with a refinement Tomer asked for
+
+The general draft carries its notice and its placeholders, and names no form,
+department or procedure. Tomer's observation: the addressee is sometimes guessed
+rather than left open.
+
+He is right, and it is the same rule as everything else in this prompt. For an
+item added by hand the model does not know who the request goes to, so the
+addressee is a fact it was not given - and the rule says an ungiven fact becomes
+a placeholder, not a plausible guess. Testing showed it going both ways: `[נמען]`
+on one item, `[ועד הבית / נציג הבית המשותף]` on another.
+
+The instruction is now explicit rather than implied.
+
+---
+
+# Turn two, closing · 24 August 2026
+
+Use on the real move, both people, with replies received from some of the
+authorities. What it taught is in `docs/turn-2-what-use-taught.md`.
+
+## Step 6a — The truncated draft
+
+About to stop a half-written draft from being shown as a finished one.
+
+On items the verified list says little about - home insurance, banks - a draft
+sometimes came back as a single line. Regenerating produced a good one, so the
+model is not the problem.
+
+Two faults, and the second is mine rather than the model's:
+
+**Nothing checks whether the answer was cut off.** OpenRouter returns a
+`finish_reason`, and `length` means the model ran out of budget mid-sentence.
+That was never read, so a truncated answer was stored and displayed exactly like
+a complete one. A person reading it has no way to tell.
+
+**The budget is probably being spent before the text starts.** Sonnet 5 does
+adaptive thinking, and those tokens come out of `max_tokens`. On a thin item
+there is more to think about and less to say, which is exactly the shape of the
+failures Tomer saw.
+
+So: raise the budget, and treat a truncated answer as a failure that says so
+rather than a draft that looks whole. A draft that is visibly missing is a
+nuisance; one that looks finished and is not is the silent failure this project
+exists to avoid.
+
+## Step 6b — The number in the hidden view
+
+About to make an item's number mean the same thing wherever it is shown.
+
+Tomer's screenshot of the hidden items showed them numbered 1, 2 and 3. They are
+items 6, 7 and 15. Hide three items and they are renumbered from one; restore
+one and its number changes again.
+
+This is the fault turn one fixed, in a place turn one did not have. The number
+was made to describe a row's place in whatever list happens to be open, when what
+it has to do is identify the item.
+
+The number is now the item's place among all the items on the move, computed once
+and not per view. A hidden item keeps the number it had, which is the number it
+will still have when it comes back.
+
+## Step 6c — The date on the row
+
+About to put the exact date beside the elapsed time.
+
+Asked for by Tomer after the use, and the reason is precise. The row
+already carries "ממתין 3 ימים", and they saw it - question (b) of three, not (a).
+They opened the log anyway, because what they wanted was the date itself, to
+decide whether an authority had gone quiet long enough to be worth a telephone
+call.
+
+The date is already in the database and has been since turn one. It was simply
+never shown. A person opening a history to read a field the row could have
+carried is a screen failing at its job, not a missing feature.
+
+Both dates: `נשלח 24.8` while waiting, `אושר 26.8` once confirmed. The elapsed
+time stays, because "three days" and "the 24th" answer different questions and
+the week showed both being asked.
+
+## Step 6d — The framing, fourth version
+
+About to revise `docs/framing.md`. Agreed with Tomer on 24 August.
+
+The third version was the first written after the tool was used. The fourth is
+the first written after the thing this document had been asking for since its
+first version - a request that can be sent after reading it once - was built,
+sent to real authorities, and answered.
+
+What changes:
+
+- The model's line moves from a decision that was argued to one that was
+  demonstrated. The third version could say only that Tomer chose to keep it
+  when he had reason to move it. This one can say that requests drafted under it
+  were sent unchanged and did their job.
+- Hiding, the item log, and the stored draft move into Settled, each with the
+  reason it took the shape it did.
+- Notifications stay out of scope, with the count updated: two turns of use, and
+  the condition written into this document has still not been met.
+- Still open is rewritten. Four of turn one's eight were built, one was answered,
+  and what remains joins what this turn raised.
+
+The definition of done keeps all nine items and none is marked as achieved, for
+the reason given a turn ago: it defines what the product has to be, not what a
+turn managed.
