@@ -548,3 +548,9 @@ body {
   border: 1px solid #ecd9a8;
   border-radius: 6px;
 }
+
+/* The date itself, beside the elapsed time. A week of use had both being asked
+   for, and reading one meant opening a history the row could have carried. */
+.item__when {
+  font-variant-numeric: tabular-nums;
+}

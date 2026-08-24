@@ -9,7 +9,7 @@ import {
 import type { DraftSubject, ItemState, MoveItem } from '../lib/items'
 import type { AuthorityType } from '../lib/move'
 import type { Person } from '../lib/people'
-import { waitingLabel } from '../lib/waiting'
+import { shortDate, waitingLabel } from '../lib/waiting'
 
 const STATE_LABEL: Record<MoveItem['state'], string> = {
   not_started: 'לא התחיל',
@@ -112,7 +112,14 @@ export function ItemRow({
         </span>
 
         {item.state === 'request_sent' && item.request_sent_at && (
-          <span className="item__waiting">{waitingLabel(item.request_sent_at)}</span>
+          <>
+            <span className="item__when">נשלח {shortDate(item.request_sent_at)}</span>
+            <span className="item__waiting">{waitingLabel(item.request_sent_at)}</span>
+          </>
+        )}
+
+        {item.state === 'confirmed' && item.confirmed_at && (
+          <span className="item__when">אושר {shortDate(item.confirmed_at)}</span>
         )}
 
         {item.reference && (

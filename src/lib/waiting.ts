@@ -23,3 +23,12 @@ const calendarDaysBetween = (from: Date, to: Date): number => {
     Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
   return Math.round((startOfDay(to) - startOfDay(from)) / MS_PER_DAY)
 }
+
+/**
+ * A date, as a person writing it by hand would.
+ *
+ * Shown beside the elapsed time rather than instead of it: "three days" and
+ * "the 24th" answer different questions, and a week of use had both being asked.
+ */
+export const shortDate = (at: string): string =>
+  new Date(at).toLocaleDateString('he-IL', { day: 'numeric', month: 'numeric' })

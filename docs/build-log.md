@@ -917,3 +917,21 @@ it has to do is identify the item.
 The number is now the item's place among all the items on the move, computed once
 and not per view. A hidden item keeps the number it had, which is the number it
 will still have when it comes back.
+
+## Step 6c — The date on the row
+
+About to put the exact date beside the elapsed time.
+
+Asked for by Tomer after a week of use, and the reason is precise. The row
+already carries "ממתין 3 ימים", and they saw it - question (b) of three, not (a).
+They opened the log anyway, because what they wanted was the date itself, to
+decide whether an authority had gone quiet long enough to be worth a telephone
+call.
+
+The date is already in the database and has been since turn one. It was simply
+never shown. A person opening a history to read a field the row could have
+carried is a screen failing at its job, not a missing feature.
+
+Both dates: `נשלח 24.8` while waiting, `אושר 26.8` once confirmed. The elapsed
+time stays, because "three days" and "the 24th" answer different questions and
+the week showed both being asked.
