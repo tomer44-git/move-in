@@ -935,3 +935,29 @@ carried is a screen failing at its job, not a missing feature.
 Both dates: `נשלח 24.8` while waiting, `אושר 26.8` once confirmed. The elapsed
 time stays, because "three days" and "the 24th" answer different questions and
 the week showed both being asked.
+
+## Step 6d — The framing, fourth version
+
+About to revise `docs/framing.md`. Agreed with Tomer on 24 August.
+
+The third version was the first written after the tool was used. The fourth is
+the first written after the thing this document had been asking for since its
+first version - a request that can be sent after reading it once - was built,
+sent to real authorities, and answered.
+
+What changes:
+
+- The model's line moves from a decision that was argued to one that was
+  demonstrated. The third version could say only that Tomer chose to keep it
+  when he had reason to move it. This one can say that requests drafted under it
+  were sent unchanged and did their job.
+- Hiding, the item log, and the stored draft move into Settled, each with the
+  reason it took the shape it did.
+- Notifications stay out of scope, with the count updated: two turns of use, and
+  the condition written into this document has still not been met.
+- Still open is rewritten. Four of turn one's eight were built, one was answered,
+  and what remains joins what this turn raised.
+
+The definition of done keeps all nine items and none is marked as achieved, for
+the reason given a turn ago: it defines what the product has to be, not what a
+turn managed.
