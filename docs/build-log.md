@@ -869,3 +869,35 @@ a placeholder, not a plausible guess. Testing showed it going both ways: `[נמ�
 on one item, `[ועד הבית / נציג הבית המשותף]` on another.
 
 The instruction is now explicit rather than implied.
+
+---
+
+# Turn two, closing · 22 August 2026
+
+A week of use on the real move, both people, with replies received from some of
+the authorities. What it taught is in `docs/turn-2-what-use-taught.md`.
+
+## Step 6a — The truncated draft
+
+About to stop a half-written draft from being shown as a finished one.
+
+On items the verified list says little about - home insurance, banks - a draft
+sometimes came back as a single line. Regenerating produced a good one, so the
+model is not the problem.
+
+Two faults, and the second is mine rather than the model's:
+
+**Nothing checks whether the answer was cut off.** OpenRouter returns a
+`finish_reason`, and `length` means the model ran out of budget mid-sentence.
+That was never read, so a truncated answer was stored and displayed exactly like
+a complete one. A person reading it has no way to tell.
+
+**The budget is probably being spent before the text starts.** Sonnet 5 does
+adaptive thinking, and those tokens come out of `max_tokens`. On a thin item
+there is more to think about and less to say, which is exactly the shape of the
+failures Tomer saw.
+
+So: raise the budget, and treat a truncated answer as a failure that says so
+rather than a draft that looks whole. A draft that is visibly missing is a
+nuisance; one that looks finished and is not is the silent failure this project
+exists to avoid.
