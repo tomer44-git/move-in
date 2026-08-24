@@ -51,7 +51,11 @@ export async function draftRequest(
         // Phrasing, not invention. Low enough that the same item drafted twice
         // reads consistently.
         temperature: 0.3,
-        max_tokens: 900,
+        // Sonnet 5 thinks before it writes, and those tokens come out of this
+        // budget. 900 was enough for the text and not for both, which is why
+        // items the list says little about - there is more to work out and less
+        // to say - came back as a single line.
+        max_tokens: 3000,
       }),
     })
 
@@ -75,12 +79,24 @@ export async function draftRequest(
     }
   }
 
-  const text = (payload as {
-    choices?: { message?: { content?: unknown } }[]
-  }).choices?.[0]?.message?.content
+  const choice = (payload as {
+    choices?: { message?: { content?: unknown }; finish_reason?: unknown }[]
+  }).choices?.[0]
+
+  const text = choice?.message?.content
 
   if (typeof text !== 'string' || text.trim().length === 0) {
     return { outcome: 'draft_failed', reason: 'the model answered with no text' }
+  }
+
+  // `length` means the model was cut off mid-sentence. Returning what arrived
+  // would put a half-written request on screen looking exactly like a finished
+  // one, and a person reading it would have no way to tell.
+  if (choice?.finish_reason === 'length') {
+    return {
+      outcome: 'draft_failed',
+      reason: 'הטיוטה נקטעה באמצע ולא נשמרה. נסה לנסח שוב.',
+    }
   }
 
   return { outcome: 'drafted', text: text.trim() }
