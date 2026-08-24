@@ -99,6 +99,10 @@ place with no municipal status. Handle it as a real case, not an impossible one.
 I joined this course halfway through. If something looks like a project
 convention and has no written source, ask me — do not assume.
 
+Dates and times come from me. You have no clock: what the environment reports is
+read once and goes stale inside a long session. Never infer a date, a duration,
+or how long something took — ask.
+
 ## When to stop and ask me
 
 Do not add an authority or an item to the verified list on your own. The list is
