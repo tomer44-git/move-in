@@ -1162,3 +1162,45 @@ about the thing that changed, not about a property that was already true.
 
 Netlify deploys from `build/ending`. Every turn has needed this changed, and
 every turn it has been forgotten first.
+
+---
+
+## Phase 4 — Use
+
+About to hand the tool to somebody who has finished a real move, and to let him
+close one here. Checks 5, 6 and 7 are answered with him, and so is the half of
+check 4 that reading the source cannot reach.
+
+**Why him and not Tomer.** Ending is the act this turn is built around, and
+Tomer's own move still has open items - ending it would lock them, and the tool
+would have cost him the thing it exists for. The person who can safely end a move
+is the one whose move is already over.
+
+**What that costs, said before it is discovered.** He is reconstructing a move he
+has already finished, not living one through the tool. Every date on the board
+will be the database's, because `setItemState` sends no date on purpose and the
+trigger stamps `request_sent_at` and `confirmed_at` from the server clock. So
+every item he marks as sent will read `נשלח היום`, and no waiting time on his
+board will be a real one. He can judge what a finished board holds and how it
+reads. He cannot judge the elapsed time, and nothing he says about it counts.
+
+**What is being watched:**
+
+- **5** - after ending, a new move begins with no setup repeated.
+- **6** - both people see the same ended state. This needs a second account on
+  his move, joined by code before he ends it. One browser cannot answer it.
+- **7** - the screens this turn added, read in Hebrew by somebody who has never
+  seen them: the name on a log line, the notice on a finished board, the
+  two-step ending, the offer to begin again.
+- **4, the half left open** - whether what remains on a finished board is what a
+  person who has actually finished a move would want to find.
+
+**One limit he should be told before he presses, not after.** Once he opens a new
+move, the finished one is no longer reachable from any screen. It is not deleted
+and nothing was lost; there is simply no way back to it yet, and step 5 records
+that as work for a later turn. If that is what stings, it is a finding and not a
+surprise.
+
+**Nothing in the code changes while he is using it.** A fault found during use is
+written down first. Whether it is fixed inside this phase or after the interview
+is Tomer's call, not something to decide mid-session with somebody waiting.
