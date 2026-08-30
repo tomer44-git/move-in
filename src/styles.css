@@ -554,3 +554,9 @@ body {
 .item__when {
   font-variant-numeric: tabular-nums;
 }
+
+/* Who did it, on the log line. Empty for the lines that predate the column. */
+.item__log-who {
+  flex: 0 0 auto;
+  color: var(--colour-violet);
+}

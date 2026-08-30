@@ -4,6 +4,8 @@ export type ItemEvent = {
   id: string
   at: string
   action: string
+  /** Who did it. Null on lines written before the column existed. */
+  actor_id: string | null
 }
 
 /**
@@ -16,7 +18,7 @@ export type ItemEvent = {
 export async function itemEvents(itemId: string): Promise<ItemEvent[]> {
   const { data, error } = await supabase
     .from('move_item_event')
-    .select('id, at, action')
+    .select('id, at, action, actor_id')
     .eq('move_item_id', itemId)
     .order('at', { ascending: false })
 

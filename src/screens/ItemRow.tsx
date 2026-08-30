@@ -193,7 +193,7 @@ export function ItemRow({
         onSave={onSaveDraft}
       />
 
-      <ItemLog itemId={item.id} />
+      <ItemLog itemId={item.id} people={people} />
     </li>
   )
 }
