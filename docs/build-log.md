@@ -1069,3 +1069,15 @@ draft inside a `details` element.
 The `details` element is the one with no precedent here. Its marker is placed by
 the browser rather than by our stylesheet, and browsers have been known to leave
 it on the left in a right-to-left document.
+
+### What the pass found
+
+No rule in the stylesheet carries a physical direction, the document is `dir="rtl"`
+and the page does not scroll sideways - the same as the two turns before it.
+
+The `details` element is gone. The measurement I wrote to check its disclosure
+marker was unsound: `summary` spans the full width, so comparing its edges says
+nothing about where the browser put the triangle. Rather than devise a better
+measurement, the element was replaced with the button-and-toggle every other fold
+on this board already uses. It was an inconsistency I had introduced for no
+reason, and removing it also removes the question.

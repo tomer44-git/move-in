@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { CATALOGUE_BY_KEY } from '../catalogue/items'
 import { ItemActions } from './ItemActions'
 import { ItemDraft } from './ItemDraft'
@@ -10,6 +11,23 @@ import type { DraftSubject, ItemState, MoveItem } from '../lib/items'
 import type { AuthorityType } from '../lib/move'
 import type { Person } from '../lib/people'
 import { shortDate, waitingLabel } from '../lib/waiting'
+
+/** A draft on a finished move: readable, and nothing more. */
+function FrozenDraft({ draft }: { draft: string }) {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div className="draft draft--frozen">
+      <button
+        className="button button--small button--quiet item__log-toggle"
+        onClick={() => setOpen((current) => !current)}
+      >
+        {open ? 'סגור טיוטה' : 'טיוטת הבקשה'}
+      </button>
+      {open && <p className="draft__frozen-text">{draft}</p>}
+    </div>
+  )
+}
 
 const STATE_LABEL: Record<MoveItem['state'], string> = {
   not_started: 'לא התחיל',
@@ -200,12 +218,14 @@ export function ItemRow({
       />
       )}
 
-      {/* The draft survives; only the ability to change it goes. */}
+      {/* The draft survives; only the ability to change it goes.
+
+          A button rather than a `details` element: every other fold on this
+          board is a button, and the disclosure marker on `details` is placed by
+          the browser rather than by our stylesheet, which is one thing fewer to
+          have to be right about in a right-to-left page. */}
       {readOnly && item.draft && (
-        <details className="draft draft--frozen">
-          <summary className="item__log-toggle">טיוטת הבקשה</summary>
-          <p className="draft__frozen-text">{item.draft}</p>
-        </details>
+        <FrozenDraft draft={item.draft} />
       )}
 
       <ItemLog itemId={item.id} people={people} />
