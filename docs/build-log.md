@@ -1081,3 +1081,21 @@ nothing about where the browser put the triangle. Rather than devise a better
 measurement, the element was replaced with the button-and-toggle every other fold
 on this board already uses. It was an inconsistency I had introduced for no
 reason, and removing it also removes the question.
+
+## Step 7 — Reporting the checks
+
+About to write `docs/verification-turn-3.md`.
+
+The same division as turn two, and for the same reason: the agent has no session
+on this application and does not sign in as Tomer, so anything needing a
+signed-in board is his to observe. Turn two's most useful fault - a trigger that
+could not write its own log - was found exactly there, four commits after it was
+pushed.
+
+Two of the seven can be settled from the source alone, because they are claims
+about what does not exist. Nothing reverses an ending, and ending writes two
+columns and touches nothing else. Both are answered by reading rather than by
+running, and reading is enough for a negative.
+
+The rest need a board, and one of them needs a finished move - which means the
+milestone and check 4 are answered by the same act.
