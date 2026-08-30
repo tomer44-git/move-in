@@ -1118,3 +1118,47 @@ because it is read as evidence. The replacement asks whether the body contains
 `actor_id` and `auth.uid()`, which are true only if the new body is in place.
 
 Found by Tomer adding a reference and seeing no name against it.
+
+---
+
+## Where turn three stands — 30 August 2026
+
+**Phase 3 of seven, verification, four checks of seven settled.**
+
+The seven phases of a turn are: plan, build, verify, use, interview, record and
+revise, merge. Turn three is in the third.
+
+**Built and pushed.** The actor on a log line, ending a move, refusing changes to
+one that has ended, and starting the next one. Two migrations, both applied to
+the Supabase project after a repair described below.
+
+**Checks 1, 2, 3 and 4 pass.** One and two were observed by Tomer on the live
+site; three and four were settled by reading the source, because both are claims
+about what does not happen - nothing reverses an ending, and `end_move` writes
+two columns and touches nothing else.
+
+**Checks 5, 6 and 7 need a move that has actually ended**, so they are answered
+by the milestone rather than before it.
+
+**Next is phase 4, use.** A friend of Tomer's has finished his own move and is
+the right person to end one in the tool: Tomer's own move still has open items
+that ending would lock. What has to come back is not whether the data survived -
+the code answers that - but whether what remains on screen is what somebody who
+finished a move would want to find.
+
+### Two hazards that bit this turn, both worth knowing
+
+**Migrations pasted in part.** Twice, a migration ran only as far as its first
+statement, because a snippet quoted in conversation was pasted instead of the
+file. Both times the symptom appeared much later. Give the whole migration, in
+one block, and quote nothing from it.
+
+**A check that could not fail.** The check written after the actor migration
+asked whether the log trigger was `security definer`. It had been since turn two,
+so it passed while the migration's actual change had not landed. A check must ask
+about the thing that changed, not about a property that was already true.
+
+### Operational
+
+Netlify deploys from `build/ending`. Every turn has needed this changed, and
+every turn it has been forgotten first.
