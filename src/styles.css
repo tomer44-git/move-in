@@ -560,3 +560,38 @@ body {
   flex: 0 0 auto;
   color: var(--colour-violet);
 }
+
+/* A finished move. Everything it held stays; nothing it offered remains. */
+
+.notice--ended {
+  margin-block-end: var(--space-2);
+  padding: var(--space-2);
+  color: var(--colour-violet);
+  background: var(--colour-violet-soft);
+  border: 1px solid #d9d2ea;
+  border-radius: 6px;
+}
+
+.end-move__open {
+  margin-block-start: var(--space-3);
+}
+
+.end-move {
+  margin-block-start: var(--space-3);
+}
+
+.draft--frozen {
+  margin-block-start: var(--space-1);
+}
+
+.draft__frozen-text {
+  margin: var(--space-1) 0 0;
+  max-inline-size: 46rem;
+  padding: var(--space-2);
+  border: 1px solid var(--colour-line);
+  border-radius: 6px;
+  background: var(--colour-page);
+  font-size: 0.875rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}

@@ -38,6 +38,7 @@ export function ItemRow({
   onHidden,
   onGenerateDraft,
   onSaveDraft,
+  readOnly,
 }: {
   item: MoveItem
   /**
@@ -61,6 +62,8 @@ export function ItemRow({
   onHidden: (hidden: boolean) => void
   onGenerateDraft: (subject: DraftSubject) => void
   onSaveDraft: (draft: string) => void
+  /** A finished move keeps everything and offers nothing. */
+  readOnly: boolean
 }) {
   const entry = item.catalogue_key
     ? CATALOGUE_BY_KEY.get(item.catalogue_key)
@@ -159,6 +162,7 @@ export function ItemRow({
         <p className="item__confirmation">אישור: {item.confirmation}</p>
       )}
 
+      {!readOnly && (
       <ItemActions
         item={item}
         meId={meId}
@@ -168,9 +172,11 @@ export function ItemRow({
         onReference={onReference}
         onHidden={onHidden}
       />
+      )}
 
       {/* The facts travel from here, because the catalogue is in git and the
           database has never been told what is on the verified list. */}
+      {!readOnly && (
       <ItemDraft
         item={item}
         isGeneral={!entry}
@@ -192,6 +198,15 @@ export function ItemRow({
         }
         onSave={onSaveDraft}
       />
+      )}
+
+      {/* The draft survives; only the ability to change it goes. */}
+      {readOnly && item.draft && (
+        <details className="draft draft--frozen">
+          <summary className="item__log-toggle">טיוטת הבקשה</summary>
+          <p className="draft__frozen-text">{item.draft}</p>
+        </details>
+      )}
 
       <ItemLog itemId={item.id} people={people} />
     </li>

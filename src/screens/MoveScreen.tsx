@@ -140,6 +140,12 @@ export function MoveScreen({ meId }: { meId: string }) {
   const { move } = screen
 
   if (isReady(move)) {
+    const reload = () => {
+      void moveById(move.id).then((fresh) => {
+        if (fresh) show(fresh)
+      })
+    }
+
     // A move that never resolved still gets its board. The outcome sits above
     // it, so the reason there is no authority stays visible and correctable
     // rather than being replaced by a list that looks complete.
@@ -153,7 +159,7 @@ export function MoveScreen({ meId }: { meId: string }) {
             onChangeAddress={() => setScreen({ name: 'editing_address', move })}
           />
         )}
-        <Board move={move} meId={meId} />
+        <Board move={move} meId={meId} onEnded={reload} />
       </>
     )
   }
