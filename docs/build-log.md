@@ -996,3 +996,28 @@ record of which person was never kept. An empty space says that accurately.
 The name is read from the profiles already fetched for the board, so opening a
 log costs no extra query. Both people are on the move and both are already
 loaded, which is the only reason this is cheap.
+
+## Step 3 — Ending a move
+
+About to add `ended_at` and `ended_by` to `move`, and to stop a move that has
+ended from being changed.
+
+Tomer chose on 24 August between two readings of what `framing.md` means by
+"reset for a future one rather than deleted". This is the second: the finished
+move is marked ended and stays readable, and a new one begins beside it. The
+first - clearing the items in place - would have kept the address and the join
+code and lost the log, the dates, the references and the confirmations. "Rather
+than deleted" is the phrase in the document, and clearing in place does delete;
+it just deletes what the row was for rather than the row.
+
+Ending is declared, not derived. A move is not finished when every item is
+confirmed - some are hidden, some are never confirmed at all, and a person
+knows they have moved in long before a bureaucracy agrees. So a person says so.
+
+The refusal is enforced in the database rather than in a screen. Two triggers,
+because there are two ways to change a finished move and they need different
+answers: an item cannot be touched while its move has ended, and a move that has
+ended cannot be un-ended by editing around it.
+
+`ended_at` requires a confirmed address, because a move that never resolved has
+nothing to be finished.
