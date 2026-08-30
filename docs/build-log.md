@@ -1256,3 +1256,26 @@ to look at, and that is the person phase 4 is waiting for.
 move running, so the history of every item on a closed board was already
 readable the moment the board could be reached. This step added no way to read
 an item; it added the door.
+
+## Step 9 — The door on every screen, not just one
+
+Tomer's friend ended his move, opened a new one, and could not find his way
+back. He is right, and the fault is in step 8: `PastMoves` was rendered inside
+the board branch of `MoveScreen` and nowhere else.
+
+The board is the one screen a person is not on at the moment they need it.
+Pressing "פתח מעבר חדש" leaves it, and the address form, the address
+confirmation and the lookup outcome all sit between there and the next board.
+Somebody who has just opened a new move is standing in exactly the rooms where
+the door was not hung.
+
+**How the check missed it.** Step 8 measured the panel: its direction, its
+edges, its rules. Every one of those measurements was about the panel being
+right, and none was about the panel being *there*. It is the same shape of fault
+as the `security definer` check earlier this turn - a measurement of something
+true, standing in for the question that mattered. What use found in a minute,
+neither the measurement nor the build could have found at all.
+
+**The fix.** The door is hoisted out of the board and put around every screen
+after sign-in, so a person can reach a finished move from wherever the tool has
+put them.
