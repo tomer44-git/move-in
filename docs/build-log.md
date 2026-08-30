@@ -983,3 +983,16 @@ that is confidently wrong is worse than one that is honestly incomplete.
 The trigger stays `security definer` - it has to, or it cannot write its own
 table - and `auth.uid()` still resolves inside it, because it reads the request's
 claim rather than the current role.
+
+## Step 2 — The name on the log line
+
+About to show who performed each action, beside the date and the action.
+
+A line with no actor shows nothing where the name would be, rather than a word
+standing in for one. Thirteen such lines exist. "Unknown" or "system" would both
+be inventions: nobody unknown did it, and no system did - a person did, and the
+record of which person was never kept. An empty space says that accurately.
+
+The name is read from the profiles already fetched for the board, so opening a
+log costs no extra query. Both people are on the move and both are already
+loaded, which is the only reason this is cheap.
