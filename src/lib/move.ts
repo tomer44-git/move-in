@@ -27,11 +27,14 @@ export type Move = {
   authority_code: string | null
   authority_type: AuthorityType | null
   authority_type_raw: string | null
+  /** When a person declared this move finished. Null while it is running. */
+  ended_at: string | null
+  ended_by: string | null
   created_at: string
 }
 
 const COLUMNS =
-  'id, address_text, join_code, lookup_status, lookup_error, matched_address, address_confirmed_at, authority_name, authority_code, authority_type, authority_type_raw, created_at'
+  'id, address_text, join_code, lookup_status, lookup_error, matched_address, address_confirmed_at, authority_name, authority_code, authority_type, authority_type_raw, ended_at, ended_by, created_at'
 
 /**
  * A move carries items once the lookup has reached any conclusion, good or not.
@@ -48,24 +51,63 @@ export const isReady = (move: Move): boolean =>
     ? false
     : move.lookup_status !== 'resolved' || move.address_confirmed_at !== null
 
+/** A finished move keeps everything it held and accepts no further change. */
+export const hasEnded = (move: Move): boolean => move.ended_at !== null
+
 /** Whether this move knows which authority the address belongs to. */
 export const hasAuthority = (move: Move): boolean =>
   move.lookup_status === 'resolved' && move.authority_type !== null
 
 /**
- * The move this person is on. Row level security limits this to their own; the
- * most recent wins, which for this turn means the one they are working on.
+ * Every move this person is on, newest first.
+ *
+ * The select carries no filter of its own. `move_select_members` already
+ * returns exactly the moves this person is a member of and nothing else, and
+ * repeating that here would put the rule in a second place where the two could
+ * disagree.
  */
-export async function currentMove(): Promise<Move | null> {
+export async function listMoves(): Promise<Move[]> {
   const { data, error } = await supabase
     .from('move')
     .select(COLUMNS)
     .order('created_at', { ascending: false })
-    .limit(1)
-    .maybeSingle<Move>()
 
   if (error) throw new Error(error.message)
-  return data
+  return (data ?? []) as Move[]
+}
+
+/** The moves that have ended, most recently ended first. */
+export const endedMoves = (moves: Move[]): Move[] =>
+  moves
+    .filter(hasEnded)
+    .sort((a, b) => (a.ended_at! < b.ended_at! ? 1 : -1))
+
+/**
+ * The move to show out of the ones a person has.
+ *
+ * The running one if there is one, and otherwise the most recently finished.
+ *
+ * "Most recent" was unambiguous while a person could only have one move. Now
+ * they can have a finished one and a running one, and ordering by date alone
+ * would land on whichever was created last - right by luck rather than by rule.
+ * A person whose move has ended and who has not started another sees their
+ * closed board, with the offer to begin again.
+ */
+export function currentOf(moves: Move[]): Move | null {
+  const running = moves.find((move) => !hasEnded(move))
+  if (running) return running
+  return endedMoves(moves)[0] ?? null
+}
+
+/**
+ * The move this person is on.
+ *
+ * One query now rather than two. The rule above is the same rule it always was;
+ * it is applied to the list the screen has to read anyway, because a person who
+ * can return to a finished move needs all of them and not just one.
+ */
+export async function currentMove(): Promise<Move | null> {
+  return currentOf(await listMoves())
 }
 
 export async function moveById(id: string): Promise<Move | null> {
@@ -147,4 +189,18 @@ export async function joinMove(code: string): Promise<string> {
   }
 
   return data as string
+}
+
+/**
+ * Declares a move finished.
+ *
+ * Nothing is deleted. The board becomes readable and unchangeable, and the next
+ * move is a new one beside it - which is what `framing.md` means by resetting
+ * for a future move rather than deleting.
+ *
+ * There is no reverse. A move that could be reopened is not finished.
+ */
+export async function endMove(moveId: string): Promise<void> {
+  const { error } = await supabase.rpc('end_move', { p_move: moveId })
+  if (error) throw new Error(error.message)
 }

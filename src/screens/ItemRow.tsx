@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { CATALOGUE_BY_KEY } from '../catalogue/items'
 import { ItemActions } from './ItemActions'
 import { ItemDraft } from './ItemDraft'
@@ -10,6 +11,23 @@ import type { DraftSubject, ItemState, MoveItem } from '../lib/items'
 import type { AuthorityType } from '../lib/move'
 import type { Person } from '../lib/people'
 import { shortDate, waitingLabel } from '../lib/waiting'
+
+/** A draft on a finished move: readable, and nothing more. */
+function FrozenDraft({ draft }: { draft: string }) {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div className="draft draft--frozen">
+      <button
+        className="button button--small button--quiet item__log-toggle"
+        onClick={() => setOpen((current) => !current)}
+      >
+        {open ? 'סגור טיוטה' : 'טיוטת הבקשה'}
+      </button>
+      {open && <p className="draft__frozen-text">{draft}</p>}
+    </div>
+  )
+}
 
 const STATE_LABEL: Record<MoveItem['state'], string> = {
   not_started: 'לא התחיל',
@@ -38,6 +56,7 @@ export function ItemRow({
   onHidden,
   onGenerateDraft,
   onSaveDraft,
+  readOnly,
 }: {
   item: MoveItem
   /**
@@ -61,6 +80,8 @@ export function ItemRow({
   onHidden: (hidden: boolean) => void
   onGenerateDraft: (subject: DraftSubject) => void
   onSaveDraft: (draft: string) => void
+  /** A finished move keeps everything and offers nothing. */
+  readOnly: boolean
 }) {
   const entry = item.catalogue_key
     ? CATALOGUE_BY_KEY.get(item.catalogue_key)
@@ -159,6 +180,7 @@ export function ItemRow({
         <p className="item__confirmation">אישור: {item.confirmation}</p>
       )}
 
+      {!readOnly && (
       <ItemActions
         item={item}
         meId={meId}
@@ -168,9 +190,11 @@ export function ItemRow({
         onReference={onReference}
         onHidden={onHidden}
       />
+      )}
 
       {/* The facts travel from here, because the catalogue is in git and the
           database has never been told what is on the verified list. */}
+      {!readOnly && (
       <ItemDraft
         item={item}
         isGeneral={!entry}
@@ -192,8 +216,19 @@ export function ItemRow({
         }
         onSave={onSaveDraft}
       />
+      )}
 
-      <ItemLog itemId={item.id} />
+      {/* The draft survives; only the ability to change it goes.
+
+          A button rather than a `details` element: every other fold on this
+          board is a button, and the disclosure marker on `details` is placed by
+          the browser rather than by our stylesheet, which is one thing fewer to
+          have to be right about in a right-to-left page. */}
+      {readOnly && item.draft && (
+        <FrozenDraft draft={item.draft} />
+      )}
+
+      <ItemLog itemId={item.id} people={people} />
     </li>
   )
 }

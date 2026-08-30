@@ -1,14 +1,14 @@
 # move-in — Framing
 
-ASE-26 personal project · Tomer Ben Bassat · Revised 24 August 2026
+ASE-26 personal project · Tomer Ben Bassat · Revised 30 August 2026
 
 Written in pencil. Revised at the end of every turn of the spiral. This is the
-fourth version. The first was scoped to one couple and one apartment; the second
+fifth version. The first was scoped to one couple and one apartment; the second
 widened it to any address in Israel; the third was the first written after the
-tool was used rather than thought about. This one is the first written after the
-thing this document had been asking for since its first version - a request that
-can be sent after reading it once - was built, sent to real authorities, and
-answered.
+tool was used rather than thought about; the fourth was the first written after a
+request the tool drafted had been sent to real authorities and answered. This one
+is the first written with nothing left unbuilt in the definition of done, and the
+first written from the use of a household that did not build it.
 
 ## Problem statement
 
@@ -22,7 +22,8 @@ waiting, and what nobody has started. They duplicate work, and they drop things.
 ## Stakeholders
 
 **The person who starts a move** — signs in, gives an address, and gets the list
-that applies to their authority.
+that applies to their authority. In turn three this was somebody outside the
+household that built the tool, for the first time.
 
 **The partner they invite** — the second person on the same move, with the same
 view and the same ability to take an item.
@@ -53,17 +54,27 @@ works.
 9. A person confirms the address that was found before the move resolves, with
    what they typed and what was found shown side by side.
 
+**All nine exist as of 30 August 2026.** The eighth was the last, and turn three
+built it. This is the first version of this document written with none of them
+outstanding, which changes what the still-open list below is for: everything on
+it is now a question about the thing rather than a piece of it that is missing.
+
 ## Out of scope
 
 - Tracking the cost of the move
 - Closing the old apartment: final bills, deposit return
 - Storing files of any kind — no contracts, receipts, photographs or scans
-- Anything after the move is finished
+- Anything after the move is finished. Reading a move that has ended is not this:
+  a finished board can be opened and read, and nothing on it can be changed.
 - The physical move itself: removals, packing, locksmith
 - Notifications. Deferred on purpose, not forgotten — if use shows they are
-  needed, they come in a later turn. Two turns of use have not shown it. Both
-  times the want was for the convenience, and neither produced a case of
-  something dropped because nobody was told. The condition stands, untriggered.
+  needed, they come in a later turn. Three turns of use have not shown it. The
+  first two produced a want for the convenience and no case of anything dropped.
+  The third produced something better than a want withheld: asked directly
+  whether anything had been dropped because nobody was told, the answer was no,
+  and the reason given was the history — dates, names and references, all
+  readable by both people without either telling the other. The condition stands,
+  untriggered.
 
 ## Settled
 
@@ -83,12 +94,40 @@ works.
   trigger and by nothing else. A log a client can write is a log that can be
   wrong, and a wrong log is worse than none because it still looks
   authoritative.
+- The log says who, as well as what and when. Owner and actor are the same person
+  only on a board where each person has their own tasks, and on this one either
+  may touch anything. Lines written before the column existed carry no name at
+  all rather than a name that might be wrong.
 - What a row must show without being opened has grown by one: the date, beside
   the elapsed time. "Three days" and "the 24th" are different questions, and use
   had both being asked - people were opening a history to read a field the row
   could have carried.
 - Each item shows how long it has been waiting since the request was sent.
 - Items are independent. There are no dependencies between them.
+
+**What it means for a move to end**
+
+- Ending is declared, never derived. A move is not finished when every item is
+  confirmed: some are hidden, some are never confirmed at all, and a person knows
+  they have moved in long before a bureaucracy agrees. So a person says so.
+- A move that has ended cannot be changed — no state, no ownership, no reference,
+  no draft, no hiding — and the refusal lives in the database rather than in a
+  screen, so that it holds for both people and for anything written later.
+- Nothing reverses an ending. A move that can be reopened is not finished.
+- Ending deletes nothing. Every item, date, reference, confirmation and log line
+  stays readable, and the next move begins beside the finished one rather than on
+  top of it. "Reset for a future one rather than deleted" means moving to the
+  next line, not wiping the current one.
+- **A finished move is a reference, not an archive.** This is what use corrected.
+  It was argued for as a record that must not be destroyed, which is an argument
+  about loss. What people do with it is read it on purpose: to see which bodies
+  they have to deal with, and to check the requests they sent against what the
+  authorities actually accepted. An archive is kept in case. A reference is used
+  — which is why reaching a finished move has to be a door on every screen and
+  not a note that it still exists somewhere.
+- Before a move is closed, the items no authority has confirmed are named on
+  screen. It tells and does not refuse: a move with items that will never be
+  confirmed is still a finished move.
 
 **What the address lookup can answer**
 
@@ -144,6 +183,12 @@ works.
   argument. Requests drafted under this line were sent to real authorities
   unchanged, and the replies were serious ones. Holding the model to phrasing
   costs nothing in usefulness.
+- The third turn checked it from the far end, which no turn had done. Somebody
+  went back into a move he had already finished to read the drafts against what
+  the authorities had accepted, and found that every one of them had been
+  phrasing that carried through all of the bodies involved. What he took from it
+  was confidence in using the drafts at all. The line has now been defended twice
+  on principle and audited once in retrospect.
 - The draft is stored on the item, not written afresh for each viewer. Two people
   looking at one item have to see one draft; a draft regenerated per viewer would
   give them different text for the same request.
@@ -158,28 +203,30 @@ works.
 
 ## Still open
 
-The third version listed eight. Four were built in turn two - the drafted
-request, hiding, the item log, and the look. One was answered. What remains joins
-what turn two raised, and the whole is recorded in
-`docs/turn-2-what-use-taught.md`.
+The fourth version listed six. Two were built in turn three — who did it in the
+log, and what happens when a move ends — and both were used. One was asked for a
+third time and answered the same way. What remains is four, and one of them is
+new. What turn three's use taught is recorded in `docs/turn-3-what-use-taught.md`.
 
-1. **Who did it, in the log.** The log records what happened and when. Asked for
-   that way, and after one turn of use the answer was that "who" is missing —
-   *"although there is an owner for every task"*. The "although" is the point:
-   owner and actor are the same person only on a board where each person has
-   their own tasks. On this one either may touch anything, so a line saying a
-   request was sent does not say who sent it. `updated_by` already holds it.
-2. **Notifications**, still a question and not yet work. Two turns, and the
-   condition above has not been met.
-3. **The three route descriptions.** Verified on 22 August, each against a real
-   authority of its kind. Turn two tested only the city one, because Tel Aviv is
-   a city; the other two are recorded as checked but have not been used.
-4. **Whether items 16, 17 and 18 apply.** Answered for this move by hiding them.
-   Still open for the list, and hiding is the reason it can stay open.
-5. **Whether an unresolved address gives a useful board.** Built in turn two and
+1. **Notifications**, still a question and not yet work. Three turns, and the
+   condition in the out-of-scope list above has not been met.
+2. **The three route descriptions.** Verified on 22 August, each against a real
+   authority of its kind. The city route has now been used on three moves,
+   because Tel Aviv is a city and so was the authority the second household moved
+   into. The local council and regional council routes remain checked and never
+   used. This closes only when somebody moves into one of them; no amount of
+   building produces it.
+3. **Whether items 16, 17 and 18 apply.** Answered for these moves by hiding
+   them. Still open for the list, and hiding is the reason it can stay open.
+4. **Whether an unresolved address gives a useful board.** Built in turn two and
    deliberately never run: testing it means entering an address the geocoder
    cannot find, which would replace the authority on a board two people are using
    for a real move. Recorded as unobserved rather than tested at that price.
-6. **What happens when the move ends.** Item 8 of the definition of done, and the
-   only one still unbuilt now that the drafted request exists. Nothing has needed
-   it yet, because the first move is not finished.
+5. **What a list of finished moves becomes.** New in this version, and it came
+   from a test rather than from a move. There is no way to delete a move, on
+   purpose, so a move made to try something out stays on the list beside the real
+   ones for good. Asked about it, Tomer was not troubled — it was a test and
+   everything on it was invented. The judgement was made about one board, and the
+   question is what the same list looks like after several years and several
+   moves, real and otherwise. Nothing is broken. It is written down because the
+   answer given was about a case of one.

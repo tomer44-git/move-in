@@ -554,3 +554,124 @@ body {
 .item__when {
   font-variant-numeric: tabular-nums;
 }
+
+/* Who did it, on the log line. Empty for the lines that predate the column. */
+.item__log-who {
+  flex: 0 0 auto;
+  color: var(--colour-violet);
+}
+
+/* A finished move. Everything it held stays; nothing it offered remains. */
+
+.notice--ended {
+  margin-block-end: var(--space-2);
+  padding: var(--space-2);
+  color: var(--colour-violet);
+  background: var(--colour-violet-soft);
+  border: 1px solid #d9d2ea;
+  border-radius: 6px;
+}
+
+.end-move__open {
+  margin-block-start: var(--space-3);
+}
+
+.end-move {
+  margin-block-start: var(--space-3);
+}
+
+.draft--frozen {
+  margin-block-start: var(--space-1);
+}
+
+.draft__frozen-text {
+  margin: var(--space-1) 0 0;
+  max-inline-size: 46rem;
+  padding: var(--space-2);
+  border: 1px solid var(--colour-line);
+  border-radius: 6px;
+  background: var(--colour-page);
+  font-size: 0.875rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+/* The offer to begin again, above the board that ended. */
+.next-move {
+  margin-block-end: var(--space-2);
+}
+
+/* The way back into a move that ended. Logical properties only, like
+   everything else here: a row that reversed would put the address on the
+   wrong side of the button in Hebrew. */
+.past-moves {
+  margin-block-end: var(--space-2);
+}
+
+.past-moves__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.past-moves__item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  padding-block: var(--space-1);
+  border-block-start: 1px solid var(--colour-line);
+}
+
+.past-moves__item:first-child {
+  border-block-start: none;
+}
+
+.past-moves__what {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+}
+
+.past-moves__when {
+  color: var(--colour-ink-soft);
+  font-size: 0.875rem;
+}
+
+/* What is still unconfirmed, listed before the move is closed. */
+.end-move__open {
+  margin-block-end: var(--space-3);
+}
+
+.end-move__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--colour-line);
+  border-radius: 6px;
+  background: var(--colour-page);
+}
+
+.end-move__item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  padding: var(--space-1) var(--space-2);
+  border-block-start: 1px solid var(--colour-line);
+}
+
+.end-move__item:first-child {
+  border-block-start: none;
+}
+
+.end-move__state {
+  color: var(--colour-ink-soft);
+  font-size: 0.875rem;
+}

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import {
   addCustomItem,
   generateDraft,
+  itemTitle,
   listItems,
   saveDraft,
   seedItems,
@@ -14,8 +15,9 @@ import {
   type MoveItem,
 } from '../lib/items'
 import { peopleOnMove, type Person } from '../lib/people'
-import { hasAuthority, type Move } from '../lib/move'
+import { endMove, hasAuthority, hasEnded, type Move } from '../lib/move'
 import { AddItem } from './AddItem'
+import { EndMove } from './EndMove'
 import { ItemRow } from './ItemRow'
 
 type State =
@@ -38,7 +40,16 @@ const AUTHORITY_TYPE_LABEL: Record<string, string> = {
  * for the rows and creating them when there are none is the same code path for
  * the first visit and for a recovery.
  */
-export function Board({ move, meId }: { move: Move; meId: string }) {
+export function Board({
+  move,
+  meId,
+  onEnded,
+}: {
+  move: Move
+  meId: string
+  onEnded: () => void
+}) {
+  const finished = hasEnded(move)
   const [state, setState] = useState<State>({ name: 'loading' })
   const [showHidden, setShowHidden] = useState(false)
   const [busyItem, setBusyItem] = useState<string | null>(null)
@@ -128,6 +139,17 @@ export function Board({ move, meId }: { move: Move; meId: string }) {
   const hidden = numbered.filter((row) => row.item.hidden_at !== null)
   const shown = showHidden ? hidden : onBoard
 
+  // What no authority has confirmed, named for the moment of closing. Hidden
+  // items are left out: they do not apply to this move, which is what hiding
+  // means, and the tally above counts the same way.
+  const openItems = onBoard
+    .filter((row) => row.item.state !== 'confirmed')
+    .map(({ item }) => ({
+      id: item.id,
+      title: itemTitle(item),
+      state: item.state,
+    }))
+
   const counts = {
     confirmed: onBoard.filter((row) => row.item.state === 'confirmed').length,
     sent: onBoard.filter((row) => row.item.state === 'request_sent').length,
@@ -157,6 +179,16 @@ export function Board({ move, meId }: { move: Move; meId: string }) {
           התחילו
         </p>
       </header>
+
+      {finished && (
+        <p className="notice notice--ended">
+          המעבר הסתיים ב-{new Date(move.ended_at!).toLocaleDateString('he-IL')}.
+          הלוח נשמר במלואו וניתן לקריאה בלבד.
+          {move.ended_by && state.people.get(move.ended_by) && (
+            <> סגר: {state.people.get(move.ended_by)!.display_name}.</>
+          )}
+        </p>
+      )}
 
       {hidden.length > 0 && (
         <div className="board__hidden-toggle">
@@ -201,11 +233,12 @@ export function Board({ move, meId }: { move: Move; meId: string }) {
             onSaveDraft={(draft: string) =>
               act(item.id, () => saveDraft(item.id, draft, false))
             }
+            readOnly={finished}
           />
         ))}
       </ol>
 
-      {!showHidden && (
+      {!showHidden && !finished && (
       <AddItem
         onAdd={async (title) => {
           const added = await addCustomItem(move.id, title)
@@ -216,6 +249,16 @@ export function Board({ move, meId }: { move: Move; meId: string }) {
           )
         }}
       />
+      )}
+
+      {!finished && (
+        <EndMove
+          openItems={openItems}
+          onEnd={async () => {
+            await endMove(move.id)
+            onEnded()
+          }}
+        />
       )}
 
       {actionError && (

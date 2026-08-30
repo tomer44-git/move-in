@@ -961,3 +961,505 @@ What changes:
 The definition of done keeps all nine items and none is marked as achieved, for
 the reason given a turn ago: it defines what the product has to be, not what a
 turn managed.
+
+---
+
+# Turn three · Ending a move · 30 August 2026
+
+## Step 1 — The actor on a log line
+
+About to add `actor_id` to `move_item_event`, filled by the trigger from
+`auth.uid()`.
+
+Nullable, and that is the interesting part. Every line already in the log was
+written before this column existed. There is no way to recover who wrote them,
+and `updated_by` on the item holds only who touched it last - which for an item
+touched twice is the wrong answer for the earlier line.
+
+So they stay empty and the screen shows them without a name. Backfilling from
+`updated_by` would put a plausible name on lines it was never true for, and a log
+that is confidently wrong is worse than one that is honestly incomplete.
+
+The trigger stays `security definer` - it has to, or it cannot write its own
+table - and `auth.uid()` still resolves inside it, because it reads the request's
+claim rather than the current role.
+
+## Step 2 — The name on the log line
+
+About to show who performed each action, beside the date and the action.
+
+A line with no actor shows nothing where the name would be, rather than a word
+standing in for one. Thirteen such lines exist. "Unknown" or "system" would both
+be inventions: nobody unknown did it, and no system did - a person did, and the
+record of which person was never kept. An empty space says that accurately.
+
+The name is read from the profiles already fetched for the board, so opening a
+log costs no extra query. Both people are on the move and both are already
+loaded, which is the only reason this is cheap.
+
+## Step 3 — Ending a move
+
+About to add `ended_at` and `ended_by` to `move`, and to stop a move that has
+ended from being changed.
+
+Tomer chose on 30 August between two readings of what `framing.md` means by
+"reset for a future one rather than deleted". This is the second: the finished
+move is marked ended and stays readable, and a new one begins beside it. The
+first - clearing the items in place - would have kept the address and the join
+code and lost the log, the dates, the references and the confirmations. "Rather
+than deleted" is the phrase in the document, and clearing in place does delete;
+it just deletes what the row was for rather than the row.
+
+Ending is declared, not derived. A move is not finished when every item is
+confirmed - some are hidden, some are never confirmed at all, and a person
+knows they have moved in long before a bureaucracy agrees. So a person says so.
+
+The refusal is enforced in the database rather than in a screen. Two triggers,
+because there are two ways to change a finished move and they need different
+answers: an item cannot be touched while its move has ended, and a move that has
+ended cannot be un-ended by editing around it.
+
+`ended_at` requires a confirmed address, because a move that never resolved has
+nothing to be finished.
+
+## Step 4 — Ending a move, on the screen
+
+About to add the control that ends a move, and the face a finished one wears.
+
+Ending asks twice. There is no un-ending: no function to reverse it, and none
+planned, because a move that could be reopened is not finished and the whole
+point is to close a chapter. An action with no undo gets a second press.
+
+A finished board keeps everything and offers nothing. Every item, date,
+reference, confirmation and log line stays readable; every button that would
+change something is gone rather than disabled. A disabled button says "you
+cannot do this now"; an absent one says "this is not a thing here any more",
+which is the truer statement.
+
+The database refuses the change regardless. The screen is the courtesy and the
+trigger is the rule - if a button were ever left behind, pressing it would fail
+rather than half-succeed.
+
+## Step 5 — The next move
+
+About to let a new move begin once one has ended. Without this, ending is just
+stopping, and `framing.md` asks for a reset.
+
+One thing has to change beyond adding a button. `currentMove` returns the most
+recent move a person is on, which was unambiguous while there could only be one.
+Now there can be a finished one and a running one, and "most recent" would land
+on whichever was created last - correct by luck rather than by rule.
+
+So the rule becomes explicit: the running move if there is one, and otherwise the
+most recently finished. A person with a finished move and no new one sees their
+closed board, with the offer to start the next.
+
+The finished move stays reachable after a new one begins. That is the difference
+between this and deleting, and it is the whole reason Tomer chose this reading.
+Reaching it is a screen for a later turn: right now the offer to start again is
+the part that has to exist, and burying a finished board behind a new one that
+does not exist yet would be solving the wrong half first.
+
+## Step 6 — The right-to-left pass
+
+About to check the screens this turn added: the name on a log line, the notice on
+a finished board, the two-step ending, the offer to begin again, and the frozen
+draft inside a `details` element.
+
+The `details` element is the one with no precedent here. Its marker is placed by
+the browser rather than by our stylesheet, and browsers have been known to leave
+it on the left in a right-to-left document.
+
+### What the pass found
+
+No rule in the stylesheet carries a physical direction, the document is `dir="rtl"`
+and the page does not scroll sideways - the same as the two turns before it.
+
+The `details` element is gone. The measurement I wrote to check its disclosure
+marker was unsound: `summary` spans the full width, so comparing its edges says
+nothing about where the browser put the triangle. Rather than devise a better
+measurement, the element was replaced with the button-and-toggle every other fold
+on this board already uses. It was an inconsistency I had introduced for no
+reason, and removing it also removes the question.
+
+## Step 7 — Reporting the checks
+
+About to write `docs/verification-turn-3.md`.
+
+The same division as turn two, and for the same reason: the agent has no session
+on this application and does not sign in as Tomer, so anything needing a
+signed-in board is his to observe. Turn two's most useful fault - a trigger that
+could not write its own log - was found exactly there, four commits after it was
+pushed.
+
+Two of the seven can be settled from the source alone, because they are claims
+about what does not exist. Nothing reverses an ending, and ending writes two
+columns and touches nothing else. Both are answered by reading rather than by
+running, and reading is enough for a negative.
+
+The rest need a board, and one of them needs a finished move - which means the
+milestone and check 4 are answered by the same act.
+
+## The fault in my own check
+
+The actor column existed and the log still showed no names. Diagnosis:
+`prosrc like '%actor_id%'` returned false - the function body had never been
+replaced. Only the `add column` at the top of the migration had run, the same
+partial paste that had already happened once with the end-move migration.
+
+**The check I wrote after that migration would not have caught it.** It asked
+whether `log_move_item_event` was `security definer`. It was - it had been since
+turn two, when the trigger was fixed. So the check confirmed something that was
+already true before the migration and said nothing about what the migration was
+for.
+
+A check that passes whether or not the change landed is worse than no check,
+because it is read as evidence. The replacement asks whether the body contains
+`actor_id` and `auth.uid()`, which are true only if the new body is in place.
+
+Found by Tomer adding a reference and seeing no name against it.
+
+---
+
+## Where turn three stands — 30 August 2026
+
+**Phase 3 of seven, verification, four checks of seven settled.**
+
+The seven phases of a turn are: plan, build, verify, use, interview, record and
+revise, merge. Turn three is in the third.
+
+**Built and pushed.** The actor on a log line, ending a move, refusing changes to
+one that has ended, and starting the next one. Two migrations, both applied to
+the Supabase project after a repair described below.
+
+**Checks 1, 2, 3 and 4 pass.** One and two were observed by Tomer on the live
+site; three and four were settled by reading the source, because both are claims
+about what does not happen - nothing reverses an ending, and `end_move` writes
+two columns and touches nothing else.
+
+**Checks 5, 6 and 7 need a move that has actually ended**, so they are answered
+by the milestone rather than before it.
+
+**Next is phase 4, use.** A friend of Tomer's has finished his own move and is
+the right person to end one in the tool: Tomer's own move still has open items
+that ending would lock. What has to come back is not whether the data survived -
+the code answers that - but whether what remains on screen is what somebody who
+finished a move would want to find.
+
+### Two hazards that bit this turn, both worth knowing
+
+**Migrations pasted in part.** Twice, a migration ran only as far as its first
+statement, because a snippet quoted in conversation was pasted instead of the
+file. Both times the symptom appeared much later. Give the whole migration, in
+one block, and quote nothing from it.
+
+**A check that could not fail.** The check written after the actor migration
+asked whether the log trigger was `security definer`. It had been since turn two,
+so it passed while the migration's actual change had not landed. A check must ask
+about the thing that changed, not about a property that was already true.
+
+### Operational
+
+Netlify deploys from `build/ending`. Every turn has needed this changed, and
+every turn it has been forgotten first.
+
+---
+
+## Phase 4 — Use
+
+About to hand the tool to somebody who has finished a real move, and to let him
+close one here. Checks 5, 6 and 7 are answered with him, and so is the half of
+check 4 that reading the source cannot reach.
+
+**Why him and not Tomer.** Ending is the act this turn is built around, and
+Tomer's own move still has open items - ending it would lock them, and the tool
+would have cost him the thing it exists for. The person who can safely end a move
+is the one whose move is already over.
+
+**What that costs, said before it is discovered.** He is reconstructing a move he
+has already finished, not living one through the tool. Every date on the board
+will be the database's, because `setItemState` sends no date on purpose and the
+trigger stamps `request_sent_at` and `confirmed_at` from the server clock. So
+every item he marks as sent will read `נשלח היום`, and no waiting time on his
+board will be a real one. He can judge what a finished board holds and how it
+reads. He cannot judge the elapsed time, and nothing he says about it counts.
+
+**What is being watched:**
+
+- **5** - after ending, a new move begins with no setup repeated.
+- **6** - both people see the same ended state. This needs a second account on
+  his move, joined by code before he ends it. One browser cannot answer it.
+- **7** - the screens this turn added, read in Hebrew by somebody who has never
+  seen them: the name on a log line, the notice on a finished board, the
+  two-step ending, the offer to begin again.
+- **4, the half left open** - whether what remains on a finished board is what a
+  person who has actually finished a move would want to find.
+
+**One limit he should be told before he presses, not after.** Once he opens a new
+move, the finished one is no longer reachable from any screen. It is not deleted
+and nothing was lost; there is simply no way back to it yet, and step 5 records
+that as work for a later turn. If that is what stings, it is a finding and not a
+surprise.
+
+**Nothing in the code changes while he is using it.** A fault found during use is
+written down first. Whether it is fixed inside this phase or after the interview
+is Tomer's call, not something to decide mid-session with somebody waiting.
+
+## Step 8 — Getting back to a move that ended
+
+Asked for by Tomer on 30 August, after reading the limit recorded in step 5 and
+in the intent for phase 4: a finished move is kept whole and is reachable from
+nowhere. He wants it reachable in a press — the items, and the history of each
+one.
+
+So turn three goes back to phase 2 for one step. Phase 4 waits, and it waits on
+purpose: handing somebody a tool whose known worst moment is the one he is being
+asked to walk into would waste the only person available to walk into it.
+
+**No schema.** The policy `move_select_members` has always let a person select
+every move they are on. Nothing was hidden from the browser; there was simply no
+screen that asked for more than one row.
+
+**Not a new screen either.** A finished board is already read-only and every
+item's log already opens on it, because `ItemLog` was never made conditional on
+the move running. Building a separate archive view would put an item on screen in
+a second place, and two places drift. This step is navigation and nothing else.
+
+**One query where there were two.** `currentMove` ran two selects to apply the
+rule step 5 wrote down — the running move if there is one, otherwise the most
+recently ended. The rule does not change. It is now derived from the list of
+moves the screen has to fetch anyway, which is one round trip rather than two.
+
+**One thing this changes that is not navigation.** The offer to open a new move
+appeared whenever the move on screen had ended, and that was right only because
+the sole way to see an ended board was to have nothing else. A person can now
+look back at a finished move while another one is running, and offering to start
+a third there would be wrong. The offer appears only when the ended move is the
+person's whole current state; looking back while a move is running offers the way
+back to it instead.
+
+### What the step found
+
+The panel was measured in the running application rather than in a copy of it:
+its markup was put into the live page's DOM, read back, and removed. In a
+document that is `dir="rtl"`, the address begins at the right edge of the row,
+the date follows it inward, the button sits at the left edge, and the page does
+not scroll sideways. The new stylesheet block carries no physical direction -
+`border-block-start`, `padding-block`, `margin-block-end` and nothing else.
+
+**What that does not settle.** It measures the panel, not the screen. Whether
+the way back reads as a way back - whether a person who has ended a move finds
+it and understands what it opens - needs somebody signed in with a finished move
+to look at, and that is the person phase 4 is waiting for.
+
+**Nothing else on the board changed.** `ItemLog` was never conditional on the
+move running, so the history of every item on a closed board was already
+readable the moment the board could be reached. This step added no way to read
+an item; it added the door.
+
+## Step 9 — The door on every screen, not just one
+
+Tomer's friend ended his move, opened a new one, and could not find his way
+back. He is right, and the fault is in step 8: `PastMoves` was rendered inside
+the board branch of `MoveScreen` and nowhere else.
+
+The board is the one screen a person is not on at the moment they need it.
+Pressing "פתח מעבר חדש" leaves it, and the address form, the address
+confirmation and the lookup outcome all sit between there and the next board.
+Somebody who has just opened a new move is standing in exactly the rooms where
+the door was not hung.
+
+**How the check missed it.** Step 8 measured the panel: its direction, its
+edges, its rules. Every one of those measurements was about the panel being
+right, and none was about the panel being *there*. It is the same shape of fault
+as the `security definer` check earlier this turn - a measurement of something
+true, standing in for the question that mattered. What use found in a minute,
+neither the measurement nor the build could have found at all.
+
+**The fix.** The door is hoisted out of the board and put around every screen
+after sign-in, so a person can reach a finished move from wherever the tool has
+put them.
+
+## Step 10 — What is still unconfirmed, said before the move is closed
+
+The second thing Tomer's friend found. He ended a move and was never told which
+items were closing without an authority's confirmation, so the question he was
+left with - did those actually get done? - had to be asked from memory.
+
+`framing.md` has been clear from its first version that an item is finished only
+when the authority confirms it, and that sending the request is a state of its
+own. The board says so at a glance and the closed board keeps saying it. The one
+moment it was not said is the moment it mattered most: the press that makes the
+board unchangeable.
+
+**It tells, and it does not refuse.** Ending is declared, not derived - a person
+knows they have moved in long before a bureaucracy agrees, and a move with four
+items that will never be confirmed is a real and finished move. So the panel
+names what is open and lets the person close anyway. Refusing would turn a fact
+about the world into an argument with the tool.
+
+**Hidden items are not counted.** They do not apply to this move, which is what
+hiding means, and the tally at the head of the board already counts the same way.
+
+**An answer either way.** With nothing open the panel says so in a line. "Did
+they all get closed in the end" deserves a yes as plainly as it deserves a list.
+
+One screen, no schema, and nothing about what an item is - only about when the
+board says it.
+
+## What phase four found, on its first use
+
+Tomer's friend finished a real move in the tool and opened the next one, which
+is the milestone this turn set itself. Two things came back with him, and a
+third that neither of them said out loud.
+
+**One.** He could not get back to the move he had finished. Step 8's fault, and
+step 9 is the fix.
+
+**Two.** Nothing told him, at the moment of closing, which items were closing
+without an authority's confirmation. Step 10 is the fix.
+
+**Three, and it is the one worth keeping.** Check 4 was settled by reading
+`end_move` and showing that it writes two columns and deletes nothing. That
+reading was correct and it is still correct. It was also not the question.
+
+*"A move that has ended loses nothing"* and *"a person can still get to what it
+holds"* are different claims, and only the first was checked. For the person
+holding it, a board that survives in the database and cannot be reached from any
+screen is not meaningfully different from one that was deleted - the difference
+is real only to somebody with a SQL editor.
+
+The reading was sound. Its subject was too narrow, and nothing about reading the
+source could have revealed that, because the function does exactly what the
+check said it does. It took somebody who had finished a move and wanted to look
+at it again.
+
+That is now three faults this turn found the same way and none of them found by
+building: a check that confirmed a property that was already true, a measurement
+of a panel that never asked whether the panel was reachable, and a proof about
+data that never asked whether a person could see it. The pattern is the same
+each time - the check was true, and adjacent to the thing that mattered.
+
+**What is still open from phase four.** Check 6 needs two accounts on one ended
+move, and nothing in what came back says there was a second person. Check 7 needs
+somebody signed in reading the new screens on purpose rather than passing
+through them.
+
+## Phase four, closed — 30 August 2026
+
+**The milestone is met.** Somebody who had finished a real move finished one in
+the tool, opened the next one, and nothing he recorded was lost or out of reach.
+
+All seven checks pass. Five, six and seven were answered by that use: he opened
+the next move with nothing to set up again, his partner saw on her own screen
+that he had closed it and found what she expected on it, and neither of them
+found anything that read wrongly in Hebrew through the closing and the opening.
+
+Phase four also cost two steps of building - the door on every screen and the
+unconfirmed items before closing - and produced the note above about check 4
+being true and beside the point. That is what the phase is for.
+
+### Two things use has not answered yet
+
+**Nobody has seen step 10.** He closed his move before the panel that names the
+unconfirmed items existed. It has been measured and never used, which is exactly
+the position step 8 was in when it was found to be hanging in the wrong room.
+The next real ending is its first use.
+
+**The second person, once the first opens the next move.** Found by reading
+rather than by use, and it should be checked with the person it concerns rather
+than argued about here.
+
+A partner who is on the finished move and not on the new one has exactly one
+move, and it has ended. `currentOf` gives her the closed board, `running` is
+null, and so she is offered `פתח מעבר חדש` - the same offer her partner took,
+who has already made the move she needs to be on. The screen it leads to has
+carried both doors since turn one, the address form and the join code, precisely
+so that a second person does not create a second board for one apartment. But
+the panel that sends her there speaks only of starting something new.
+
+So the guard is in place and the wording does not point at it. Whether that
+matters is a question for her, not for me: what did she see when he opened the
+next move, and what did she do.
+
+## Phase 5 — Interview
+
+About to write `docs/turn-3-what-use-taught.md`, the third of its kind. Written
+from what people say after using the thing, and holding what they said. Not a
+backlog: as in turn two, the most important thing in it will probably not be a
+fault.
+
+**Two people this time, not one.** Turn two interviewed Tomer alone, because
+Tomer was the only person who had used it. Turn three was used by somebody who
+had finished a real move and by his partner, and the second person's view is not
+recoverable from the first's - that is the whole reason check 6 exists.
+
+**What the interview has to ask, and why each one is here rather than invented:**
+
+1. *To the friend* - you had already finished this move outside the tool, and
+   then finished it inside. What did the closed board give you that your own
+   memory of the move did not, and what did you go looking for on it that was
+   not there? This is check 4's other half, the one no reading of `end_move`
+   could reach.
+
+2. *To the friend* - after you opened the new move, did you actually go back to
+   the closed one, or was knowing it was there enough? Steps 8 and 9 built a
+   door on the assumption that it would be walked through. If knowing is what
+   people want, a door was the wrong shape and a signpost was the right one.
+
+3. *To his partner* - when he opened the next move, what did you see and what
+   did you do? Recorded as an open question when phase four closed. She is
+   offered `פתח מעבר חדש` while the move she needs is one he has already made.
+
+4. *To the friend* - which authority was his move into? `framing.md` has listed
+   the two unexercised route descriptions as open since turn two: the city route
+   has been used and the local and regional council routes have only been
+   checked. If he moved into either, something that has been open for two turns
+   just closed without anybody arranging it.
+
+5. *To both* - did anything get dropped because nobody was told? The condition
+   `framing.md` set for notifications, asked for the third time. It has stood
+   untriggered through two turns, and the honest thing is to ask it again rather
+   than to assume the answer it has given twice.
+
+6. *To Tomer* - three faults this turn were found by use and none by building,
+   and all three had the same shape: a check that was true and beside the point.
+   Does that belong in `CLAUDE.md` as a rule rather than in a build log?
+
+Nothing in this phase changes code.
+
+## Phase 6 — Record and revise
+
+About to write down what turn three changes about how the work is done, and then
+what it changes about what the thing is.
+
+Two pieces, and the first is agreed. Tomer said on 30 August that the rule about
+checks belongs in `CLAUDE.md`, under `Known traps`.
+
+It goes there because `CLAUDE.md` already says what to do when the same
+correction happens twice: stop, and say it belongs as a rule rather than in the
+chat. It happened three times this turn, in three different places, with one
+shape. That is the trigger the document wrote for itself.
+
+**The rule is about what a check is for.** Every one of the three was true. What
+none of them asked was what result would mean the change had not landed - so
+each described a property of the change instead of the effect the change was
+made for, and each passed while something was broken.
+
+Still owed after this, and not being done unasked: `framing.md` is revised at the
+end of every turn, and its fourth version is now behind what the tool does. Its
+"still open" list has an item this turn closed, an item this turn answered from
+an angle nobody planned, and an item that has now been asked and unmet three
+times. That revision is agreed with Tomer before it is written, as the fourth
+version was.
+
+### The framing, fifth version
+
+About to revise `docs/framing.md`. Agreed with Tomer on 30 August, item by item
+and not as a direction: what closes, what stays open unchanged, what changes only
+in its count, and what enters that was in no previous version.
+
+The sentence the revision turns on is not a status. A finished move was argued
+for as something that must not be destroyed, and use showed it is something
+people read on purpose to decide what to do next. **A reference, not an archive.**
+That is a change in what the thing is, and it is why the door had to be a door.

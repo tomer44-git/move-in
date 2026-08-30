@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { itemEvents, type ItemEvent } from '../lib/events'
+import type { Person } from '../lib/people'
 
 /**
  * The closed set from the schema, in Hebrew.
@@ -35,7 +36,14 @@ type State =
   | { name: 'open'; events: ItemEvent[] }
   | { name: 'error'; message: string }
 
-export function ItemLog({ itemId }: { itemId: string }) {
+export function ItemLog({
+  itemId,
+  people,
+}: {
+  itemId: string
+  /** Already loaded for the board, so a log costs no extra query. */
+  people: Map<string, Person>
+}) {
   const [state, setState] = useState<State>({ name: 'closed' })
 
   // Re-reading when the item changes underneath keeps a stale history from being
@@ -95,6 +103,12 @@ export function ItemLog({ itemId }: { itemId: string }) {
               <span className="item__log-when">{formatWhen(event.at)}</span>
               <span className="item__log-what">
                 {ACTION_LABEL[event.action] ?? event.action}
+              </span>
+              {/* Nothing where the name would be, for a line written before the
+                  column existed. "Unknown" or "system" would both be inventions:
+                  a person did it, and which person was never recorded. */}
+              <span className="item__log-who">
+                {event.actor_id ? (people.get(event.actor_id)?.display_name ?? '') : ''}
               </span>
             </li>
           ))}
