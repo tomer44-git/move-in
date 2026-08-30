@@ -1306,3 +1306,41 @@ they all get closed in the end" deserves a yes as plainly as it deserves a list.
 
 One screen, no schema, and nothing about what an item is - only about when the
 board says it.
+
+## What phase four found, on its first use
+
+Tomer's friend finished a real move in the tool and opened the next one, which
+is the milestone this turn set itself. Two things came back with him, and a
+third that neither of them said out loud.
+
+**One.** He could not get back to the move he had finished. Step 8's fault, and
+step 9 is the fix.
+
+**Two.** Nothing told him, at the moment of closing, which items were closing
+without an authority's confirmation. Step 10 is the fix.
+
+**Three, and it is the one worth keeping.** Check 4 was settled by reading
+`end_move` and showing that it writes two columns and deletes nothing. That
+reading was correct and it is still correct. It was also not the question.
+
+*"A move that has ended loses nothing"* and *"a person can still get to what it
+holds"* are different claims, and only the first was checked. For the person
+holding it, a board that survives in the database and cannot be reached from any
+screen is not meaningfully different from one that was deleted - the difference
+is real only to somebody with a SQL editor.
+
+The reading was sound. Its subject was too narrow, and nothing about reading the
+source could have revealed that, because the function does exactly what the
+check said it does. It took somebody who had finished a move and wanted to look
+at it again.
+
+That is now three faults this turn found the same way and none of them found by
+building: a check that confirmed a property that was already true, a measurement
+of a panel that never asked whether the panel was reachable, and a proof about
+data that never asked whether a person could see it. The pattern is the same
+each time - the check was true, and adjacent to the thing that mattered.
+
+**What is still open from phase four.** Check 6 needs two accounts on one ended
+move, and nothing in what came back says there was a second person. Check 7 needs
+somebody signed in reading the new screens on purpose rather than passing
+through them.
