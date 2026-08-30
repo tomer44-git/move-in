@@ -1427,3 +1427,28 @@ recoverable from the first's - that is the whole reason check 6 exists.
    Does that belong in `CLAUDE.md` as a rule rather than in a build log?
 
 Nothing in this phase changes code.
+
+## Phase 6 — Record and revise
+
+About to write down what turn three changes about how the work is done, and then
+what it changes about what the thing is.
+
+Two pieces, and the first is agreed. Tomer said on 30 August that the rule about
+checks belongs in `CLAUDE.md`, under `Known traps`.
+
+It goes there because `CLAUDE.md` already says what to do when the same
+correction happens twice: stop, and say it belongs as a rule rather than in the
+chat. It happened three times this turn, in three different places, with one
+shape. That is the trigger the document wrote for itself.
+
+**The rule is about what a check is for.** Every one of the three was true. What
+none of them asked was what result would mean the change had not landed - so
+each described a property of the change instead of the effect the change was
+made for, and each passed while something was broken.
+
+Still owed after this, and not being done unasked: `framing.md` is revised at the
+end of every turn, and its fourth version is now behind what the tool does. Its
+"still open" list has an item this turn closed, an item this turn answered from
+an angle nobody planned, and an item that has now been asked and unmet three
+times. That revision is agreed with Tomer before it is written, as the fourth
+version was.
