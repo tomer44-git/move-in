@@ -1,7 +1,7 @@
 -- Turn three, step 3 · A move that has ended.
 --
 -- `framing.md` asks that a finished move be "reset for a future one rather than
--- deleted". Tomer chose on 24 August between the two readings of that: the
+-- deleted". Tomer chose on 30 August between the two readings of that: the
 -- finished move is marked ended and stays readable, and the next one begins
 -- beside it. Clearing the items in place would have kept the address and the
 -- join code and lost the log, the dates, the references and the confirmations -
