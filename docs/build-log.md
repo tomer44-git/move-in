@@ -1381,3 +1381,49 @@ the panel that sends her there speaks only of starting something new.
 So the guard is in place and the wording does not point at it. Whether that
 matters is a question for her, not for me: what did she see when he opened the
 next move, and what did she do.
+
+## Phase 5 — Interview
+
+About to write `docs/turn-3-what-use-taught.md`, the third of its kind. Written
+from what people say after using the thing, and holding what they said. Not a
+backlog: as in turn two, the most important thing in it will probably not be a
+fault.
+
+**Two people this time, not one.** Turn two interviewed Tomer alone, because
+Tomer was the only person who had used it. Turn three was used by somebody who
+had finished a real move and by his partner, and the second person's view is not
+recoverable from the first's - that is the whole reason check 6 exists.
+
+**What the interview has to ask, and why each one is here rather than invented:**
+
+1. *To the friend* - you had already finished this move outside the tool, and
+   then finished it inside. What did the closed board give you that your own
+   memory of the move did not, and what did you go looking for on it that was
+   not there? This is check 4's other half, the one no reading of `end_move`
+   could reach.
+
+2. *To the friend* - after you opened the new move, did you actually go back to
+   the closed one, or was knowing it was there enough? Steps 8 and 9 built a
+   door on the assumption that it would be walked through. If knowing is what
+   people want, a door was the wrong shape and a signpost was the right one.
+
+3. *To his partner* - when he opened the next move, what did you see and what
+   did you do? Recorded as an open question when phase four closed. She is
+   offered `פתח מעבר חדש` while the move she needs is one he has already made.
+
+4. *To the friend* - which authority was his move into? `framing.md` has listed
+   the two unexercised route descriptions as open since turn two: the city route
+   has been used and the local and regional council routes have only been
+   checked. If he moved into either, something that has been open for two turns
+   just closed without anybody arranging it.
+
+5. *To both* - did anything get dropped because nobody was told? The condition
+   `framing.md` set for notifications, asked for the third time. It has stood
+   untriggered through two turns, and the honest thing is to ask it again rather
+   than to assume the answer it has given twice.
+
+6. *To Tomer* - three faults this turn were found by use and none by building,
+   and all three had the same shape: a check that was true and beside the point.
+   Does that belong in `CLAUDE.md` as a rule rather than in a build log?
+
+Nothing in this phase changes code.
