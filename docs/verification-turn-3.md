@@ -5,6 +5,12 @@ ASE-26 personal project · Tomer Ben Bassat · 30 August 2026 · branch `build/e
 The seven checks turn three set itself in `docs/plan-turn-3.md`, and where each
 stands at the end of building.
 
+**Four are settled. Three need a finished move.**
+
+Two were settled by reading the source, and two by Tomer on the live site on
+30 August. Three remain, and all three need a move that has actually ended -
+which means they are answered by the milestone itself.
+
 **Two are settled here. Five need a signed-in board**, and one of those needs a
 finished move, which means it is answered by the milestone itself.
 
@@ -59,26 +65,38 @@ This is the check the plan called the line. Reading the function is what settles
 it; whether what survives is what a person would want to find is check 4's other
 half, and only somebody who has finished a real move can answer that.
 
-## Needing a signed-in board
+## Observed by Tomer
 
 ### 1 · Every log line written from now on says who did it
 
-The column exists, the trigger fills it from `auth.uid()`, and the screen shows
-it beside the date and the action.
+**Pass**, after a fault that took use to find.
 
-Not observed on a real board.
+The column existed, the trigger was in place, the screen was ready - and the log
+still showed no names. `prosrc like '%actor_id%'` returned false: the function
+body had never been replaced, because only the `add column` at the top of the
+migration had run.
+
+**The check written after that migration would not have caught it.** It asked
+whether the function was `security definer`. It was, and had been since turn two.
+The check confirmed something already true before the migration and said nothing
+about what the migration was for - a check that passes whether or not the change
+lands, which is worse than none because it is read as evidence.
+
+Found by Tomer recording a reference and seeing no name against it. The
+replacement check asks whether the body contains `actor_id` and `auth.uid()`.
 
 ### 2 · A line written before this turn shows no name, never a wrong one
 
-Thirteen such lines exist, confirmed by counting them after the migration ran.
-They were not backfilled. `updated_by` on an item holds only who touched it last,
-which for an item touched twice is the wrong answer for the earlier line, and a
-log that is confidently wrong is worse than one that is honestly incomplete.
+**Pass**, and demonstrated on one item showing both behaviours at once: three
+lines from 30 August carrying `Tomer ben bassat`, and two older ones carrying a
+date, an action, and an empty space where the name would be.
 
-The screen renders an empty space rather than a word. "Unknown" and "system"
-would both be inventions: a person did it, and which person was never recorded.
+The fifteen existing lines were not backfilled. `updated_by` holds only who
+touched an item last, which for an item touched twice is the wrong answer for the
+earlier line. "Unknown" and "system" would both be inventions: a person did it,
+and which person was never recorded.
 
-Not observed.
+## Needing a finished move
 
 ### 5 · After ending one, a new move can be started without repeating any setup
 

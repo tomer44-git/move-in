@@ -1099,3 +1099,22 @@ running, and reading is enough for a negative.
 
 The rest need a board, and one of them needs a finished move - which means the
 milestone and check 4 are answered by the same act.
+
+## The fault in my own check
+
+The actor column existed and the log still showed no names. Diagnosis:
+`prosrc like '%actor_id%'` returned false - the function body had never been
+replaced. Only the `add column` at the top of the migration had run, the same
+partial paste that had already happened once with the end-move migration.
+
+**The check I wrote after that migration would not have caught it.** It asked
+whether `log_move_item_event` was `security definer`. It was - it had been since
+turn two, when the trigger was fixed. So the check confirmed something that was
+already true before the migration and said nothing about what the migration was
+for.
+
+A check that passes whether or not the change landed is worse than no check,
+because it is read as evidence. The replacement asks whether the body contains
+`actor_id` and `auth.uid()`, which are true only if the new body is in place.
+
+Found by Tomer adding a reference and seeing no name against it.
