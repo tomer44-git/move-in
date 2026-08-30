@@ -1452,3 +1452,14 @@ end of every turn, and its fourth version is now behind what the tool does. Its
 an angle nobody planned, and an item that has now been asked and unmet three
 times. That revision is agreed with Tomer before it is written, as the fourth
 version was.
+
+### The framing, fifth version
+
+About to revise `docs/framing.md`. Agreed with Tomer on 30 August, item by item
+and not as a direction: what closes, what stays open unchanged, what changes only
+in its count, and what enters that was in no previous version.
+
+The sentence the revision turns on is not a status. A finished move was argued
+for as something that must not be destroyed, and use showed it is something
+people read on purpose to decide what to do next. **A reference, not an archive.**
+That is a change in what the thing is, and it is why the door had to be a door.
