@@ -1204,3 +1204,36 @@ surprise.
 **Nothing in the code changes while he is using it.** A fault found during use is
 written down first. Whether it is fixed inside this phase or after the interview
 is Tomer's call, not something to decide mid-session with somebody waiting.
+
+## Step 8 — Getting back to a move that ended
+
+Asked for by Tomer on 30 August, after reading the limit recorded in step 5 and
+in the intent for phase 4: a finished move is kept whole and is reachable from
+nowhere. He wants it reachable in a press — the items, and the history of each
+one.
+
+So turn three goes back to phase 2 for one step. Phase 4 waits, and it waits on
+purpose: handing somebody a tool whose known worst moment is the one he is being
+asked to walk into would waste the only person available to walk into it.
+
+**No schema.** The policy `move_select_members` has always let a person select
+every move they are on. Nothing was hidden from the browser; there was simply no
+screen that asked for more than one row.
+
+**Not a new screen either.** A finished board is already read-only and every
+item's log already opens on it, because `ItemLog` was never made conditional on
+the move running. Building a separate archive view would put an item on screen in
+a second place, and two places drift. This step is navigation and nothing else.
+
+**One query where there were two.** `currentMove` ran two selects to apply the
+rule step 5 wrote down — the running move if there is one, otherwise the most
+recently ended. The rule does not change. It is now derived from the list of
+moves the screen has to fetch anyway, which is one round trip rather than two.
+
+**One thing this changes that is not navigation.** The offer to open a new move
+appeared whenever the move on screen had ended, and that was right only because
+the sole way to see an ended board was to have nothing else. A person can now
+look back at a finished move while another one is running, and offering to start
+a third there would be wrong. The offer appears only when the ended move is the
+person's whole current state; looking back while a move is running offers the way
+back to it instead.
