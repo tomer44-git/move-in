@@ -961,3 +961,25 @@ What changes:
 The definition of done keeps all nine items and none is marked as achieved, for
 the reason given a turn ago: it defines what the product has to be, not what a
 turn managed.
+
+---
+
+# Turn three · Ending a move
+
+## Step 1 — The actor on a log line
+
+About to add `actor_id` to `move_item_event`, filled by the trigger from
+`auth.uid()`.
+
+Nullable, and that is the interesting part. Every line already in the log was
+written before this column existed. There is no way to recover who wrote them,
+and `updated_by` on the item holds only who touched it last - which for an item
+touched twice is the wrong answer for the earlier line.
+
+So they stay empty and the screen shows them without a name. Backfilling from
+`updated_by` would put a plausible name on lines it was never true for, and a log
+that is confidently wrong is worse than one that is honestly incomplete.
+
+The trigger stays `security definer` - it has to, or it cannot write its own
+table - and `auth.uid()` still resolves inside it, because it reads the request's
+claim rather than the current role.
