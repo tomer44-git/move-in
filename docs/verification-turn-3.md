@@ -42,8 +42,13 @@ a move that can be reopened is not finished.
 
 ### 4 · A move that has ended loses nothing
 
-**Pass**, and it is a claim about what the code does not do, which is why reading
-it is enough.
+**Pass on the data, and use showed the claim was narrower than the check.** The
+reading below is correct: `end_move` writes two columns and deletes nothing.
+What it never asked was whether a person can still reach what survived. On first
+use the answer was no - the finished board was in the database and behind no
+door - and for the person holding it that is not meaningfully different from
+having lost it. Steps 8, 9 and 10 are what came of that; the reading itself
+stands, and stands for less than it appeared to.
 
 Ending is this, entire:
 
@@ -100,15 +105,16 @@ and which person was never recorded.
 
 ### 5 · After ending one, a new move can be started without repeating any setup
 
-`currentMove` now returns the running move if there is one and the most recently
+**Pass, observed.** Tomer's friend ended a real move and opened the next one, and
+nothing had to be set up again.
+
+`currentMove` returns the running move if there is one and the most recently
 finished otherwise - a rule rather than the accident of ordering by date, which
 was unambiguous only while a person could have one move.
 
-A finished board offers the next move above it. Sign-in, the Google client, the
-Supabase configuration and the catalogue are all unchanged, so there is nothing
-to set up again.
-
-Not observed.
+What the same act also showed is that starting the next one is where the
+finished one disappeared. The check as written is met; check 4 is where that
+belongs.
 
 ### 6 · Both people see the same ended state
 
@@ -116,7 +122,8 @@ Not observed.
 its two members, exactly like every other fact about a move. There is nothing
 per-browser that could disagree.
 
-Not demonstrated with two accounts.
+Still not demonstrated with two accounts. Nothing in what came back from the
+first use says a second person was on that move.
 
 ### 7 · Every screen reads correctly in Hebrew, right to left
 
@@ -142,6 +149,13 @@ into the live page, read back, removed: the address begins at the right edge,
 the button sits at the left, the page does not scroll sideways, and the rules
 added for it carry no physical direction. Check 7 still needs a person signed
 in, and now it has one more screen to read.
+
+Two more screens since: the door as it now appears on every screen after
+sign-in, and the list of unconfirmed items inside the ending panel. The second
+was measured the same way - the item's name sits flush to the start edge inside
+the row's padding, its state flush to the end edge, and the page does not scroll
+sideways. Somebody signed in still has to read them on purpose rather than pass
+through them, which is what step 9 exists to prove was never enough on its own.
 
 ## The milestone
 
