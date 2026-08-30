@@ -1344,3 +1344,40 @@ each time - the check was true, and adjacent to the thing that mattered.
 move, and nothing in what came back says there was a second person. Check 7 needs
 somebody signed in reading the new screens on purpose rather than passing
 through them.
+
+## Phase four, closed — 30 August 2026
+
+**The milestone is met.** Somebody who had finished a real move finished one in
+the tool, opened the next one, and nothing he recorded was lost or out of reach.
+
+All seven checks pass. Five, six and seven were answered by that use: he opened
+the next move with nothing to set up again, his partner saw on her own screen
+that he had closed it and found what she expected on it, and neither of them
+found anything that read wrongly in Hebrew through the closing and the opening.
+
+Phase four also cost two steps of building - the door on every screen and the
+unconfirmed items before closing - and produced the note above about check 4
+being true and beside the point. That is what the phase is for.
+
+### Two things use has not answered yet
+
+**Nobody has seen step 10.** He closed his move before the panel that names the
+unconfirmed items existed. It has been measured and never used, which is exactly
+the position step 8 was in when it was found to be hanging in the wrong room.
+The next real ending is its first use.
+
+**The second person, once the first opens the next move.** Found by reading
+rather than by use, and it should be checked with the person it concerns rather
+than argued about here.
+
+A partner who is on the finished move and not on the new one has exactly one
+move, and it has ended. `currentOf` gives her the closed board, `running` is
+null, and so she is offered `פתח מעבר חדש` - the same offer her partner took,
+who has already made the move she needs to be on. The screen it leads to has
+carried both doors since turn one, the address form and the join code, precisely
+so that a second person does not create a second board for one apartment. But
+the panel that sends her there speaks only of starting something new.
+
+So the guard is in place and the wording does not point at it. Whether that
+matters is a question for her, not for me: what did she see when he opened the
+next move, and what did she do.
