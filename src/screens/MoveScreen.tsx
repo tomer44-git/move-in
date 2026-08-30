@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, type ReactNode } from 'react'
 import {
   confirmAddress,
   createMove,
@@ -119,6 +119,26 @@ export function MoveScreen({ meId }: { meId: string }) {
     [show],
   )
 
+  /**
+   * Every screen after signing in carries the door to a move that ended.
+   *
+   * It was on the board alone, which is the one screen a person is not on when
+   * they need it: pressing "open a new move" leaves the board, and the address
+   * form, the address confirmation and the lookup outcome all sit between there
+   * and the next board. Somebody who has just opened a new move is standing in
+   * exactly the rooms the door was missing from.
+   */
+  const withDoor = (body: ReactNode) => (
+    <>
+      <PastMoves
+        moves={moves}
+        shownId={screen.name === 'move' ? screen.move.id : undefined}
+        onOpen={show}
+      />
+      {body}
+    </>
+  )
+
   if (screen.name === 'loading') return <p className="notice">רגע…</p>
 
   if (screen.name === 'error') {
@@ -133,7 +153,7 @@ export function MoveScreen({ meId }: { meId: string }) {
     // Two doors. With only the address form here, the second person would create
     // a second move for the same apartment - which is the thing the join code
     // exists to prevent.
-    return (
+    return withDoor(
       <div className="doors">
         <AddressForm
           title="כתובת הדירה החדשה"
@@ -153,12 +173,12 @@ export function MoveScreen({ meId }: { meId: string }) {
               throw new Error('ההצטרפות הצליחה אך המעבר לא נמצא')
           }}
         />
-      </div>
+      </div>,
     )
   }
 
   if (screen.name === 'editing_address') {
-    return (
+    return withDoor(
       <AddressForm
         title="שינוי הכתובת"
         lead="כל מה שהבדיקה הקודמת מצאה יימחק, והכתובת החדשה תיבדק מחדש."
@@ -168,7 +188,7 @@ export function MoveScreen({ meId }: { meId: string }) {
           await setAddress(screen.move.id, address)
           await runLookup(screen.move.id)
         }}
-      />
+      />,
     )
   }
 
@@ -185,7 +205,7 @@ export function MoveScreen({ meId }: { meId: string }) {
     // A move that never resolved still gets its board. The outcome sits above
     // it, so the reason there is no authority stays visible and correctable
     // rather than being replaced by a list that looks complete.
-    return (
+    return withDoor(
       <>
         {/* Reading a finished move while another is running. The offer here is
             the way back, never the offer to open a third. */}
@@ -229,15 +249,13 @@ export function MoveScreen({ meId }: { meId: string }) {
             onChangeAddress={() => setScreen({ name: 'editing_address', move })}
           />
         )}
-        <PastMoves moves={moves} shownId={move.id} onOpen={show} />
-
         <Board move={move} meId={meId} onEnded={reload} />
-      </>
+      </>,
     )
   }
 
   if (move.lookup_status === 'resolved') {
-    return (
+    return withDoor(
       <ConfirmAddress
         move={move}
         onConfirm={async () => {
@@ -246,11 +264,11 @@ export function MoveScreen({ meId }: { meId: string }) {
           if (fresh) show(fresh)
         }}
         onReject={() => setScreen({ name: 'editing_address', move })}
-      />
+      />,
     )
   }
 
-  return (
+  return withDoor(
     <>
       <LookupOutcome
         move={move}
@@ -263,6 +281,6 @@ export function MoveScreen({ meId }: { meId: string }) {
           {lookupError}
         </p>
       )}
-    </>
+    </>,
   )
 }

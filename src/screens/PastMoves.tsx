@@ -17,7 +17,8 @@ export function PastMoves({
   onOpen,
 }: {
   moves: Move[]
-  shownId: string
+  /** The move on screen, when there is one. Left out, every ended move is offered. */
+  shownId?: string
   onOpen: (move: Move) => void
 }) {
   // The one being read is not offered as somewhere to go.
