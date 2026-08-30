@@ -5,14 +5,13 @@ ASE-26 personal project · Tomer Ben Bassat · 30 August 2026 · branch `build/e
 The seven checks turn three set itself in `docs/plan-turn-3.md`, and where each
 stands at the end of building.
 
-**Four are settled. Three need a finished move.**
+**All seven pass.** Two by reading the source, two by Tomer on the live site,
+and the last three by a friend of Tomer's who finished a real move in the tool
+on 30 August and opened the next one - the milestone this turn set itself.
 
-Two were settled by reading the source, and two by Tomer on the live site on
-30 August. Three remain, and all three need a move that has actually ended -
-which means they are answered by the milestone itself.
-
-**Two are settled here. Five need a signed-in board**, and one of those needs a
-finished move, which means it is answered by the milestone itself.
+Three of the seven were rewritten after use rather than before it, and one of
+them, check 4, was narrowed by what use found. That is recorded where it
+happened rather than tidied away.
 
 The division is the same as turn two's, and turn two is the argument for keeping
 it: its most useful fault - a log trigger that could not write to its own table -
@@ -101,7 +100,7 @@ touched an item last, which for an item touched twice is the wrong answer for th
 earlier line. "Unknown" and "system" would both be inventions: a person did it,
 and which person was never recorded.
 
-## Needing a finished move
+## Answered by the finished move
 
 ### 5 · After ending one, a new move can be started without repeating any setup
 
@@ -122,8 +121,9 @@ belongs.
 its two members, exactly like every other fact about a move. There is nothing
 per-browser that could disagree.
 
-Still not demonstrated with two accounts. Nothing in what came back from the
-first use says a second person was on that move.
+**Pass, observed with two accounts.** The friend's partner was on the same move,
+and when he closed it she saw that it had been closed by him, with what she
+expected to find on it. Nothing had to be told from one to the other.
 
 ### 7 · Every screen reads correctly in Hebrew, right to left
 
@@ -150,12 +150,14 @@ the button sits at the left, the page does not scroll sideways, and the rules
 added for it carry no physical direction. Check 7 still needs a person signed
 in, and now it has one more screen to read.
 
-Two more screens since: the door as it now appears on every screen after
-sign-in, and the list of unconfirmed items inside the ending panel. The second
-was measured the same way - the item's name sits flush to the start edge inside
-the row's padding, its state flush to the end edge, and the page does not scroll
-sideways. Somebody signed in still has to read them on purpose rather than pass
-through them, which is what step 9 exists to prove was never enough on its own.
+**Pass, observed.** Two people went through the closing of a move and the
+opening of the next one in Hebrew, and nothing read wrongly.
+
+**What that covers, and what it does not.** It covers the ending panel as it was
+that day, the closed board, the offer to begin again, and the door of step 9 -
+he came back afterwards and read the finished move through it. It does not cover
+the list of unconfirmed items from step 10, which did not exist when he closed.
+That screen has been measured and not yet used.
 
 ## The milestone
 
