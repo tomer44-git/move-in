@@ -1059,3 +1059,13 @@ between this and deleting, and it is the whole reason Tomer chose this reading.
 Reaching it is a screen for a later turn: right now the offer to start again is
 the part that has to exist, and burying a finished board behind a new one that
 does not exist yet would be solving the wrong half first.
+
+## Step 6 — The right-to-left pass
+
+About to check the screens this turn added: the name on a log line, the notice on
+a finished board, the two-step ending, the offer to begin again, and the frozen
+draft inside a `details` element.
+
+The `details` element is the one with no precedent here. Its marker is placed by
+the browser rather than by our stylesheet, and browsers have been known to leave
+it on the left in a right-to-left document.
