@@ -1279,3 +1279,30 @@ neither the measurement nor the build could have found at all.
 **The fix.** The door is hoisted out of the board and put around every screen
 after sign-in, so a person can reach a finished move from wherever the tool has
 put them.
+
+## Step 10 — What is still unconfirmed, said before the move is closed
+
+The second thing Tomer's friend found. He ended a move and was never told which
+items were closing without an authority's confirmation, so the question he was
+left with - did those actually get done? - had to be asked from memory.
+
+`framing.md` has been clear from its first version that an item is finished only
+when the authority confirms it, and that sending the request is a state of its
+own. The board says so at a glance and the closed board keeps saying it. The one
+moment it was not said is the moment it mattered most: the press that makes the
+board unchangeable.
+
+**It tells, and it does not refuse.** Ending is declared, not derived - a person
+knows they have moved in long before a bureaucracy agrees, and a move with four
+items that will never be confirmed is a real and finished move. So the panel
+names what is open and lets the person close anyway. Refusing would turn a fact
+about the world into an argument with the tool.
+
+**Hidden items are not counted.** They do not apply to this move, which is what
+hiding means, and the tally at the head of the board already counts the same way.
+
+**An answer either way.** With nothing open the panel says so in a line. "Did
+they all get closed in the end" deserves a yes as plainly as it deserves a list.
+
+One screen, no schema, and nothing about what an item is - only about when the
+board says it.
