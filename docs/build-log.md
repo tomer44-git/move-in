@@ -1039,3 +1039,23 @@ which is the truer statement.
 The database refuses the change regardless. The screen is the courtesy and the
 trigger is the rule - if a button were ever left behind, pressing it would fail
 rather than half-succeed.
+
+## Step 5 — The next move
+
+About to let a new move begin once one has ended. Without this, ending is just
+stopping, and `framing.md` asks for a reset.
+
+One thing has to change beyond adding a button. `currentMove` returns the most
+recent move a person is on, which was unambiguous while there could only be one.
+Now there can be a finished one and a running one, and "most recent" would land
+on whichever was created last - correct by luck rather than by rule.
+
+So the rule becomes explicit: the running move if there is one, and otherwise the
+most recently finished. A person with a finished move and no new one sees their
+closed board, with the offer to start the next.
+
+The finished move stays reachable after a new one begins. That is the difference
+between this and deleting, and it is the whole reason Tomer chose this reading.
+Reaching it is a screen for a later turn: right now the offer to start again is
+the part that has to exist, and burying a finished board behind a new one that
+does not exist yet would be solving the wrong half first.
