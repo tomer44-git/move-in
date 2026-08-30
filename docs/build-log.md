@@ -1237,3 +1237,22 @@ look back at a finished move while another one is running, and offering to start
 a third there would be wrong. The offer appears only when the ended move is the
 person's whole current state; looking back while a move is running offers the way
 back to it instead.
+
+### What the step found
+
+The panel was measured in the running application rather than in a copy of it:
+its markup was put into the live page's DOM, read back, and removed. In a
+document that is `dir="rtl"`, the address begins at the right edge of the row,
+the date follows it inward, the button sits at the left edge, and the page does
+not scroll sideways. The new stylesheet block carries no physical direction -
+`border-block-start`, `padding-block`, `margin-block-end` and nothing else.
+
+**What that does not settle.** It measures the panel, not the screen. Whether
+the way back reads as a way back - whether a person who has ended a move finds
+it and understands what it opens - needs somebody signed in with a finished move
+to look at, and that is the person phase 4 is waiting for.
+
+**Nothing else on the board changed.** `ItemLog` was never conditional on the
+move running, so the history of every item on a closed board was already
+readable the moment the board could be reached. This step added no way to read
+an item; it added the door.
