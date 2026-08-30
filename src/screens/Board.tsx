@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import {
   addCustomItem,
   generateDraft,
+  itemTitle,
   listItems,
   saveDraft,
   seedItems,
@@ -138,6 +139,17 @@ export function Board({
   const hidden = numbered.filter((row) => row.item.hidden_at !== null)
   const shown = showHidden ? hidden : onBoard
 
+  // What no authority has confirmed, named for the moment of closing. Hidden
+  // items are left out: they do not apply to this move, which is what hiding
+  // means, and the tally above counts the same way.
+  const openItems = onBoard
+    .filter((row) => row.item.state !== 'confirmed')
+    .map(({ item }) => ({
+      id: item.id,
+      title: itemTitle(item),
+      state: item.state,
+    }))
+
   const counts = {
     confirmed: onBoard.filter((row) => row.item.state === 'confirmed').length,
     sent: onBoard.filter((row) => row.item.state === 'request_sent').length,
@@ -241,6 +253,7 @@ export function Board({
 
       {!finished && (
         <EndMove
+          openItems={openItems}
           onEnd={async () => {
             await endMove(move.id)
             onEnded()

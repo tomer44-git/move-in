@@ -1,4 +1,4 @@
-import { CATALOGUE } from '../catalogue/items'
+import { CATALOGUE, CATALOGUE_BY_KEY } from '../catalogue/items'
 import { supabase } from './supabase'
 
 export type ItemState = 'not_started' | 'request_sent' | 'confirmed'
@@ -22,6 +22,25 @@ export type MoveItem = {
   draft_generated_at: string | null
   updated_at: string
   updated_by: string | null
+}
+
+/**
+ * What an item is called.
+ *
+ * A row from the verified list is titled by the list; a hand-added one carries
+ * its own title. A key the catalogue does not know is a real possibility - the
+ * list lives in git and a board lives in the database, and the two can be of
+ * different ages - so it says so rather than showing nothing.
+ *
+ * `ItemRow` does not call this. An unknown key is not a title problem there: it
+ * replaces the whole row with the key itself, so that whoever has to fix it can
+ * see what to look for.
+ */
+export const itemTitle = (item: MoveItem): string => {
+  const entry = item.catalogue_key
+    ? CATALOGUE_BY_KEY.get(item.catalogue_key)
+    : undefined
+  return entry?.title ?? item.custom_title ?? 'פריט לא מזוהה'
 }
 
 const COLUMNS =

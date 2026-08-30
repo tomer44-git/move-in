@@ -642,3 +642,36 @@ body {
   color: var(--colour-ink-soft);
   font-size: 0.875rem;
 }
+
+/* What is still unconfirmed, listed before the move is closed. */
+.end-move__open {
+  margin-block-end: var(--space-3);
+}
+
+.end-move__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--colour-line);
+  border-radius: 6px;
+  background: var(--colour-page);
+}
+
+.end-move__item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  padding: var(--space-1) var(--space-2);
+  border-block-start: 1px solid var(--colour-line);
+}
+
+.end-move__item:first-child {
+  border-block-start: none;
+}
+
+.end-move__state {
+  color: var(--colour-ink-soft);
+  font-size: 0.875rem;
+}
