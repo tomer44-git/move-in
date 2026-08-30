@@ -59,19 +59,38 @@ export const hasAuthority = (move: Move): boolean =>
   move.lookup_status === 'resolved' && move.authority_type !== null
 
 /**
- * The move this person is on. Row level security limits this to their own; the
- * most recent wins, which for this turn means the one they are working on.
+ * The move this person is on.
+ *
+ * The running one if there is one, and otherwise the most recently finished.
+ *
+ * "Most recent" was unambiguous while a person could only have one move. Now
+ * they can have a finished one and a running one, and ordering by date alone
+ * would land on whichever was created last - right by luck rather than by rule.
+ * A person whose move has ended and who has not started another sees their
+ * closed board, with the offer to begin again.
  */
 export async function currentMove(): Promise<Move | null> {
-  const { data, error } = await supabase
+  const running = await supabase
     .from('move')
     .select(COLUMNS)
+    .is('ended_at', null)
     .order('created_at', { ascending: false })
     .limit(1)
     .maybeSingle<Move>()
 
-  if (error) throw new Error(error.message)
-  return data
+  if (running.error) throw new Error(running.error.message)
+  if (running.data) return running.data
+
+  const finished = await supabase
+    .from('move')
+    .select(COLUMNS)
+    .not('ended_at', 'is', null)
+    .order('ended_at', { ascending: false })
+    .limit(1)
+    .maybeSingle<Move>()
+
+  if (finished.error) throw new Error(finished.error.message)
+  return finished.data
 }
 
 export async function moveById(id: string): Promise<Move | null> {

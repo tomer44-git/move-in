@@ -3,6 +3,7 @@ import {
   confirmAddress,
   createMove,
   currentMove,
+  hasEnded,
   isReady,
   joinMove,
   moveById,
@@ -151,6 +152,24 @@ export function MoveScreen({ meId }: { meId: string }) {
     // rather than being replaced by a list that looks complete.
     return (
       <>
+        {/* A finished move offers the next one. Ending without this would be
+            stopping, and framing.md asks for a reset. */}
+        {hasEnded(move) && (
+          <div className="panel next-move">
+            <h2 className="panel__title">מעבר חדש</h2>
+            <p className="panel__lead">
+              המעבר שמתחת הסתיים ונשמר. אפשר לפתוח מעבר חדש — הוא יתחיל ריק, עם
+              רשימה משלו וקוד הצטרפות משלו.
+            </p>
+            <button
+              className="button"
+              onClick={() => setScreen({ name: 'no_move' })}
+            >
+              פתח מעבר חדש
+            </button>
+          </div>
+        )}
+
         {move.lookup_status !== 'resolved' && (
           <LookupOutcome
             move={move}

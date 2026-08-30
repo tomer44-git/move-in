@@ -595,3 +595,8 @@ body {
   line-height: 1.7;
   white-space: pre-wrap;
 }
+
+/* The offer to begin again, above the board that ended. */
+.next-move {
+  margin-block-end: var(--space-2);
+}
