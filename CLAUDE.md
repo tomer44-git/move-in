@@ -93,6 +93,12 @@ English with Hebrew planned for later.
 A wrong entry in the list sends a real person to the wrong office, and nothing in
 the system will report it. This is the failure that matters most here.
 
+A check must be able to fail. Before writing one down, say what result would mean
+the change did not land. If no result would, the check is about something else —
+usually a property that was already true, or the thing itself rather than a
+person's ability to reach it. Three faults in turn three had exactly this shape,
+all three found by use and none by building.
+
 An address can fall outside every polygon — a new neighbourhood, a bad match, a
 place with no municipal status. Handle it as a real case, not an impossible one.
 
