@@ -59,7 +59,31 @@ export const hasAuthority = (move: Move): boolean =>
   move.lookup_status === 'resolved' && move.authority_type !== null
 
 /**
- * The move this person is on.
+ * Every move this person is on, newest first.
+ *
+ * The select carries no filter of its own. `move_select_members` already
+ * returns exactly the moves this person is a member of and nothing else, and
+ * repeating that here would put the rule in a second place where the two could
+ * disagree.
+ */
+export async function listMoves(): Promise<Move[]> {
+  const { data, error } = await supabase
+    .from('move')
+    .select(COLUMNS)
+    .order('created_at', { ascending: false })
+
+  if (error) throw new Error(error.message)
+  return (data ?? []) as Move[]
+}
+
+/** The moves that have ended, most recently ended first. */
+export const endedMoves = (moves: Move[]): Move[] =>
+  moves
+    .filter(hasEnded)
+    .sort((a, b) => (a.ended_at! < b.ended_at! ? 1 : -1))
+
+/**
+ * The move to show out of the ones a person has.
  *
  * The running one if there is one, and otherwise the most recently finished.
  *
@@ -69,28 +93,21 @@ export const hasAuthority = (move: Move): boolean =>
  * A person whose move has ended and who has not started another sees their
  * closed board, with the offer to begin again.
  */
+export function currentOf(moves: Move[]): Move | null {
+  const running = moves.find((move) => !hasEnded(move))
+  if (running) return running
+  return endedMoves(moves)[0] ?? null
+}
+
+/**
+ * The move this person is on.
+ *
+ * One query now rather than two. The rule above is the same rule it always was;
+ * it is applied to the list the screen has to read anyway, because a person who
+ * can return to a finished move needs all of them and not just one.
+ */
 export async function currentMove(): Promise<Move | null> {
-  const running = await supabase
-    .from('move')
-    .select(COLUMNS)
-    .is('ended_at', null)
-    .order('created_at', { ascending: false })
-    .limit(1)
-    .maybeSingle<Move>()
-
-  if (running.error) throw new Error(running.error.message)
-  if (running.data) return running.data
-
-  const finished = await supabase
-    .from('move')
-    .select(COLUMNS)
-    .not('ended_at', 'is', null)
-    .order('ended_at', { ascending: false })
-    .limit(1)
-    .maybeSingle<Move>()
-
-  if (finished.error) throw new Error(finished.error.message)
-  return finished.data
+  return currentOf(await listMoves())
 }
 
 export async function moveById(id: string): Promise<Move | null> {
