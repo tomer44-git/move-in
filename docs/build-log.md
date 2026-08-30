@@ -1021,3 +1021,21 @@ ended cannot be un-ended by editing around it.
 
 `ended_at` requires a confirmed address, because a move that never resolved has
 nothing to be finished.
+
+## Step 4 — Ending a move, on the screen
+
+About to add the control that ends a move, and the face a finished one wears.
+
+Ending asks twice. There is no un-ending: no function to reverse it, and none
+planned, because a move that could be reopened is not finished and the whole
+point is to close a chapter. An action with no undo gets a second press.
+
+A finished board keeps everything and offers nothing. Every item, date,
+reference, confirmation and log line stays readable; every button that would
+change something is gone rather than disabled. A disabled button says "you
+cannot do this now"; an absent one says "this is not a thing here any more",
+which is the truer statement.
+
+The database refuses the change regardless. The screen is the courtesy and the
+trigger is the rule - if a button were ever left behind, pressing it would fail
+rather than half-succeed.
