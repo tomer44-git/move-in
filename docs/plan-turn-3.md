@@ -1,6 +1,6 @@
 # move-in — Build plan, turn three
 
-ASE-26 personal project · Tomer Ben Bassat · branch `build/ending`
+ASE-26 personal project · Tomer Ben Bassat · 30 August 2026 · branch `build/ending`
 
 Approved before any code was written. The specification is `docs/framing.md`, in
 its fourth version.
@@ -33,7 +33,7 @@ board.
 ## The decision this turn rests on
 
 `framing.md` says a finished move "can be reset for a future one rather than
-deleted". That has two readings, and Tomer chose the second on 24 August.
+deleted". That has two readings, and Tomer chose the second on 30 August.
 
 **Rejected - reset in place.** The same move row, items returned to not started,
 everything cleared. It keeps the address and the join code and loses the log, the

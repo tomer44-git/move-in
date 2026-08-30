@@ -1,6 +1,6 @@
 # Verification — turn three
 
-ASE-26 personal project · Tomer Ben Bassat · branch `build/ending`
+ASE-26 personal project · Tomer Ben Bassat · 30 August 2026 · branch `build/ending`
 
 The seven checks turn three set itself in `docs/plan-turn-3.md`, and where each
 stands at the end of building.

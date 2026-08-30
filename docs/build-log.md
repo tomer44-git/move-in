@@ -964,7 +964,7 @@ turn managed.
 
 ---
 
-# Turn three · Ending a move
+# Turn three · Ending a move · 30 August 2026
 
 ## Step 1 — The actor on a log line
 
@@ -1002,7 +1002,7 @@ loaded, which is the only reason this is cheap.
 About to add `ended_at` and `ended_by` to `move`, and to stop a move that has
 ended from being changed.
 
-Tomer chose on 24 August between two readings of what `framing.md` means by
+Tomer chose on 30 August between two readings of what `framing.md` means by
 "reset for a future one rather than deleted". This is the second: the finished
 move is marked ended and stays readable, and a new one begins beside it. The
 first - clearing the items in place - would have kept the address and the join
