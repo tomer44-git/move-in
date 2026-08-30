@@ -135,6 +135,14 @@ question.
 
 The new screens were not seen signed in.
 
+**A screen was added after this was written.** Step 8 gave a finished move a way
+back into it, at Tomer's asking on 30 August, and the panel that offers it did
+not exist when the pass above was made. It was measured on its own terms - put
+into the live page, read back, removed: the address begins at the right edge,
+the button sits at the left, the page does not scroll sideways, and the rules
+added for it carry no physical direction. Check 7 still needs a person signed
+in, and now it has one more screen to read.
+
 ## The milestone
 
 **Somebody finishes a real move in the tool, and nothing they recorded is lost.**
