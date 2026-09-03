@@ -1527,3 +1527,25 @@ authority since its second version, and this is not one: it is a name, shown as 
 name, used only to point somebody outward.
 
 Tomer runs it by hand in the SQL editor.
+
+## Step 3 — The lookup keeps the name
+
+About to stop `resolveAuthority` from discarding an answer it was given.
+
+When the layer returns a name and a type but no `CR_LAMAS`, the outcome is still
+`lookup_failed` - nothing about this makes the move resolved - but the name and
+the raw type now travel with the failure instead of being dropped on the floor.
+`resolve-move` writes them beside the failure.
+
+**Only where they were actually answered.** The same outcome covers a timeout and
+an unreachable service, and in those cases nothing is known. The two fields are
+optional and absent there, and the row keeps its nulls. A link can only be shown
+where a name exists, so the difference has to survive all the way to the screen.
+
+**`authority_type` is still not written.** Said again here because it is the one
+thing in this step that is easy to add by accident and would quietly give items
+3 to 6 a route the tool never resolved.
+
+Nothing on screen changes yet. The board still says רשות לא ידועה, because
+`hasAuthority` asks for a resolved lookup and this is not one. What changes is
+that the answer is no longer thrown away.
