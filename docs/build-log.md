@@ -1549,3 +1549,39 @@ thing in this step that is easy to add by accident and would quietly give items
 Nothing on screen changes yet. The board still says רשות לא ידועה, because
 `hasAuthority` asks for a resolved lookup and this is not one. What changes is
 that the answer is no longer thrown away.
+
+## Step 4 — The note, and the link
+
+About to put a note above the first item on any board that has no authority, and
+beside it a link where an authority was named.
+
+The wording is Tomer's, with one word changed by agreement. He dictated "or
+delete the ones that are not relevant", and there is no delete in this tool and
+never has been: an item that does not apply is hidden, because a deletion by one
+person would be unrecoverable for the other and would take the owner, the date
+and the reference with it. A sentence describing a button that does not exist is
+a small lie on a screen whose whole job is to be accurate, so it says hide.
+
+**When the note appears.** Whenever `hasAuthority` is false - the address was not
+found, it fell outside every boundary, the service failed, or the layer answered
+with something incomplete. All four leave a person with nineteen items and no
+route, and the note is the same in all four because their situation is.
+
+It does not appear on a resolved move, including one whose `Sug_Muni` is a type
+the verified list has no route for. There the authority is known and named on
+screen; what is missing is a route, and that is a different sentence for a
+different day.
+
+**When the link appears.** Only where the layer actually named an authority, and
+only where that authority is a local or regional council. After a timeout no
+name was ever returned, and a link built from nothing would point somewhere
+invented - which is the failure this project is most careful about.
+
+**The link is a search, and it says so.** The tool does not hold the address of
+any council's website and is not going to: `CLAUDE.md` puts detail at the level
+of authority type and not of the individual municipality, and two hundred and
+fifty URLs is a maintenance burden whose failure mode is sending a real person to
+the wrong place. The link is built from the name the layer just returned, so it
+exists for all two hundred and forty-nine councils and there is nothing to keep
+up to date. The label says "search for the site of", because that is what it
+does.
