@@ -1463,3 +1463,44 @@ The sentence the revision turns on is not a status. A finished move was argued
 for as something that must not be destroyed, and use showed it is something
 people read on purpose to decide what to do next. **A reference, not an archive.**
 That is a change in what the thing is, and it is why the door had to be a door.
+
+# Turn four · A working board when the address does not resolve
+
+## Step 1 — The board that thought it had ended
+
+About to make `resolve-move` return every column the client's `Move` declares,
+and to stop `hasEnded` reading a missing field as a date.
+
+`SELECTED` in that function was written in turn two. Four columns the client
+needs have been added since or were never in it: `join_code`, `created_at`, and
+turn three's `ended_at` and `ended_by`. The object it returns is therefore not a
+`Move`, although its type says it is - TypeScript checks the shape the function
+declares, not the shape the browser will treat it as after a fetch.
+
+Then turn three added
+
+    hasEnded = (move) => move.ended_at !== null
+
+which is true for `undefined`. So a board rendered straight from a lookup was a
+finished board: every action gone, and `new Date(undefined)` printing
+`המעבר הסתיים ב-Invalid Date`.
+
+**Two screenshots of the same move, minutes apart, show both halves.** In the
+first, taken straight after the lookup, the ended notice is present and the join
+code beside the address is blank. In the second, after a reload, the notice is
+gone, the code reads `ZL9F8S`, and every action is back. One object was missing
+two columns; both symptoms are the same absence.
+
+**The direction of the failure is the part worth fixing on its own.** A missing
+`ended_at` currently means "ended", which locks a board somebody is using. The
+opposite default - missing means "not ended" - can at worst offer a button on a
+move that has finished, and `move_item_refuses_ended_move` refuses the write. One
+mistake costs a person their board; the other costs a failed click. So the
+comparison becomes a truthiness test and the database stays the authority on what
+has ended.
+
+Both halves are fixed, not just the one that would have been enough. The column
+list is the fault; the comparison is what turned it into a locked screen instead
+of a wrong date.
+
+No schema. Nothing to run.
