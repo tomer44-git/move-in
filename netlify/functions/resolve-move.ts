@@ -147,7 +147,17 @@ export default async (request: Request): Promise<Response> => {
       })
 
     case 'lookup_failed':
-      return write({ ...point, lookup_status: 'lookup_failed', lookup_error: authority.reason })
+      // The name and the raw type are written only where the layer gave them.
+      // `authority_type` - the mapped one, which decides the route on items 3 to
+      // 6 - is deliberately not written: the move was not resolved, and an item
+      // with no route is the honest result of that.
+      return write({
+        ...point,
+        lookup_status: 'lookup_failed',
+        lookup_error: authority.reason,
+        authority_name: authority.authorityName ?? null,
+        authority_type_raw: authority.authorityTypeRaw ?? null,
+      })
 
     case 'resolved':
       return write({
