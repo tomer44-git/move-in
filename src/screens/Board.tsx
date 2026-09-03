@@ -18,6 +18,7 @@ import { peopleOnMove, type Person } from '../lib/people'
 import { endMove, hasAuthority, hasEnded, type Move } from '../lib/move'
 import { AddItem } from './AddItem'
 import { EndMove } from './EndMove'
+import { GeneralMoveNotice } from './GeneralMoveNotice'
 import { ItemRow } from './ItemRow'
 
 type State =
@@ -189,6 +190,11 @@ export function Board({
           )}
         </p>
       )}
+
+      {/* Above the first item, on any board with no authority. Fifteen of the
+          nineteen never needed one, so the list stands; what is missing is the
+          route, and the note says where to go and look for it. */}
+      {!known && <GeneralMoveNotice move={move} />}
 
       {hidden.length > 0 && (
         <div className="board__hidden-toggle">

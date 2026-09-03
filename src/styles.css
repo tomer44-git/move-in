@@ -675,3 +675,24 @@ body {
   color: var(--colour-ink-soft);
   font-size: 0.875rem;
 }
+
+/* The note above the first item, on a board with no authority.
+   `.notice` alone is soft grey, which is right for "one moment…" and wrong for
+   a paragraph a person is meant to read and act on. */
+.notice--general {
+  margin-block: var(--space-2);
+  padding: var(--space-2);
+  border: 1px solid var(--colour-line);
+  border-radius: 6px;
+  background: #eef4fb;
+  color: var(--colour-ink);
+}
+
+.general__text {
+  margin: 0;
+  line-height: 1.7;
+}
+
+.general__link {
+  margin: var(--space-1) 0 0;
+}
