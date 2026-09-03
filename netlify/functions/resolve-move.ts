@@ -22,9 +22,16 @@ const ANON_KEY = process.env['SUPABASE_ANON_KEY'] ?? process.env['VITE_SUPABASE_
 const SERVICE_ROLE_KEY = process.env['SUPABASE_SERVICE_ROLE_KEY'] ?? ''
 const USER_AGENT = process.env['NOMINATIM_USER_AGENT'] ?? ''
 
+/**
+ * Every column the browser's `Move` declares, and the few this function needs
+ * for itself. The two lists have to stay the same length: what comes back from
+ * here is handed straight to the board, and a column missing from it arrives as
+ * `undefined` rather than as the null the screen is written against.
+ */
 type MoveRow = {
   id: string
   address_text: string
+  join_code: string
   lookup_status: string
   lookup_error: string | null
   authority_name: string | null
@@ -36,10 +43,13 @@ type MoveRow = {
   matched_address: string | null
   address_confirmed_at: string | null
   resolved_at: string | null
+  ended_at: string | null
+  ended_by: string | null
+  created_at: string
 }
 
 const SELECTED =
-  'id, address_text, lookup_status, lookup_error, authority_name, authority_code, authority_type, authority_type_raw, point_lat, point_lon, matched_address, address_confirmed_at, resolved_at'
+  'id, address_text, join_code, lookup_status, lookup_error, authority_name, authority_code, authority_type, authority_type_raw, point_lat, point_lon, matched_address, address_confirmed_at, resolved_at, ended_at, ended_by, created_at'
 
 export default async (request: Request): Promise<Response> => {
   if (request.method !== 'POST') return fail(405, 'use POST')

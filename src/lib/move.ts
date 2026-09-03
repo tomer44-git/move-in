@@ -51,8 +51,17 @@ export const isReady = (move: Move): boolean =>
     ? false
     : move.lookup_status !== 'resolved' || move.address_confirmed_at !== null
 
-/** A finished move keeps everything it held and accepts no further change. */
-export const hasEnded = (move: Move): boolean => move.ended_at !== null
+/**
+ * A finished move keeps everything it held and accepts no further change.
+ *
+ * Truthiness rather than `!== null`, and the reason is which way the mistake
+ * falls. A move object that arrived without the column at all reads as
+ * `undefined`, and under the old comparison that counted as ended - which locked
+ * a board somebody was working on. Read the other way, the worst case is a
+ * button offered on a move that has finished, and `move_item_refuses_ended_move`
+ * refuses the write. The database stays the authority on what has ended.
+ */
+export const hasEnded = (move: Move): boolean => Boolean(move.ended_at)
 
 /** Whether this move knows which authority the address belongs to. */
 export const hasAuthority = (move: Move): boolean =>
