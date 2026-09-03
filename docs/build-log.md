@@ -1504,3 +1504,26 @@ list is the fault; the comparison is what turned it into a locked screen instead
 of a wrong date.
 
 No schema. Nothing to run.
+
+## Step 2 — A failed lookup may keep the name it was given
+
+About to relax one constraint. `move_authority_needs_resolved` allows an
+authority name only on a resolved move, which is why the answer the layer gave
+for גזר - a name and a type, and no locality code - was discarded whole.
+
+**Relaxing, not adding.** No new column. The name goes where names go, and the
+rule that a resolved move needs everything is untouched.
+
+**The mapped `authority_type` is still not written on a failed lookup**, and that
+is the part that does the work. It is the column that decides which route items
+3 to 6 show, so leaving it null means those items carry no route without a single
+screen having to remember to suppress one. A rule enforced by absence cannot be
+forgotten by a later change.
+
+`hasAuthority()` asks for `lookup_status = 'resolved'`. It goes on answering no,
+and the board goes on saying רשות לא ידועה. Nothing about this makes the tool
+claim an authority it did not fully resolve - `framing.md` has refused a guessed
+authority since its second version, and this is not one: it is a name, shown as a
+name, used only to point somebody outward.
+
+Tomer runs it by hand in the SQL editor.
