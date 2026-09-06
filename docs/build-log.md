@@ -1639,3 +1639,41 @@ and its route, and nothing on the resolved path was touched.
 The remaining four are the ones this turn exists for, and all four are about what
 a person sees on a board straight after a failed lookup. They are Tomer's to
 observe, exactly as the fault itself was his to find.
+
+## Phase 5 — Interview
+
+About to write `docs/turn-4-what-use-taught.md`, the fourth and last of its kind.
+
+**All seven checks passed.** The four that needed a board were observed by Tomer
+at גפן 8, כרמי יוסף - the address that started the turn, and one no version of
+this tool has ever been able to resolve.
+
+This interview owes two things rather than one. What this turn taught, as the
+three before it did. And, because it is the last, whatever the whole arc taught
+that no single turn was in a position to see.
+
+**What it has to ask:**
+
+1. *The note.* It was built to inform, and the wording Tomer dictated reads as an
+   instruction. Did it change what he did - did he go to the council's site, and
+   did he add or hide an item because of it? A screen that changes what a person
+   does is a different thing from one that changes what they know.
+
+2. *The link.* Did the search land on Gezer's actual site? The tool holds no
+   council's address on purpose, and this is the first evidence about whether
+   building one from a name is good enough or merely defensible.
+
+3. *The board with no authority.* Fifteen of the nineteen items never needed one
+   and four of them say they have no route. Did that read as a working board or
+   as a broken one? The whole turn rests on the answer being the first.
+
+4. *The English error on a Hebrew screen.* `the boundary layer did not answer
+   within 8 seconds` was on screen twice during this turn, in a tool whose first
+   convention is that the interface is Hebrew. Nobody has asked for it to be
+   fixed and it has never been written down. Does it belong in the last version
+   of `framing.md` as something open, or was it never a problem?
+
+5. *The whole of it.* Four turns. What did the tool turn out to be for, and what
+   did he expect it to do that it never did?
+
+Nothing in this phase changes code.
