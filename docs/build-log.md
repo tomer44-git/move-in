@@ -1677,3 +1677,30 @@ that no single turn was in a position to see.
    did he expect it to do that it never did?
 
 Nothing in this phase changes code.
+
+## Phase 6 — Record and revise
+
+About to write `docs/framing.md` for the sixth and last time. Agreed with Tomer
+on four points, item by item, before a word was written.
+
+A new part of Settled for what a board does when there is no authority. The
+`CR_LAMAS` fact recorded where it belongs - among the things the address lookup
+can answer - because a regional council having no locality code is a fact about
+the country and not about this code. The route descriptions rewritten to say what
+turned out to be true rather than what was assumed. And a paragraph at the top
+saying the spiral stopped by decision.
+
+**Two items leave the still-open list, and neither by being built.**
+
+The question of whether an unresolved address gives a useful board was written in
+turn two and deliberately never run, because running it meant breaking a live
+board. Turn four ran it for real, by a route nobody planned: an address the
+geocoder finds and the boundary layer cannot complete produces the same board,
+and somebody sat in front of it and worked.
+
+And the local council route has been used, by a friend of Tomer's in turn three
+who moved into one. That is recorded for exactly what it is - the address
+resolved and the board appeared - and not for more. Whether the route's wording
+matched what he actually had to do was never asked.
+
+The document is written in pencil and this is the last time it is picked up.
