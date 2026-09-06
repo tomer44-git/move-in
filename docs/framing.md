@@ -1,14 +1,27 @@
 # move-in — Framing
 
-ASE-26 personal project · Tomer Ben Bassat · Revised 30 August 2026
+ASE-26 personal project · Tomer Ben Bassat · Revised 3 September 2026
 
 Written in pencil. Revised at the end of every turn of the spiral. This is the
-fifth version. The first was scoped to one couple and one apartment; the second
-widened it to any address in Israel; the third was the first written after the
-tool was used rather than thought about; the fourth was the first written after a
-request the tool drafted had been sent to real authorities and answered. This one
-is the first written with nothing left unbuilt in the definition of done, and the
-first written from the use of a household that did not build it.
+sixth version and the last one.
+
+The first was scoped to one couple and one apartment; the second widened it to
+any address in Israel; the third was the first written after the tool was used
+rather than thought about; the fourth was the first written after a request the
+tool drafted had been sent to real authorities and answered; the fifth was the
+first written with nothing left unbuilt in the definition of done, and the first
+written from the use of a household that did not build it.
+
+**This one is written because the spiral stopped, and it stopped by decision.**
+
+Four turns. Every one of the nine things this document has asked for since its
+first version exists and has been used by somebody on a real move. What remains
+in **Still open** below is not a backlog and not unfinished work: every item on
+it is waiting for the world rather than for a developer. One needs somebody to
+move into a particular kind of place. One needs a household with children. One
+needs a case of something being dropped that has not occurred in four turns of
+asking. One needs years to pass. Nothing on that list can be closed by building,
+which is why building stopped.
 
 ## Problem statement
 
@@ -54,10 +67,8 @@ works.
 9. A person confirms the address that was found before the move resolves, with
    what they typed and what was found shown side by side.
 
-**All nine exist as of 30 August 2026.** The eighth was the last, and turn three
-built it. This is the first version of this document written with none of them
-outstanding, which changes what the still-open list below is for: everything on
-it is now a question about the thing rather than a piece of it that is missing.
+**All nine exist, and all nine have been used on a real move.** The eighth was
+the last to be built, in turn three.
 
 ## Out of scope
 
@@ -68,13 +79,15 @@ it is now a question about the thing rather than a piece of it that is missing.
   a finished board can be opened and read, and nothing on it can be changed.
 - The physical move itself: removals, packing, locksmith
 - Notifications. Deferred on purpose, not forgotten — if use shows they are
-  needed, they come in a later turn. Three turns of use have not shown it. The
-  first two produced a want for the convenience and no case of anything dropped.
-  The third produced something better than a want withheld: asked directly
-  whether anything had been dropped because nobody was told, the answer was no,
-  and the reason given was the history — dates, names and references, all
-  readable by both people without either telling the other. The condition stands,
-  untriggered.
+  needed, they come in a later turn. Three turns of use were asked, and none
+  showed it. The first two produced a want for the convenience and no case of
+  anything dropped. The third produced something better than a want withheld:
+  asked directly whether anything had been dropped because nobody was told, the
+  answer was no, and the reason given was the history — dates, names and
+  references, all readable by both people without either telling the other. The
+  fourth turn's use was a single board at a single address rather than a move
+  lived through, and the question was not put. The condition stands, untriggered,
+  and there is no later turn.
 
 ## Settled
 
@@ -129,16 +142,50 @@ it is now a question about the thing rather than a piece of it that is missing.
   screen. It tells and does not refuse: a move with items that will never be
   confirmed is still a finished move.
 
+**When there is no authority**
+
+- **A board with no authority is a working board.** Fifteen of the nineteen items
+  never needed one. Turn two chose to show all nineteen rather than withhold the
+  four, reasoning that leaving them out would let a person conclude arnona did not
+  apply to them when the truth was only that nobody knew which office. Turn four
+  put somebody in front of exactly that board, and it worked.
+- The four authority-dependent items say they have no route. They do not guess
+  one, and they are not hidden.
+- Above the first item, such a board says what it is: nineteen items for a general
+  move, and a suggestion to look at the council's own site for anything more — to
+  add what is missing, or hide what does not apply. It says hide, because there is
+  no delete in this tool and a sentence describing a button that does not exist is
+  a lie on a screen whose whole job is accuracy.
+- Where the layer named an authority before failing, the board offers a link to
+  search for that council's site. **The tool holds no council's web address and
+  never will**: detail lives at the level of authority type, and a stale URL sends
+  a real person to the wrong office. The link is built from the name that was just
+  returned, so it exists for every council and there is nothing to maintain. The
+  label says "search for", because that is what it does.
+- A name is kept from a failed lookup; the mapped authority type is not. That is
+  what keeps those four items route-free without any screen having to remember to
+  suppress a route — there is none to suppress. A rule enforced by absence cannot
+  be forgotten by a later change.
+
 **What the address lookup can answer**
 
-- An address resolves to an authority, or it does not, and there are five ways it
-  does not: the geocoder knows no such address, the point falls inside no
-  polygon, the point falls inside a polygon that belongs to no authority, the
-  service did not answer, or it has not been tried. Each says something different
-  on screen, because each leads a person somewhere different.
+- An address resolves to an authority, or it does not, and there are six ways it
+  does not: the geocoder knows no such address, the point falls inside no polygon,
+  the point falls inside a polygon that belongs to no authority, the layer names
+  an authority it cannot fully describe, the service did not answer, or it has not
+  been tried. Each says something different on screen, because each leads a person
+  somewhere different.
 - `ללא שיפוט` is a state of its own and not a kind of authority. Those polygons
   are real places with no municipal body at all, and no authority is recorded for
   them.
+- **A regional council has no `CR_LAMAS`, and this is a fact about the country
+  rather than about this code.** `CR_LAMAS` is the Central Bureau of Statistics
+  code for a *locality*. A regional council is a grouping of localities and not
+  one itself, so it has no locality code to give: all 127 of them in the layer
+  return an empty field. Cities and local councils are localities, which is why
+  they resolve and why this was invisible for three turns. The layer does carry
+  `CR_PNIM`, the Interior Ministry's own code for an authority, on every row - the
+  answer for anybody who later needs an identifier that exists for all of them.
 - A geocoder will answer a street name that exists in three towns with the wrong
   one, confidently and silently. So the match is shown to a person and agreed to
   before it counts. This is not a nicety; it is the only thing standing between a
@@ -203,30 +250,63 @@ it is now a question about the thing rather than a piece of it that is missing.
 
 ## Still open
 
-The fourth version listed six. Two were built in turn three — who did it in the
-log, and what happens when a move ends — and both were used. One was asked for a
-third time and answered the same way. What remains is four, and one of them is
-new. What turn three's use taught is recorded in `docs/turn-3-what-use-taught.md`.
+The fifth version listed five. One closed in turn four, and one has been half
+answered since turn three without anybody noticing. Four remain, and none of them
+is work. What turn four's use taught is in `docs/turn-4-what-use-taught.md`.
 
-1. **Notifications**, still a question and not yet work. Three turns, and the
-   condition in the out-of-scope list above has not been met.
-2. **The three route descriptions.** Verified on 22 August, each against a real
-   authority of its kind. The city route has now been used on three moves,
-   because Tel Aviv is a city and so was the authority the second household moved
-   into. The local council and regional council routes remain checked and never
-   used. This closes only when somebody moves into one of them; no amount of
-   building produces it.
+1. **Notifications**, still a question and never work. Asked in three turns and
+   never triggered by any of them. The condition is in the out-of-scope list
+   above and it stands.
+2. **The two route descriptions that have not been read back.** This item said
+   for two versions that the local and regional council routes were "checked but
+   have not been used", and it was read as waiting for the right person to move
+   to the right sort of place. That reading was wrong in both halves.
+
+   The **local council** route has been used: a friend of Tomer's moved into one
+   in turn three, and the address resolved and produced a board. What was never
+   asked is whether the route's wording matched what he actually had to do, so
+   the description itself is still unread back.
+
+   The **regional council** route could not have been used by anybody. Until turn
+   four no regional council address in the country could resolve at all, for the
+   reason recorded above, and even now such a board deliberately shows no route.
+   Reading that description back against reality needs somebody moving into a
+   regional council and a version of the tool that routes them, and neither
+   exists.
+
+   **An open item that never closes is data.** This one had been reporting a
+   defect for two turns in the language of a missing opportunity, and nobody
+   asked why the opportunity never came.
 3. **Whether items 16, 17 and 18 apply.** Answered for these moves by hiding
-   them. Still open for the list, and hiding is the reason it can stay open.
-4. **Whether an unresolved address gives a useful board.** Built in turn two and
-   deliberately never run: testing it means entering an address the geocoder
-   cannot find, which would replace the authority on a board two people are using
-   for a real move. Recorded as unobserved rather than tested at that price.
-5. **What a list of finished moves becomes.** New in this version, and it came
-   from a test rather than from a move. There is no way to delete a move, on
+   them. Still open for the list, and hiding is the reason it can stay open. It
+   needs a household unlike the two that used this.
+4. **What a list of finished moves becomes.** There is no way to delete a move, on
    purpose, so a move made to try something out stays on the list beside the real
    ones for good. Asked about it, Tomer was not troubled — it was a test and
    everything on it was invented. The judgement was made about one board, and the
    question is what the same list looks like after several years and several
    moves, real and otherwise. Nothing is broken. It is written down because the
    answer given was about a case of one.
+
+**Closed in turn four, and not by being built.** *"Whether an unresolved address
+gives a useful board"* was written in turn two and deliberately never run,
+because running it meant entering a bad address on a board two people were using
+for a real move. Turn four ran it for real by a route nobody planned: an address
+the geocoder finds and the boundary layer cannot complete produces the same board
+— nineteen items, no authority, four of them without a route — and somebody sat
+in front of it and worked. The answer is yes.
+
+## Two questions asked at the end and not answered
+
+Recorded because a question nobody answered is not a question whose answer was
+no, and there is no fifth turn to ask them again.
+
+**The English error on a Hebrew screen.** Messages like `the boundary layer did
+not answer within 8 seconds` reach a person through `lookup_error`. Eleven of
+them exist in the two functions that talk to outside services. The tool's first
+convention is a Hebrew interface. Whether this belongs here as something open was
+asked and not answered.
+
+**What the tool turned out to be, and what it never did.** The one question no
+earlier turn was in a position to ask. It was asked at the end of the last one
+and left without an answer.

@@ -28,7 +28,18 @@ export type LookupResult =
   /** Inside no polygon at all. */
   | { outcome: 'outside_boundaries' }
   /** The service did not answer, or did not answer with something usable. */
-  | { outcome: 'lookup_failed'; reason: string }
+  | {
+      outcome: 'lookup_failed'
+      reason: string
+      /**
+       * Present only where the layer named an authority it could not fully
+       * describe. Absent for a timeout or an unreachable service, where nothing
+       * about the authority is known - and the difference has to survive to the
+       * screen, because only a name can be linked to.
+       */
+      authorityName?: string
+      authorityTypeRaw?: string
+    }
 
 /**
  * Layer `muni_il` of `גבולות_שיפוט_רשויות_מקומיות`, percent-encoded because the
@@ -159,10 +170,18 @@ export async function resolveAuthority(
 
   // An authority with no code cannot be recorded as resolved: the move row
   // requires one, and inventing one is the failure this whole path avoids.
+  //
+  // The name and the type are handed back all the same. They were answered and
+  // they are true, and this is not a rare corner: CR_LAMAS is the Central Bureau
+  // of Statistics code for a locality, and none of the country's 127 regional
+  // councils has one, because a regional council is a grouping of localities and
+  // not a locality itself. Every one of them arrives here.
   if (blank(code)) {
     return {
       outcome: 'lookup_failed',
       reason: `the authority ${authorityName} came back without a CR_LAMAS code`,
+      authorityName,
+      authorityTypeRaw,
     }
   }
 

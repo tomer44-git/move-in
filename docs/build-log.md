@@ -1463,3 +1463,244 @@ The sentence the revision turns on is not a status. A finished move was argued
 for as something that must not be destroyed, and use showed it is something
 people read on purpose to decide what to do next. **A reference, not an archive.**
 That is a change in what the thing is, and it is why the door had to be a door.
+
+# Turn four · A working board when the address does not resolve
+
+## Step 1 — The board that thought it had ended
+
+About to make `resolve-move` return every column the client's `Move` declares,
+and to stop `hasEnded` reading a missing field as a date.
+
+`SELECTED` in that function was written in turn two. Four columns the client
+needs have been added since or were never in it: `join_code`, `created_at`, and
+turn three's `ended_at` and `ended_by`. The object it returns is therefore not a
+`Move`, although its type says it is - TypeScript checks the shape the function
+declares, not the shape the browser will treat it as after a fetch.
+
+Then turn three added
+
+    hasEnded = (move) => move.ended_at !== null
+
+which is true for `undefined`. So a board rendered straight from a lookup was a
+finished board: every action gone, and `new Date(undefined)` printing
+`המעבר הסתיים ב-Invalid Date`.
+
+**Two screenshots of the same move, minutes apart, show both halves.** In the
+first, taken straight after the lookup, the ended notice is present and the join
+code beside the address is blank. In the second, after a reload, the notice is
+gone, the code reads `ZL9F8S`, and every action is back. One object was missing
+two columns; both symptoms are the same absence.
+
+**The direction of the failure is the part worth fixing on its own.** A missing
+`ended_at` currently means "ended", which locks a board somebody is using. The
+opposite default - missing means "not ended" - can at worst offer a button on a
+move that has finished, and `move_item_refuses_ended_move` refuses the write. One
+mistake costs a person their board; the other costs a failed click. So the
+comparison becomes a truthiness test and the database stays the authority on what
+has ended.
+
+Both halves are fixed, not just the one that would have been enough. The column
+list is the fault; the comparison is what turned it into a locked screen instead
+of a wrong date.
+
+No schema. Nothing to run.
+
+## Step 2 — A failed lookup may keep the name it was given
+
+About to relax one constraint. `move_authority_needs_resolved` allows an
+authority name only on a resolved move, which is why the answer the layer gave
+for גזר - a name and a type, and no locality code - was discarded whole.
+
+**Relaxing, not adding.** No new column. The name goes where names go, and the
+rule that a resolved move needs everything is untouched.
+
+**The mapped `authority_type` is still not written on a failed lookup**, and that
+is the part that does the work. It is the column that decides which route items
+3 to 6 show, so leaving it null means those items carry no route without a single
+screen having to remember to suppress one. A rule enforced by absence cannot be
+forgotten by a later change.
+
+`hasAuthority()` asks for `lookup_status = 'resolved'`. It goes on answering no,
+and the board goes on saying רשות לא ידועה. Nothing about this makes the tool
+claim an authority it did not fully resolve - `framing.md` has refused a guessed
+authority since its second version, and this is not one: it is a name, shown as a
+name, used only to point somebody outward.
+
+Tomer runs it by hand in the SQL editor.
+
+## Step 3 — The lookup keeps the name
+
+About to stop `resolveAuthority` from discarding an answer it was given.
+
+When the layer returns a name and a type but no `CR_LAMAS`, the outcome is still
+`lookup_failed` - nothing about this makes the move resolved - but the name and
+the raw type now travel with the failure instead of being dropped on the floor.
+`resolve-move` writes them beside the failure.
+
+**Only where they were actually answered.** The same outcome covers a timeout and
+an unreachable service, and in those cases nothing is known. The two fields are
+optional and absent there, and the row keeps its nulls. A link can only be shown
+where a name exists, so the difference has to survive all the way to the screen.
+
+**`authority_type` is still not written.** Said again here because it is the one
+thing in this step that is easy to add by accident and would quietly give items
+3 to 6 a route the tool never resolved.
+
+Nothing on screen changes yet. The board still says רשות לא ידועה, because
+`hasAuthority` asks for a resolved lookup and this is not one. What changes is
+that the answer is no longer thrown away.
+
+## Step 4 — The note, and the link
+
+About to put a note above the first item on any board that has no authority, and
+beside it a link where an authority was named.
+
+The wording is Tomer's, with one word changed by agreement. He dictated "or
+delete the ones that are not relevant", and there is no delete in this tool and
+never has been: an item that does not apply is hidden, because a deletion by one
+person would be unrecoverable for the other and would take the owner, the date
+and the reference with it. A sentence describing a button that does not exist is
+a small lie on a screen whose whole job is to be accurate, so it says hide.
+
+**When the note appears.** Whenever `hasAuthority` is false - the address was not
+found, it fell outside every boundary, the service failed, or the layer answered
+with something incomplete. All four leave a person with nineteen items and no
+route, and the note is the same in all four because their situation is.
+
+It does not appear on a resolved move, including one whose `Sug_Muni` is a type
+the verified list has no route for. There the authority is known and named on
+screen; what is missing is a route, and that is a different sentence for a
+different day.
+
+**When the link appears.** Only where the layer actually named an authority, and
+only where that authority is a local or regional council. After a timeout no
+name was ever returned, and a link built from nothing would point somewhere
+invented - which is the failure this project is most careful about.
+
+**The link is a search, and it says so.** The tool does not hold the address of
+any council's website and is not going to: `CLAUDE.md` puts detail at the level
+of authority type and not of the individual municipality, and two hundred and
+fifty URLs is a maintenance burden whose failure mode is sending a real person to
+the wrong place. The link is built from the name the layer just returned, so it
+exists for all two hundred and forty-nine councils and there is nothing to keep
+up to date. The label says "search for the site of", because that is what it
+does.
+
+## Step 5 — The right-to-left pass
+
+About to check what this turn put on screen: the note above the first item, and
+the link beside it where an authority was named.
+
+Less new surface than any turn before it. Everything else this turn touched was a
+column list, a comparison and a function's return value - none of which draws
+anything.
+
+### What the pass found
+
+Nothing to change, and the checks are written here so that what they could have
+caught is on the record rather than the word "passed".
+
+**No rule added carries a physical direction.** Grepped across the whole
+stylesheet for `left`, `right`, `float` and the physical margins and paddings.
+None, this turn or any turn. The two rules added use `margin-block` and a
+symmetric `padding` shorthand.
+
+**The note and the link both begin at the start edge**, measured in the running
+page rather than reasoned about: the paragraph's start edge and the link's start
+edge each sit exactly one padding in from the panel's, and the page does not
+scroll sideways.
+
+**The colour was wrong and was changed.** `.notice` on its own is
+`rgb(102, 120, 138)`, a soft grey that is right for "one moment…" and wrong for a
+paragraph somebody is meant to read and act on. It now resolves to
+`rgb(35, 48, 61)`, and that was read back from the browser rather than assumed
+from the file - the file said one thing and only the computed value proves which
+rule won.
+
+**The link's label carries no Latin text.** The URL is in the `href` and never on
+screen, so there is no mixed-direction line to get wrong. The one number in the
+note - nineteen - renders in its place inside the Hebrew sentence.
+
+**`rel="noreferrer noopener"` on the only external link this tool has ever had.**
+
+## Step 6 — Reporting the checks
+
+About to write `docs/verification-turn-4.md`.
+
+Three of the seven are settled without a board, which is one more than turn three
+managed, and the extra one was not won by arguing harder. `resolveAuthority` was
+run against the live boundary layer at three real points - Tel Aviv, the address
+in כרמי יוסף, and a point at sea. The service is public and needs no token, so
+the only reason no previous turn did this is that no previous turn thought of it.
+
+That settles check 6, the line of this turn: a city still resolves with its code
+and its route, and nothing on the resolved path was touched.
+
+The remaining four are the ones this turn exists for, and all four are about what
+a person sees on a board straight after a failed lookup. They are Tomer's to
+observe, exactly as the fault itself was his to find.
+
+## Phase 5 — Interview
+
+About to write `docs/turn-4-what-use-taught.md`, the fourth and last of its kind.
+
+**All seven checks passed.** The four that needed a board were observed by Tomer
+at גפן 8, כרמי יוסף - the address that started the turn, and one no version of
+this tool has ever been able to resolve.
+
+This interview owes two things rather than one. What this turn taught, as the
+three before it did. And, because it is the last, whatever the whole arc taught
+that no single turn was in a position to see.
+
+**What it has to ask:**
+
+1. *The note.* It was built to inform, and the wording Tomer dictated reads as an
+   instruction. Did it change what he did - did he go to the council's site, and
+   did he add or hide an item because of it? A screen that changes what a person
+   does is a different thing from one that changes what they know.
+
+2. *The link.* Did the search land on Gezer's actual site? The tool holds no
+   council's address on purpose, and this is the first evidence about whether
+   building one from a name is good enough or merely defensible.
+
+3. *The board with no authority.* Fifteen of the nineteen items never needed one
+   and four of them say they have no route. Did that read as a working board or
+   as a broken one? The whole turn rests on the answer being the first.
+
+4. *The English error on a Hebrew screen.* `the boundary layer did not answer
+   within 8 seconds` was on screen twice during this turn, in a tool whose first
+   convention is that the interface is Hebrew. Nobody has asked for it to be
+   fixed and it has never been written down. Does it belong in the last version
+   of `framing.md` as something open, or was it never a problem?
+
+5. *The whole of it.* Four turns. What did the tool turn out to be for, and what
+   did he expect it to do that it never did?
+
+Nothing in this phase changes code.
+
+## Phase 6 — Record and revise
+
+About to write `docs/framing.md` for the sixth and last time. Agreed with Tomer
+on four points, item by item, before a word was written.
+
+A new part of Settled for what a board does when there is no authority. The
+`CR_LAMAS` fact recorded where it belongs - among the things the address lookup
+can answer - because a regional council having no locality code is a fact about
+the country and not about this code. The route descriptions rewritten to say what
+turned out to be true rather than what was assumed. And a paragraph at the top
+saying the spiral stopped by decision.
+
+**Two items leave the still-open list, and neither by being built.**
+
+The question of whether an unresolved address gives a useful board was written in
+turn two and deliberately never run, because running it meant breaking a live
+board. Turn four ran it for real, by a route nobody planned: an address the
+geocoder finds and the boundary layer cannot complete produces the same board,
+and somebody sat in front of it and worked.
+
+And the local council route has been used, by a friend of Tomer's in turn three
+who moved into one. That is recorded for exactly what it is - the address
+resolved and the board appeared - and not for more. Whether the route's wording
+matched what he actually had to do was never asked.
+
+The document is written in pencil and this is the last time it is picked up.
