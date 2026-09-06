@@ -1585,3 +1585,40 @@ the wrong place. The link is built from the name the layer just returned, so it
 exists for all two hundred and forty-nine councils and there is nothing to keep
 up to date. The label says "search for the site of", because that is what it
 does.
+
+## Step 5 — The right-to-left pass
+
+About to check what this turn put on screen: the note above the first item, and
+the link beside it where an authority was named.
+
+Less new surface than any turn before it. Everything else this turn touched was a
+column list, a comparison and a function's return value - none of which draws
+anything.
+
+### What the pass found
+
+Nothing to change, and the checks are written here so that what they could have
+caught is on the record rather than the word "passed".
+
+**No rule added carries a physical direction.** Grepped across the whole
+stylesheet for `left`, `right`, `float` and the physical margins and paddings.
+None, this turn or any turn. The two rules added use `margin-block` and a
+symmetric `padding` shorthand.
+
+**The note and the link both begin at the start edge**, measured in the running
+page rather than reasoned about: the paragraph's start edge and the link's start
+edge each sit exactly one padding in from the panel's, and the page does not
+scroll sideways.
+
+**The colour was wrong and was changed.** `.notice` on its own is
+`rgb(102, 120, 138)`, a soft grey that is right for "one moment…" and wrong for a
+paragraph somebody is meant to read and act on. It now resolves to
+`rgb(35, 48, 61)`, and that was read back from the browser rather than assumed
+from the file - the file said one thing and only the computed value proves which
+rule won.
+
+**The link's label carries no Latin text.** The URL is in the `href` and never on
+screen, so there is no mixed-direction line to get wrong. The one number in the
+note - nineteen - renders in its place inside the Hebrew sentence.
+
+**`rel="noreferrer noopener"` on the only external link this tool has ever had.**
