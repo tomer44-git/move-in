@@ -1622,3 +1622,20 @@ screen, so there is no mixed-direction line to get wrong. The one number in the
 note - nineteen - renders in its place inside the Hebrew sentence.
 
 **`rel="noreferrer noopener"` on the only external link this tool has ever had.**
+
+## Step 6 — Reporting the checks
+
+About to write `docs/verification-turn-4.md`.
+
+Three of the seven are settled without a board, which is one more than turn three
+managed, and the extra one was not won by arguing harder. `resolveAuthority` was
+run against the live boundary layer at three real points - Tel Aviv, the address
+in כרמי יוסף, and a point at sea. The service is public and needs no token, so
+the only reason no previous turn did this is that no previous turn thought of it.
+
+That settles check 6, the line of this turn: a city still resolves with its code
+and its route, and nothing on the resolved path was touched.
+
+The remaining four are the ones this turn exists for, and all four are about what
+a person sees on a board straight after a failed lookup. They are Tomer's to
+observe, exactly as the fault itself was his to find.
